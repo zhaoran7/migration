@@ -1,0 +1,13 @@
+score	trait	source	accession	N	UKB_overlap	method	note
+prs_education	Education years	Okbay et al. 2016 discovery stage	GCST003676	293723	No	Released 5,000-variant discovery weights	Released 5,000-variant discovery-stage file; UKB was replication only; no additional clumping
+prs_income	Individual income	Kweon et al. 2025 individual-income meta-analysis	10.62891/aac85602	72601	No	PRS-CS-auto	UKB contributed household and occupational income, not individual income
+prs_all_cause_mortality	All-cause mortality	Deelen et al. 2019 longevity GWAS	GCST008598	36745	No	PRS-CS-auto	Longevity effects were sign-reversed so higher PRS indicates mortality liability; not a direct mortality GWAS
+prs_cvd_mortality	CVD mortality	FinnGen R12 hard cardiovascular disease	I9_CVD_HARD	500348	No	PRS-CS-auto	Broad CVD-liability proxy; not a cause-specific mortality GWAS
+prs_cad	CAD	FinnGen R12 major coronary heart disease event	I9_CHD	500348	No	PRS-CS-auto	
+prs_stroke	Stroke	FinnGen R12 stroke excluding SAH	I9_STR	484133	No	PRS-CS-auto	
+prs_heart_failure	Heart failure	FinnGen R12 strict heart failure	I9_HEARTFAIL	500348	No	PRS-CS-auto	
+prs_atrial_fibrillation	Atrial fibrillation	FinnGen R12 atrial fibrillation and flutter	I9_AF	316342	No	PRS-CS-auto	
+prs_type2_diabetes	Type 2 diabetes	FinnGen R12 combined type 2 diabetes	T2D	486367	No	PRS-CS-auto	
+prs_depression	Depression	FinnGen R12 depression	F5_DEPRESSIO	494164	No	PRS-CS-auto	
+prs_anxiety	Anxiety disorder	FinnGen R12 all anxiety disorders	F5_ALLANXIOUS	480289	No	PRS-CS-auto	
+prs_dementia	Dementia	FinnGen R12 dementia including outpatient diagnoses	F5_DEMENTIA_INCLAVO	500348	No	PRS-CS-auto	

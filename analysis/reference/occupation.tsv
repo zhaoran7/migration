@@ -1,0 +1,354 @@
+soc2000	occupation	siops	isei	egp	mcamsis	fcamsis
+1111	Senior officials in national government	64	77	1	85.6	67.9
+1112	Directors and chief executives of major organisations	70	70	1	71.5	64.5
+1113	Senior officials in local government	64	77	1	70.7	63
+1114	Senior officials of special interest organisations	63	58	2	71.01	69.78
+1121	Production, works and maintenance managers	60	67	1	57.77	55.68
+1122	Managers in construction	60	67	1	58.07	49.35
+1123	Managers in mining and energy	60	67	1	64.88	57.26
+1131	Financial managers and chartered secretaries	60	69	1	71.15	67.01
+1132	Marketing and sales managers	60	56	1	64.1	63.46
+1133	Purchasing managers	60	69	1	60.97	63.26
+1134	Advertising and public relations managers	60	69	1	70.66	79.47
+1135	Personnel, training and industrial relations managers	60	69	1	70.17	66.27
+1136	Information and communication technology managers	60	69	1	69.58	62.58
+1137	Research and development managers	60	69	1	69.72	72.5
+1141	Quality assurance managers	60	69	1	63.06	62.46
+1142	Customer care managers	60	69	1	63.65	61.46
+1151	Financial institution managers	60	87	1	64.88	59.85
+1152	Office managers	60	69	1	64	63.78
+1161	Transport and distribution managers	60	59	1	55.11	54.99
+1162	Storage and warehouse managers	60	59	1	49.1	47.74
+1163	Retail and wholesale managers	60	59	1	58.68	52.69
+1171	Officers in armed forces				77	63.1
+1172	Police officers (inspectors and above)	45	56	2	60	63.1
+1173	Senior officers in fire, ambulance, prison and related	60	67	1	68.12	62.21
+1174	Security managers	60	69	1	59.66	59.82
+1181	Hospital and health service managers	60	67	1	61.96	61.58
+1182	Pharmacy managers	52	51	2	72.42	80.53
+1183	Healthcare practice managers	52	51	2	63.67	62.77
+1184	Social services managers	60	67	1	69.21	61.65
+1185	Residential and day care managers	52	51	2	60.69	53.69
+1211	Farm managers	47	43	11	55.4	59.1
+1212	Natural environment and conservation managers	47	43	11	58.65	62.21
+1219	Managers in animal husbandry, forestry and fishing n.e.	47	43	11	52.26	61.71
+1221	Hotel and accommodation managers	38	44	2	56.5	51.9
+1222	Conference and exhibition managers	60	87	1	60.46	58.7
+1223	Restaurant and catering managers	38	44	2	54	47.1
+1224	Publicans and managers of licensed premises	38	44	2	50.52	39.43
+1225	Leisure and sports managers	52	51	2	58.94	67.29
+1226	Travel agency managers	52	51	2	73.2	61.4
+1231	Property, housing and land managers	52	51	2	67.24	71.17
+1232	Garage managers and proprietors	46	49	2	57.5	56.3
+1233	Hairdressing and beauty salon managers and proprietors	52	51	2	56.9	45.4
+1234	Shopkeepers and wholesale/retail dealers	46	49	2	57.71	52.43
+1235	Recycling and refuse disposal managers	52	51	2	51.48	49.47
+1239	Managers and proprietors in other services n.e.c.	52	51	2	60.16	57.88
+2111	Chemists	69	74	1	73.4	81.6
+2112	Biological scientists and biochemists	69	77	1	74.5	79.13
+2113	Physicists, geologists and meteorologists	69	74	1	84.22	81.5
+2121	Civil engineers	70	69	1	65.88	80.57
+2122	Mechanical engineers	66	67	1	67.83	82.15
+2123	Electrical engineers	65	68	1	67.54	74.44
+2124	Electronics engineers	65	68	1	67.17	79.6
+2125	Chemical engineers	66	71	1	80.3	76.4
+2126	Design and development engineers	56	69	1	65.54	79.41
+2127	Production and process engineers	56	69	1	55.49	77.73
+2128	Planning and quality control engineers	56	69	1	60.06	59.81
+2129	Engineering professionals n.e.c.	56	69	1	64.84	83.93
+2131	IT strategy and planning professionals	51	71	1	78.81	77.99
+2132	Software professionals	51	71	1	76.18	76.26
+2211	Medical practitioners	78	88	1	87.4	88.2
+2212	Psychologists	67	71	1	94	86.4
+2213	Pharmacists/pharmacologists	64	74	1	73.7	83.2
+2214	Ophthalmic opticians	73	85	1	80.2	90.7
+2215	Dental practitioners	70	85	1	83.7	90.8
+2216	Veterinarians	61	83	1	79.6	88.4
+2311	Higher education teaching professionals	78	77	1	81.39	94.21
+2312	Further education teaching professionals	78	77	1	63.8	78.6
+2313	Education officers, school inspectors	68	70	1	79.9	87
+2314	Secondary education teaching professionals	60	69	2	70.9	80.6
+2315	Primary and nursery education teaching professionals	57	66	2	65.5	73.9
+2316	Special needs education teaching professionals	62	66	2	65.8	75.2
+2317	Registrars and senior administrators of educational est	62	65	2	79.65	74.07
+2319	Teaching professionals n.e.c.	62	65	2	65.53	73.52
+2321	Scientific researchers	69	74	1	77.94	76.47
+2322	Social science researchers	58	65	1	73.53	63.7
+2329	Researchers n.e.c.	78	77	1	67.09	72.26
+2411	Solicitors and lawyers, judges and coroners	73	85	1	84.82	89.38
+2419	Legal professionals n.e.c.	71	82	1	85.06	90.06
+2421	Chartered and certified accountants	62	69	1	72.5	75.9
+2422	Management accountants	62	69	1	68	74.5
+2423	Management consultants, actuaries, economists and stati	57	69	2	76.98	76.02
+2431	Architects	72	69	1	79.6	77.9
+2432	Town planners	72	69	1	86.3	77.9
+2433	Quantity surveyors	58	56	2	69.7	83.5
+2434	Chartered surveyors (not quantity surveyors)	58	56	2	67.24	76.2
+2441	Public service administrative professionals				69.53	67.2
+2442	Social workers	52	51	2	73.6	56
+2443	Probation officers	52	51	2	73.6	56
+2444	Clergy	60	53	2	82.2	86.4
+2451	Librarians	54	65	2	72.24	70.88
+2452	Archivists and curators	54	65	2	76.5	86.1
+3111	Laboratory technicians	46	45	2	60.96	61.28
+3112	Electrical/electronics technicians	46	46	2	49.17	53.38
+3113	Engineering technicians	47	49	2	50.98	59.68
+3114	Building and civil engineering technicians	39	45	2	57.52	78.97
+3115	Quality assurance technicians	46	53	2	54.25	57.67
+3119	Science and engineering technicians n.e.c.	46	53	2	52.42	55.93
+3121	Architectural technologists and town planning technicia	46	53	2	67.4	83.8
+3122	Draughtspersons	55	51	2	58.84	67.91
+3123	Building inspectors	54	50	2	61.54	78.82
+3131	IT operations technicians	53	52	2	68.81	69.97
+3132	IT user support technicians	53	52	2	69.2	71.2
+3211	Nurses	44	38	3	52.4	59.4
+3212	Midwives	44	38	3	59.8	64.5
+3213	Paramedics	53	51	2	46.6	42.2
+3214	Medical radiographers	58	57	2	66.3	73.8
+3215	Chiropodists	51	60	2	66.9	70.1
+3216	Dispensing opticians	60	60	2	66.3	73.7
+3217	Pharmaceutical dispensers	44	51	2	46.7	60.9
+3218	Medical and dental technicians	51	55	2	49.02	53.56
+3221	Physiotherapists	51	60	2	66.1	78
+3222	Occupational therapists	51	60	2	66.3	78.1
+3223	Speech and language therapists	51	60	2	66.3	78.1
+3229	Therapists n.e.c.	51	60	2	61.94	74.27
+3231	Youth and community workers	49	43	3	62.72	58.56
+3232	Housing and welfare officers	49	43	3	63.49	58.76
+3311	NCOs and other ranks				45.1	56.1
+3312	Police officers (sergeant and below)	40	50	8	56.77	60.65
+3313	Fire service officers (leading fire officer and below)	35	42	8	52.7	60.8
+3314	Prison service officers (below principal officer)	39	40	9	48.6	59
+3319	Protective service associate professionals n.e.c.	30	40	9	63.94	48.32
+3411	Artists	57	54	2	71.9	70
+3412	Authors, writers	58	65	2	75.03	84.12
+3413	Actors, entertainers	45	52	2	68.68	66.29
+3414	Dancers and choreographers	32	50	2	68.8	70.95
+3415	Musicians	32	50	2	71.56	75.09
+3416	Arts officers, producers and directors	57	64	2	70.24	67.1
+3421	Graphic designers	49	53	2	67.77	66.63
+3422	Product, clothing and related designers	49	53	2	67.27	72.69
+3431	Journalists, newspaper and periodical editors	58	65	2	75.67	85.15
+3432	Broadcasting associate professionals	50	64	2	71.55	70.26
+3433	Public relations officers	46	55	2	70.7	78.21
+3434	Photographers and audio-visual equipment operators	46	48	2	64.74	63.84
+3441	Sports players	49	54	2	70.4	73.6
+3442	Sports coaches, instructors and officials	49	54	2	67.48	71.64
+3443	Fitness instructors	49	54	2	67.4	74.54
+3449	Sports and fitness occupations n.e.c.	49	54	2	70.4	73.6
+3511	Air traffic controllers	50	69	1	69.44	66.03
+3512	Aircraft pilots and flight engineers	60	69	1	73.11	67.39
+3513	Ship and hovercraft officers	55	52	2	55.8	64.94
+3514	Train drivers	43	41	8	36.5	30.1
+3520	Legal associate professionals	49	59	2	64.4	69.95
+3531	Estimators, valuers and assessors	46	56	2	61.18	61.69
+3532	Brokers	50	61	2	65.6	62.13
+3533	Insurance underwriters	44	54	2	63.2	60.54
+3534	Finance and investment analysts/advisers	46	55	2	66.34	61.83
+3535	Taxation experts	52	57	2	67.8	65.4
+3536	Importers, exporters	50	55	2	60.28	62.6
+3537	Financial and accounting technicians	49	51	3	67.01	68.5
+3539	Business and related associate professionals n.e.c.	46	55	2	66.57	64.92
+3541	Buyers and purchasing officers	49	50	2	56.23	63.23
+3542	Sales representatives	46	56	2	57.76	59.99
+3543	Marketing associate professionals	46	55	2	67.66	70.57
+3544	Estate agents, auctioneers	49	59	2	67.05	72.88
+3551	Conservation and environmental protection officers	52	50	2	69.01	71.85
+3552	Countryside and park rangers	52	50	2	41.36	39.18
+3561	Public service associate professionals	55	56	2	69.1	66.89
+3562	Personnel and industrial relations officers	56	69	2	63.61	66.29
+3563	Vocational and industrial trainers and instructors	50	38	3	56	66.12
+3564	Careers advisers and vocational guidance specialists	56	69	2	57	67.2
+3565	Inspectors of factories, utilities and trading standard	54	50	2	56.29	67.2
+3566	Statutory examiners	54	50	2	64.41	65.52
+3567	Occupational hygienists and safety officers (health and	54	50	2	57.83	68.04
+3568	Environmental health officers	54	50	2	67.9	54
+4111	Civil Service executive officers	37	39	4	64.17	59.62
+4112	Civil Service administrative officers and assistants	37	39	4	50.9	51
+4113	Local government clerical officers and assistants	37	39	4	59.06	57.33
+4114	Officers of non-governmental organisations	37	39	4	71.04	69.65
+4121	Credit controllers	44	51	3	58.36	54.56
+4122	Accounts and wages clerks, book-keepers, other financia	44	51	3	58.82	55.18
+4123	Counter clerks	37	48	4	54.15	52.64
+4131	Filing and other records assistants/clerks	36	39	4	50.77	58.18
+4132	Pensions and insurance clerks	37	39	4	57.63	55.79
+4133	Stock control clerks	30	32	4	42.01	45.82
+4134	Transport and distribution clerks	37	45	4	51.74	55.18
+4135	Library assistants/clerks	36	39	4	50.5	65
+4136	Database assistants/clerks	45	50	3	51.86	49.24
+4137	Market research interviewers	37	39	4	53.04	55.12
+4141	Telephonists	38	52	4	51.12	50.33
+4142	Communication operators	38	52	4	48.9	50.78
+4150	General office assistants/clerks	37	39	4	53.2	54.3
+4211	Medical secretaries	53	53	3	62.6	65.8
+4212	Legal secretaries	53	53	3	62.6	54.8
+4213	School secretaries	53	53	3	50.6	58.3
+4214	Company secretaries	53	53	3	66.03	67.53
+4215	Personal assistants and other secretaries	53	53	3	63.33	62.85
+4216	Receptionists	38	52	4	51.6	55.86
+4217	Typists	45	51	3	60.65	53.59
+5111	Farmers	38	23	10	52.89	56.52
+5112	Horticultural trades	40	23	10	48.24	55.71
+5113	Gardeners and groundsmen/ groundswomen	40	23	10	38.45	60.31
+5119	Agricultural and fishing trades n.e.c.	28	28	10	47	53.88
+5211	Smiths and forge workers	35	33	8	33.2	29
+5212	Moulders, core makers, die casters	38	29	8	18.3	28.6
+5213	Sheet metal workers	34	33	8	38.6	29.2
+5214	Metal plate workers, shipwrights, riveters	44	30	8	33.9	28.6
+5215	Welding trades	39	30	8	33.3	28.7
+5216	Pipe fitters	34	33	8	43.32	39.48
+5221	Metal machining setters and setter-operators	38	34	8	34.95	31.44
+5222	Tool makers, tool fitters and markers-out	40	40	8	42.73	29.98
+5223	Metal working production and maintenance fitters	43	34	8	41.23	29.95
+5224	Precision instrument makers and repairers	47	38	8	45.95	40.44
+5231	Motor mechanics, auto engineers	43	34	8	43.63	50.04
+5232	Vehicle body builders and repairers	34	33	8	39.05	49.7
+5233	Auto electricians	38	40	8	54.2	49.7
+5234	Vehicle spray painters	31	29	8	36.1	30.2
+5241	Electricians, electrical fitters	44	37	8	46.43	41.45
+5242	Telecommunications engineers	35	40	8	49.01	54.26
+5243	Lines repairers and cable jointers	36	38	8	41.5	42.9
+5244	TV, video and audio engineers	48	39	8	47.48	56.9
+5245	Computer engineers, installation and maintenance	48	39	8	54.1	56.7
+5249	Electrical/electronics engineers n.e.c.	48	39	8	49.16	42.36
+5311	Steel erectors	44	30	8	31.98	29.58
+5312	Bricklayers, masons	34	29	9	33.9	44.1
+5313	Roofers, roof tilers and slaters	31	19	9	34.2	44.1
+5314	Plumbers, heating and ventilating engineers	34	33	8	43.45	39.19
+5315	Carpenters and joiners	37	29	8	41.35	40.9
+5316	Glaziers, window fabricators and fitters	26	26	9	39.1	40.5
+5319	Construction trades n.e.c.	36	29	9	40.79	43.8
+5321	Plasterers	31	31	8	36.4	44.1
+5322	Floorers and wall tilers	31	30	8	43.23	44.08
+5323	Painters and decorators	31	29	8	38.8	50.1
+5411	Weavers and knitters	32	29	9	19.48	26.82
+5412	Upholsterers	31	28	8	42.18	40.7
+5413	Leather and related trades	27	31	8	39.87	31.08
+5414	Tailors and dressmakers	40	45	8	42.88	39.27
+5419	Textiles, garments and related trades n.e.c.	34	36	8	39.32	30.27
+5421	Originators, compositors and print preparers	42	40	8	46.38	51.37
+5422	Printers	42	40	8	41.18	36.51
+5423	Bookbinders and print finishers	32	37	8	38.48	33.16
+5424	Screen printers	52	38	8	43.35	36.1
+5431	Butchers, meat cutters	24	30	8	33.6	35
+5432	Bakers, flour confectioners	33	31	8	38.08	41.91
+5433	Fishmongers, poultry dressers	24	30	8	26.15	26.85
+5434	Chefs, cooks	31	30	8	45.97	41.75
+5491	Glass and ceramics makers, decorators and finishers	28	28	9	25.62	29.38
+5492	Furniture makers, other craft woodworkers	40	33	8	42.84	44.49
+5493	Pattern makers (moulds)	40	33	8	39.45	36.41
+5494	Musical instrument makers and tuners	33	38	8	64.03	41.66
+5495	Goldsmiths, silversmiths, precious stone workers	43	38	8	53.93	39.58
+5496	Floral arrangers, florists	49	53	2	51.5	54.7
+5499	Hand craft occupations n.e.c.	31	29	9	32.09	34.86
+6111	Nursing auxiliaries and assistants	42	25	9	43.76	45.63
+6112	Ambulance staff (excluding paramedics)	42	25	9	46.6	42.2
+6113	Dental nurses	42	25	9	45.01	52.36
+6114	Houseparents and residential wardens	42	25	9	58.96	50.44
+6115	Care assistants and home carers	17	25	4	43.97	37.72
+6121	Nursery nurses	23	25	4	46.78	56.73
+6122	Childminders and related occupations	23	25	4	46.7	49.7
+6123	Playgroup leaders/assistants	23	25	4	45.63	55.78
+6124	Educational assistants	23	25	4	43.5	57.2
+6131	Veterinary nurses and assistants	48	51	2	43.9	54
+6139	Animal care occupations n.e.c.	48	51	2	36.02	40.51
+6211	Sports and leisure assistants	29	19	9	44.41	41.57
+6212	Travel agents	38	52	4	59.28	59.41
+6213	Travel and tour guides	29	34	4	51.74	56.58
+6214	Air travel assistants	50	34	4	52.48	55.81
+6215	Rail travel assistants	32	34	4	35.68	37.22
+6219	Leisure and travel service occupations n.e.c.	32	34	4	46.85	47.93
+6221	Hairdressers, barbers	32	29	8	52.6	46.45
+6222	Beauticians and related occupations	32	29	8	51.7	57.91
+6231	Housekeepers and related occupations	37	30	2	35.9	40.7
+6232	Caretakers	25	23	9	40.11	27.52
+6291	Undertakers and mortuary assistants	34	54	8	45.24	43.3
+6292	Pest control officers	20	29	9	43	41.6
+7111	Sales and retail assistants	32	43	4	51.51	42.82
+7112	Retail cashiers and check-out operators	32	43	4	35.7	39.99
+7113	Telephone salespersons	26	29	3	53.2	48.94
+7121	Collector salespersons and credit agents	26	29	3	42.85	53.33
+7122	Debt, rent and other cash collectors	21	27	9	42.74	41.27
+7123	Roundsmen/women and van salespersons	26	29	3	39.7	42.9
+7124	Market and street traders and assistants	32	43	4	46.1	41.97
+7125	Merchandisers and window dressers	49	53	2	49.34	55.38
+7129	Sales related occupations n.e.c.	46	56	2	55.32	58.08
+7211	Call centre agents/operators	38	52	4	50.48	52.58
+7212	Customer care occupations	38	52	4	52.21	54.1
+8111	Food, drink and tobacco process operatives	33	29	9	31.02	28.66
+8112	Glass and ceramics process operatives	31	22	9	22.45	26.88
+8113	Textile process operatives	28	30	9	24.28	23.11
+8114	Chemical and related process operatives	42	35	8	33.45	30.24
+8115	Rubber process operatives	30	30	9	27.43	27.83
+8116	Plastics process operatives	30	30	9	30.18	28.83
+8117	Metal making and treating process operatives	40	30	9	30.13	31.46
+8118	Electroplaters	28	30	9	24.3	26.4
+8119	Process operatives n.e.c.	36	30	9	31.68	29.89
+8121	Paper and wood machine operatives	28	27	9	33.67	25.37
+8122	Coal mine operatives	34	35	9	21.88	29.68
+8123	Quarry workers and related operatives	32	35	9	32.61	38.6
+8124	Energy plant operatives	38	32	8	34.39	29.34
+8125	Metal working machine operatives	38	36	9	32.08	24.21
+8126	Water and sewerage plant operatives	34	33	8	42.72	39.62
+8129	Plant and machine operatives n.e.c.	33	26	9	35.4	28.94
+8131	Assemblers (electrical products)	48	34	9	37.15	32.42
+8132	Assemblers (vehicles and metal goods)	30	30	9	37.5	29.2
+8133	Routine inspectors and testers	33	26	9	38.32	32.9
+8134	Weighers, graders, sorters	33	26	9	30.27	27.09
+8135	Tyre, exhaust and windscreen fitters	43	34	8	36.23	43.02
+8136	Clothing cutters	26	32	9	33.1	19.7
+8137	Sewing machinists	25	32	9	32.9	28.26
+8138	Routine laboratory testers	33	26	9	44.09	51.23
+8139	Assemblers and routine operatives n.e.c.	33	26	9	28.89	31.55
+8141	Scaffolders, stagers, riggers	28	30	8	33.7	44.1
+8142	Road construction operatives	15	21	9	28.19	55.6
+8143	Rail construction and maintenance operatives	15	21	9	25.26	32.67
+8149	Construction operatives n.e.c.	15	21	9	40.09	39.23
+8211	Heavy goods vehicle drivers	33	34	9	34.5	46.2
+8212	Van drivers	31	30	9	34.93	45.26
+8213	Bus and coach drivers	32	30	9	35.1	46.1
+8214	Taxi, cab drivers and chauffeurs	31	30	9	42.3	50.5
+8215	Driving instructors	50	38	3	54.3	65.5
+8216	Rail transport operatives	29	32	9	35.22	34.99
+8217	Seafarers (merchant navy); barge, lighter and boat oper	29	32	9	39.81	33.36
+8218	Air transport operatives	20	29	9	32.95	36.74
+8219	Transport operatives n.e.c.	20	29	9	33.66	37.34
+8221	Crane drivers	33	28	8	24.3	30.1
+8222	Fork-lift truck drivers	28	28	9	29.1	30.2
+8223	Agricultural machinery drivers	31	26	10	34.97	38.33
+8229	Mobile machine drivers and operatives n.e.c.	32	26	9	29.73	31.26
+9111	Farm workers	23	16	10	32.2	35.3
+9112	Forestry workers	18	16	10	44.7	39.8
+9119	Fishing and agriculture related occupations n.e.c.	23	16	10	35.26	41.24
+9121	Labourers in building and woodworking trades	15	21	9	30.89	36.3
+9129	Labourers in other construction trades n.e.c.	15	21	9	29.92	34.79
+9131	Labourers in foundries	19	20	9	26.28	29.55
+9132	Industrial cleaning process occupations	21	16	9	33.25	32.94
+9133	Printing machine minders and assistants	19	20	9	43.12	39.21
+9134	Packers, bottlers, canners, fillers	19	20	9	30.2	28.3
+9139	Labourers in process and plant operations n.e.c.	19	20	9	29.31	30.12
+9141	Stevedores, dockers and slingers	20	29	9	32.36	33.06
+9149	Other goods handling and storage occupations n.e.c.	20	29	9	36.47	36.91
+9211	Postal workers, mail sorters, messengers, couriers	22	25	9	41.06	38.86
+9219	Elementary office occupations n.e.c.	22	25	9	50.8	50.5
+9221	Hospital porters	21	16	9	38.5	50.7
+9222	Hotel porters	20	27	9	43.09	39.25
+9223	Kitchen and catering assistants	21	16	9	45.57	35.06
+9224	Waiters, waitresses	21	34	9	39.47	38.52
+9225	Bar staff	21	34	9	35.59	36.74
+9226	Leisure and theme park attendants	20	27	9	42.72	41.28
+9229	Elementary personal services occupations n.e.c.	20	27	9	43.03	43.99
+9231	Window cleaners	19	23	9	37.6	38.9
+9232	Road sweepers	13	23	9	32.23	27.15
+9233	Cleaners, domestics	21	16	9	36.44	26.93
+9234	Launderers, dry cleaners, pressers	22	16	9	44.04	27.26
+9235	Refuse and salvage occupations	13	23	9	26.01	35.9
+9239	Elementary cleaning occupations n.e.c.	13	23	9	34.21	35.21
+9241	Security guards and related occupations	20	27	9	38.92	48.18
+9242	Traffic wardens	30	40	9	40.7	35.65
+9243	School crossing patrol attendants	20	27	9	43.5	29.6
+9244	School mid-day assistants	23	25	4	45.75	43.74
+9245	Car park attendants	20	27	9	39.3	25
+9249	Elementary security occupations n.e.c.	20	27	9	41.32	34.35
+9251	Shelf fillers	32	43	4	35.3	38.1
+9259	Elementary sales occupations n.e.c.	22	25	9	34.66	38.72

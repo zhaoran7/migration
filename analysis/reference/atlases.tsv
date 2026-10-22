@@ -1,0 +1,10 @@
+Atlas	File	Annotation	Raw counts	URL
+Brain	human_brain_ifg.h5ad	cell_type	True	https://datasets.cellxgene.cziscience.com/b26c5844-47db-4622-8511-4694abf824e7.h5ad
+Immune	cross_tissue_immune_global.h5ad	Manually_curated_celltype	True	https://www.tissueimmunecellatlas.org/
+Vascular	human_brain_vascular.h5ad	cell_type	False	https://datasets.cellxgene.cziscience.com/25da7ccb-04ca-49d2-b00b-a794ef8c766d.h5ad
+Adipose	tabula_sapiens_fat.h5ad	cell_type	False	https://datasets.cellxgene.cziscience.com/8115812f-9acf-4f62-b15f-bde18086a1c8.h5ad
+Heart	tabula_sapiens_heart.h5ad	cell_type	False	https://datasets.cellxgene.cziscience.com/82197577-7914-45c0-9fde-6597a1da920f.h5ad
+Liver	tabula_sapiens_liver.h5ad	cell_type	False	https://datasets.cellxgene.cziscience.com/a4b3a49e-062b-4e3f-8915-02f40607651f.h5ad
+Mouse spatial	E16.5_E1S1.MOSTA	annotation	counts	https://yanglab.westlake.edu.cn/gsmap/home
+Human spatial	cs8	annotation	counts	https://yanglab.westlake.edu.cn/gsmap/home
+Adult cortex	dlpfc	annotation	counts	https://research.libd.org/spatialLIBD/

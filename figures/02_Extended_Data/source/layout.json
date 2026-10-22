@@ -1,0 +1,82 @@
+{
+  "Fig1": {
+    "width": 5494895,
+    "height": 7351037,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"73749\" y=\"2682\"/>\n    <a:ext cx=\"9467850\" cy=\"7289800\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"9467850\" cy=\"7289800\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "Fig2": {
+    "width": 11776161,
+    "height": 9536139,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"77525\" y=\"47051\"/>\n    <a:ext cx=\"11616032\" cy=\"9391246\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"11616032\" cy=\"9391246\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "Fig3": {
+    "width": 9104509,
+    "height": 9848191,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"26734\" y=\"26716\"/>\n    <a:ext cx=\"9061200\" cy=\"9810000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"9061200\" cy=\"9810000\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "Fig4": {
+    "width": 8688381,
+    "height": 6264339,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"62286\" y=\"6433\"/>\n    <a:ext cx=\"8640000\" cy=\"6480000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"8640000\" cy=\"6480000\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "Fig5": {
+    "width": 7290225,
+    "height": 7208912,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"-8887\" y=\"-13969\"/>\n    <a:ext cx=\"7308000\" cy=\"7308000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"7308000\" cy=\"7308000\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "Fig6": {
+    "width": 6844871,
+    "height": 7873663,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"36886\" y=\"21616\"/>\n    <a:ext cx=\"7020000\" cy=\"7866000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"7020000\" cy=\"7866000\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "ED1": {
+    "width": 8495365,
+    "height": 6197477,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"-74857\" y=\"11525\"/>\n    <a:ext cx=\"8640000\" cy=\"6408000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"8640000\" cy=\"6408000\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "ED2": {
+    "width": 7740000,
+    "height": 8928000,
+    "transform": {}
+  },
+  "ED3": {
+    "width": 7333702,
+    "height": 6213609,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"72437\" y=\"77530\"/>\n    <a:ext cx=\"7326000\" cy=\"6282000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"7326000\" cy=\"6282000\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "ED4": {
+    "width": 9291440,
+    "height": 10520538,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"-24117\" y=\"-13947\"/>\n    <a:ext cx=\"9360000\" cy=\"10584000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"9360000\" cy=\"10584000\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "ED5": {
+    "width": 9291440,
+    "height": 10540862,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"-24117\" y=\"-13947\"/>\n    <a:ext cx=\"9360000\" cy=\"10584000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"9360000\" cy=\"10584000\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "ED6": {
+    "width": 9311765,
+    "height": 10520538,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"-24117\" y=\"-13947\"/>\n    <a:ext cx=\"9360000\" cy=\"10584000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"9360000\" cy=\"10584000\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "ED7": {
+    "width": 8242012,
+    "height": 8283504,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"-18994\" y=\"-13927\"/>\n    <a:ext cx=\"8280000\" cy=\"8352000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"8280000\" cy=\"8352000\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "ED8": {
+    "width": 9612000,
+    "height": 9054000,
+    "transform": {}
+  },
+  "ED9": {
+    "width": 8262331,
+    "height": 9085252,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"-8834\" y=\"-13914\"/>\n    <a:ext cx=\"8280000\" cy=\"9108000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"8280000\" cy=\"9108000\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  },
+  "ED10": {
+    "width": 8571556,
+    "height": 6020684,
+    "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"-24063\" y=\"-34197\"/>\n    <a:ext cx=\"8640000\" cy=\"6084000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"8640000\" cy=\"6084000\"/>\n  <\/a:xfrm>\n<\/p:grpSpPr>"
+  }
+}

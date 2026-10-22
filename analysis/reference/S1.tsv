@@ -1,0 +1,33 @@
+Cohort	Variable	Definition	Scale	Source
+UKB	MD	Straight-line Euclidean distance between birthplace and recruitment-residence British National Grid coordinates, divided by 1000.	km	UKB fields 129, 130, 22688, 22689
+UKB	MD in phenotypic models	Raw MD centred and divided by its cohort SD before outcome-specific exclusions.	Per SD	Current Fig2 model
+UKB	MD in GWAS and PRS analyses	Rank-based inverse-normal transform; average ranks for ties, qnorm((rank - 0.5)/N).	RINT; standardized for PRS regression	Current GWAS and PRS models
+UKB	Birthplace TDI	TDI assigned to the closest unique geocoded recruitment-residence reference point; not historical TDI at the participant's birth date.	TDI units	UKB recruitment TDI, field 22189; nearest-neighbour geographic assignment
+UKB	Recruitment TDI	Townsend deprivation value at recruitment residence. Higher values indicate greater deprivation.	TDI units	UKB field 22189 in the analysed extract
+UKB	ΔTDI	Recruitment TDI minus Birthplace TDI; positive values indicate a more deprived destination.	Per SD in phenotypic models; RINT in GWAS	Endpoint TDI values
+UKB	Low → Low	Birthplace and Recruitment TDI classified using the same cohort-median Recruitment TDI threshold: -2.32. Both endpoints &lt;= -2.32.	Endpoint category	Prepared UKB phenotype cohort
+UKB	High → Low	Birthplace and Recruitment TDI classified using the same cohort-median Recruitment TDI threshold: -2.32. Birthplace &gt; -2.32; Recruitment &lt;= -2.32.	Endpoint category	Prepared UKB phenotype cohort
+UKB	Low → High	Birthplace and Recruitment TDI classified using the same cohort-median Recruitment TDI threshold: -2.32. Birthplace &lt;= -2.32; Recruitment &gt; -2.32.	Endpoint category	Prepared UKB phenotype cohort
+UKB	High → High	Birthplace and Recruitment TDI classified using the same cohort-median Recruitment TDI threshold: -2.32. Both endpoints &gt; -2.32.	Endpoint category	Prepared UKB phenotype cohort
+UKB	Migration cross TTWA	Different birthplace and recruitment-residence 2011 travel-to-work area codes; 0 for the same area and 1 for different areas.	Binary	ONS TTWA 2011 boundaries
+UKB	Population density change	log(1 + recruitment population/km2) minus log(1 + birthplace population/km2); positive values indicate movement towards higher density.	Per SD	2011 population grid, 1-km cells
+UKB	Rural-urban route	Four endpoint combinations: Urban → Urban, Urban → Rural, Rural → Urban and Rural → Rural.	Urban → Urban reference	England/Wales: ONS 2011 LSOA; Scotland: 2020 two-fold classification on 2011 Data Zones; Northern Ireland: NISRA 2015 settlement bands A-E urban, F-H and outside settlements rural
+UKB	Education years	Packed qualification codes mapped as 1=20, 2=13, 3=10, 4=10, 5=19, 6=15 and 7=7 years; the highest numeric code is retained when multiple codes are present.	Years	UKB field 6138; current preprocessing
+UKB	Income	Baseline household-income category as recorded in the analysed phenotype file.	Ordinal category	UKB field 738
+UKB	CAMSIS	Sex-specific CAMSIS score matched to baseline SOC2000 occupation code.	Occupational status score	UKB field 20277; ukbjobs SOC2000 lookup
+UKB	SES	First principal component of standardized education years, income and CAMSIS; sign oriented towards higher socioeconomic status, then standardized.	SD	Current UKB PCA definition
+UKB	Occupational physical demand	Never/rarely, Sometimes, Usually or Always; retain all four response levels.	Four categories	UKB field 816
+UKHLS	Migrant	At least one observed residential move in eligible migration history. Missing history is not a confirmed non-move.	Binary	Observed between-wave migration records
+UKHLS	MD	Sum of observed between-wave migration distances; use positive-distance migrants only for MD associations.	km; log(1 + cumulative km), then per SD	UKHLS supplied kilometres; HRS supplied miles converted to km (x 1.609344)
+UKHLS	MT	Cumulative number of observed moves; zero retained in migrant-status and MT analyses.	Per SD; zero retained	Observed between-wave migration records
+UKHLS	SES	Mean of within-wave standardized education and log(1 + non-negative household income), followed by within-wave SES standardization; continuous components winsorized at the 1st/99th percentiles.	SD within wave	Current longitudinal-cohort definition
+HRS	Migrant	At least one observed residential move in eligible migration history. Missing history is not a confirmed non-move.	Binary	Observed between-wave migration records
+HRS	MD	Sum of observed between-wave migration distances; use positive-distance migrants only for MD associations.	km; log(1 + cumulative km), then per SD	UKHLS supplied kilometres; HRS supplied miles converted to km (x 1.609344)
+HRS	MT	Cumulative number of observed moves; zero retained in migrant-status and MT analyses.	Per SD; zero retained	Observed between-wave migration records
+HRS	SES	Mean of within-wave standardized education and log(1 + non-negative household income), followed by within-wave SES standardization; continuous components winsorized at the 1st/99th percentiles.	SD within wave	Current longitudinal-cohort definition
+UKB	College	University/college degree indicator from the packed baseline qualification field.	Binary	UKB field 6138
+UKB	ISEI	International Socio-Economic Index matched to baseline SOC2000 occupation.	Occupational status score	UKB field 20277; SOC2000 lookup
+UKB	SIOPS	Standard International Occupational Prestige Scale matched to baseline SOC2000 occupation.	Occupational prestige score	UKB field 20277; SOC2000 lookup
+UKB	Work hours	Reported usual weekly working hours.	Hours/week	UKB field 767
+UKB	Work standing	Frequency of standing or walking at work.	Ordinal response	UKB field 806
+UKB	Shift work	Frequency of shift work.	Ordinal response	UKB field 826

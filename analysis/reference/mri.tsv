@@ -1,0 +1,315 @@
+Omics layer	Feature ID	Display name	MRI class	Atlas	Measure	Region	Hemisphere	UKB field ID	BIG40 ID
+MRI	cortex_area_left_TotalSurface	Cortical area left TotalSurface	cortex	Desikan-Killiany	area	TotalSurface	left	p26721	648
+MRI	cortex_area_left_bankssts	Cortical area left bankssts	cortex	Desikan-Killiany	area	bankssts	left	p26722	649
+MRI	cortex_area_left_caudalanteriorcingulate	Cortical area left caudalanteriorcingulate	cortex	Desikan-Killiany	area	caudalanteriorcingulate	left	p26723	650
+MRI	cortex_area_left_caudalmiddlefrontal	Cortical area left caudalmiddlefrontal	cortex	Desikan-Killiany	area	caudalmiddlefrontal	left	p26724	651
+MRI	cortex_area_left_cuneus	Cortical area left cuneus	cortex	Desikan-Killiany	area	cuneus	left	p26725	652
+MRI	cortex_area_left_entorhinal	Cortical area left entorhinal	cortex	Desikan-Killiany	area	entorhinal	left	p26726	653
+MRI	cortex_area_left_frontalpole	Cortical area left frontalpole	cortex	Desikan-Killiany	area	frontalpole	left	p26752	679
+MRI	cortex_area_left_fusiform	Cortical area left fusiform	cortex	Desikan-Killiany	area	fusiform	left	p26727	654
+MRI	cortex_area_left_inferiorparietal	Cortical area left inferiorparietal	cortex	Desikan-Killiany	area	inferiorparietal	left	p26728	655
+MRI	cortex_area_left_inferiortemporal	Cortical area left inferiortemporal	cortex	Desikan-Killiany	area	inferiortemporal	left	p26729	656
+MRI	cortex_area_left_insula	Cortical area left insula	cortex	Desikan-Killiany	area	insula	left	p26754	681
+MRI	cortex_area_left_isthmuscingulate	Cortical area left isthmuscingulate	cortex	Desikan-Killiany	area	isthmuscingulate	left	p26730	657
+MRI	cortex_area_left_lateraloccipital	Cortical area left lateraloccipital	cortex	Desikan-Killiany	area	lateraloccipital	left	p26731	658
+MRI	cortex_area_left_lateralorbitofrontal	Cortical area left lateralorbitofrontal	cortex	Desikan-Killiany	area	lateralorbitofrontal	left	p26732	659
+MRI	cortex_area_left_lingual	Cortical area left lingual	cortex	Desikan-Killiany	area	lingual	left	p26733	660
+MRI	cortex_area_left_medialorbitofrontal	Cortical area left medialorbitofrontal	cortex	Desikan-Killiany	area	medialorbitofrontal	left	p26734	661
+MRI	cortex_area_left_middletemporal	Cortical area left middletemporal	cortex	Desikan-Killiany	area	middletemporal	left	p26735	662
+MRI	cortex_area_left_paracentral	Cortical area left paracentral	cortex	Desikan-Killiany	area	paracentral	left	p26737	664
+MRI	cortex_area_left_parahippocampal	Cortical area left parahippocampal	cortex	Desikan-Killiany	area	parahippocampal	left	p26736	663
+MRI	cortex_area_left_parsopercularis	Cortical area left parsopercularis	cortex	Desikan-Killiany	area	parsopercularis	left	p26738	665
+MRI	cortex_area_left_parsorbitalis	Cortical area left parsorbitalis	cortex	Desikan-Killiany	area	parsorbitalis	left	p26739	666
+MRI	cortex_area_left_parstriangularis	Cortical area left parstriangularis	cortex	Desikan-Killiany	area	parstriangularis	left	p26740	667
+MRI	cortex_area_left_pericalcarine	Cortical area left pericalcarine	cortex	Desikan-Killiany	area	pericalcarine	left	p26741	668
+MRI	cortex_area_left_postcentral	Cortical area left postcentral	cortex	Desikan-Killiany	area	postcentral	left	p26742	669
+MRI	cortex_area_left_posteriorcingulate	Cortical area left posteriorcingulate	cortex	Desikan-Killiany	area	posteriorcingulate	left	p26743	670
+MRI	cortex_area_left_precentral	Cortical area left precentral	cortex	Desikan-Killiany	area	precentral	left	p26744	671
+MRI	cortex_area_left_precuneus	Cortical area left precuneus	cortex	Desikan-Killiany	area	precuneus	left	p26745	672
+MRI	cortex_area_left_rostralanteriorcingulate	Cortical area left rostralanteriorcingulate	cortex	Desikan-Killiany	area	rostralanteriorcingulate	left	p26746	673
+MRI	cortex_area_left_rostralmiddlefrontal	Cortical area left rostralmiddlefrontal	cortex	Desikan-Killiany	area	rostralmiddlefrontal	left	p26747	674
+MRI	cortex_area_left_superiorfrontal	Cortical area left superiorfrontal	cortex	Desikan-Killiany	area	superiorfrontal	left	p26748	675
+MRI	cortex_area_left_superiorparietal	Cortical area left superiorparietal	cortex	Desikan-Killiany	area	superiorparietal	left	p26749	676
+MRI	cortex_area_left_superiortemporal	Cortical area left superiortemporal	cortex	Desikan-Killiany	area	superiortemporal	left	p26750	677
+MRI	cortex_area_left_supramarginal	Cortical area left supramarginal	cortex	Desikan-Killiany	area	supramarginal	left	p26751	678
+MRI	cortex_area_left_transversetemporal	Cortical area left transversetemporal	cortex	Desikan-Killiany	area	transversetemporal	left	p26753	680
+MRI	cortex_area_right_TotalSurface	Cortical area right TotalSurface	cortex	Desikan-Killiany	area	TotalSurface	right	p26822	682
+MRI	cortex_area_right_bankssts	Cortical area right bankssts	cortex	Desikan-Killiany	area	bankssts	right	p26823	683
+MRI	cortex_area_right_caudalanteriorcingulate	Cortical area right caudalanteriorcingulate	cortex	Desikan-Killiany	area	caudalanteriorcingulate	right	p26824	684
+MRI	cortex_area_right_caudalmiddlefrontal	Cortical area right caudalmiddlefrontal	cortex	Desikan-Killiany	area	caudalmiddlefrontal	right	p26825	685
+MRI	cortex_area_right_cuneus	Cortical area right cuneus	cortex	Desikan-Killiany	area	cuneus	right	p26826	686
+MRI	cortex_area_right_entorhinal	Cortical area right entorhinal	cortex	Desikan-Killiany	area	entorhinal	right	p26827	687
+MRI	cortex_area_right_frontalpole	Cortical area right frontalpole	cortex	Desikan-Killiany	area	frontalpole	right	p26853	713
+MRI	cortex_area_right_fusiform	Cortical area right fusiform	cortex	Desikan-Killiany	area	fusiform	right	p26828	688
+MRI	cortex_area_right_inferiorparietal	Cortical area right inferiorparietal	cortex	Desikan-Killiany	area	inferiorparietal	right	p26829	689
+MRI	cortex_area_right_inferiortemporal	Cortical area right inferiortemporal	cortex	Desikan-Killiany	area	inferiortemporal	right	p26830	690
+MRI	cortex_area_right_insula	Cortical area right insula	cortex	Desikan-Killiany	area	insula	right	p26855	715
+MRI	cortex_area_right_isthmuscingulate	Cortical area right isthmuscingulate	cortex	Desikan-Killiany	area	isthmuscingulate	right	p26831	691
+MRI	cortex_area_right_lateraloccipital	Cortical area right lateraloccipital	cortex	Desikan-Killiany	area	lateraloccipital	right	p26832	692
+MRI	cortex_area_right_lateralorbitofrontal	Cortical area right lateralorbitofrontal	cortex	Desikan-Killiany	area	lateralorbitofrontal	right	p26833	693
+MRI	cortex_area_right_lingual	Cortical area right lingual	cortex	Desikan-Killiany	area	lingual	right	p26834	694
+MRI	cortex_area_right_medialorbitofrontal	Cortical area right medialorbitofrontal	cortex	Desikan-Killiany	area	medialorbitofrontal	right	p26835	695
+MRI	cortex_area_right_middletemporal	Cortical area right middletemporal	cortex	Desikan-Killiany	area	middletemporal	right	p26836	696
+MRI	cortex_area_right_paracentral	Cortical area right paracentral	cortex	Desikan-Killiany	area	paracentral	right	p26838	698
+MRI	cortex_area_right_parahippocampal	Cortical area right parahippocampal	cortex	Desikan-Killiany	area	parahippocampal	right	p26837	697
+MRI	cortex_area_right_parsopercularis	Cortical area right parsopercularis	cortex	Desikan-Killiany	area	parsopercularis	right	p26839	699
+MRI	cortex_area_right_parsorbitalis	Cortical area right parsorbitalis	cortex	Desikan-Killiany	area	parsorbitalis	right	p26840	700
+MRI	cortex_area_right_parstriangularis	Cortical area right parstriangularis	cortex	Desikan-Killiany	area	parstriangularis	right	p26841	701
+MRI	cortex_area_right_pericalcarine	Cortical area right pericalcarine	cortex	Desikan-Killiany	area	pericalcarine	right	p26842	702
+MRI	cortex_area_right_postcentral	Cortical area right postcentral	cortex	Desikan-Killiany	area	postcentral	right	p26843	703
+MRI	cortex_area_right_posteriorcingulate	Cortical area right posteriorcingulate	cortex	Desikan-Killiany	area	posteriorcingulate	right	p26844	704
+MRI	cortex_area_right_precentral	Cortical area right precentral	cortex	Desikan-Killiany	area	precentral	right	p26845	705
+MRI	cortex_area_right_precuneus	Cortical area right precuneus	cortex	Desikan-Killiany	area	precuneus	right	p26846	706
+MRI	cortex_area_right_rostralanteriorcingulate	Cortical area right rostralanteriorcingulate	cortex	Desikan-Killiany	area	rostralanteriorcingulate	right	p26847	707
+MRI	cortex_area_right_rostralmiddlefrontal	Cortical area right rostralmiddlefrontal	cortex	Desikan-Killiany	area	rostralmiddlefrontal	right	p26848	708
+MRI	cortex_area_right_superiorfrontal	Cortical area right superiorfrontal	cortex	Desikan-Killiany	area	superiorfrontal	right	p26849	709
+MRI	cortex_area_right_superiorparietal	Cortical area right superiorparietal	cortex	Desikan-Killiany	area	superiorparietal	right	p26850	710
+MRI	cortex_area_right_superiortemporal	Cortical area right superiortemporal	cortex	Desikan-Killiany	area	superiortemporal	right	p26851	711
+MRI	cortex_area_right_supramarginal	Cortical area right supramarginal	cortex	Desikan-Killiany	area	supramarginal	right	p26852	712
+MRI	cortex_area_right_transversetemporal	Cortical area right transversetemporal	cortex	Desikan-Killiany	area	transversetemporal	right	p26854	714
+MRI	cortex_thickness_left_GlobalMeanThickness	Cortical thickness left GlobalMeanThickness	cortex	Desikan-Killiany	thickness	GlobalMeanThickness	left	p26755	1020
+MRI	cortex_thickness_left_bankssts	Cortical thickness left bankssts	cortex	Desikan-Killiany	thickness	bankssts	left	p26756	1021
+MRI	cortex_thickness_left_caudalanteriorcingulate	Cortical thickness left caudalanteriorcingulate	cortex	Desikan-Killiany	thickness	caudalanteriorcingulate	left	p26757	1022
+MRI	cortex_thickness_left_caudalmiddlefrontal	Cortical thickness left caudalmiddlefrontal	cortex	Desikan-Killiany	thickness	caudalmiddlefrontal	left	p26758	1023
+MRI	cortex_thickness_left_cuneus	Cortical thickness left cuneus	cortex	Desikan-Killiany	thickness	cuneus	left	p26759	1024
+MRI	cortex_thickness_left_entorhinal	Cortical thickness left entorhinal	cortex	Desikan-Killiany	thickness	entorhinal	left	p26760	1025
+MRI	cortex_thickness_left_frontalpole	Cortical thickness left frontalpole	cortex	Desikan-Killiany	thickness	frontalpole	left	p26786	1051
+MRI	cortex_thickness_left_fusiform	Cortical thickness left fusiform	cortex	Desikan-Killiany	thickness	fusiform	left	p26761	1026
+MRI	cortex_thickness_left_inferiorparietal	Cortical thickness left inferiorparietal	cortex	Desikan-Killiany	thickness	inferiorparietal	left	p26762	1027
+MRI	cortex_thickness_left_inferiortemporal	Cortical thickness left inferiortemporal	cortex	Desikan-Killiany	thickness	inferiortemporal	left	p26763	1028
+MRI	cortex_thickness_left_insula	Cortical thickness left insula	cortex	Desikan-Killiany	thickness	insula	left	p26788	1053
+MRI	cortex_thickness_left_isthmuscingulate	Cortical thickness left isthmuscingulate	cortex	Desikan-Killiany	thickness	isthmuscingulate	left	p26764	1029
+MRI	cortex_thickness_left_lateraloccipital	Cortical thickness left lateraloccipital	cortex	Desikan-Killiany	thickness	lateraloccipital	left	p26765	1030
+MRI	cortex_thickness_left_lateralorbitofrontal	Cortical thickness left lateralorbitofrontal	cortex	Desikan-Killiany	thickness	lateralorbitofrontal	left	p26766	1031
+MRI	cortex_thickness_left_lingual	Cortical thickness left lingual	cortex	Desikan-Killiany	thickness	lingual	left	p26767	1032
+MRI	cortex_thickness_left_medialorbitofrontal	Cortical thickness left medialorbitofrontal	cortex	Desikan-Killiany	thickness	medialorbitofrontal	left	p26768	1033
+MRI	cortex_thickness_left_middletemporal	Cortical thickness left middletemporal	cortex	Desikan-Killiany	thickness	middletemporal	left	p26769	1034
+MRI	cortex_thickness_left_paracentral	Cortical thickness left paracentral	cortex	Desikan-Killiany	thickness	paracentral	left	p26771	1036
+MRI	cortex_thickness_left_parahippocampal	Cortical thickness left parahippocampal	cortex	Desikan-Killiany	thickness	parahippocampal	left	p26770	1035
+MRI	cortex_thickness_left_parsopercularis	Cortical thickness left parsopercularis	cortex	Desikan-Killiany	thickness	parsopercularis	left	p26772	1037
+MRI	cortex_thickness_left_parsorbitalis	Cortical thickness left parsorbitalis	cortex	Desikan-Killiany	thickness	parsorbitalis	left	p26773	1038
+MRI	cortex_thickness_left_parstriangularis	Cortical thickness left parstriangularis	cortex	Desikan-Killiany	thickness	parstriangularis	left	p26774	1039
+MRI	cortex_thickness_left_pericalcarine	Cortical thickness left pericalcarine	cortex	Desikan-Killiany	thickness	pericalcarine	left	p26775	1040
+MRI	cortex_thickness_left_postcentral	Cortical thickness left postcentral	cortex	Desikan-Killiany	thickness	postcentral	left	p26776	1041
+MRI	cortex_thickness_left_posteriorcingulate	Cortical thickness left posteriorcingulate	cortex	Desikan-Killiany	thickness	posteriorcingulate	left	p26777	1042
+MRI	cortex_thickness_left_precentral	Cortical thickness left precentral	cortex	Desikan-Killiany	thickness	precentral	left	p26778	1043
+MRI	cortex_thickness_left_precuneus	Cortical thickness left precuneus	cortex	Desikan-Killiany	thickness	precuneus	left	p26779	1044
+MRI	cortex_thickness_left_rostralanteriorcingulate	Cortical thickness left rostralanteriorcingulate	cortex	Desikan-Killiany	thickness	rostralanteriorcingulate	left	p26780	1045
+MRI	cortex_thickness_left_rostralmiddlefrontal	Cortical thickness left rostralmiddlefrontal	cortex	Desikan-Killiany	thickness	rostralmiddlefrontal	left	p26781	1046
+MRI	cortex_thickness_left_superiorfrontal	Cortical thickness left superiorfrontal	cortex	Desikan-Killiany	thickness	superiorfrontal	left	p26782	1047
+MRI	cortex_thickness_left_superiorparietal	Cortical thickness left superiorparietal	cortex	Desikan-Killiany	thickness	superiorparietal	left	p26783	1048
+MRI	cortex_thickness_left_superiortemporal	Cortical thickness left superiortemporal	cortex	Desikan-Killiany	thickness	superiortemporal	left	p26784	1049
+MRI	cortex_thickness_left_supramarginal	Cortical thickness left supramarginal	cortex	Desikan-Killiany	thickness	supramarginal	left	p26785	1050
+MRI	cortex_thickness_left_transversetemporal	Cortical thickness left transversetemporal	cortex	Desikan-Killiany	thickness	transversetemporal	left	p26787	1052
+MRI	cortex_thickness_right_GlobalMeanThickness	Cortical thickness right GlobalMeanThickness	cortex	Desikan-Killiany	thickness	GlobalMeanThickness	right	p26856	1054
+MRI	cortex_thickness_right_bankssts	Cortical thickness right bankssts	cortex	Desikan-Killiany	thickness	bankssts	right	p26857	1055
+MRI	cortex_thickness_right_caudalanteriorcingulate	Cortical thickness right caudalanteriorcingulate	cortex	Desikan-Killiany	thickness	caudalanteriorcingulate	right	p26858	1056
+MRI	cortex_thickness_right_caudalmiddlefrontal	Cortical thickness right caudalmiddlefrontal	cortex	Desikan-Killiany	thickness	caudalmiddlefrontal	right	p26859	1057
+MRI	cortex_thickness_right_cuneus	Cortical thickness right cuneus	cortex	Desikan-Killiany	thickness	cuneus	right	p26860	1058
+MRI	cortex_thickness_right_entorhinal	Cortical thickness right entorhinal	cortex	Desikan-Killiany	thickness	entorhinal	right	p26861	1059
+MRI	cortex_thickness_right_frontalpole	Cortical thickness right frontalpole	cortex	Desikan-Killiany	thickness	frontalpole	right	p26887	1085
+MRI	cortex_thickness_right_fusiform	Cortical thickness right fusiform	cortex	Desikan-Killiany	thickness	fusiform	right	p26862	1060
+MRI	cortex_thickness_right_inferiorparietal	Cortical thickness right inferiorparietal	cortex	Desikan-Killiany	thickness	inferiorparietal	right	p26863	1061
+MRI	cortex_thickness_right_inferiortemporal	Cortical thickness right inferiortemporal	cortex	Desikan-Killiany	thickness	inferiortemporal	right	p26864	1062
+MRI	cortex_thickness_right_insula	Cortical thickness right insula	cortex	Desikan-Killiany	thickness	insula	right	p26889	1087
+MRI	cortex_thickness_right_isthmuscingulate	Cortical thickness right isthmuscingulate	cortex	Desikan-Killiany	thickness	isthmuscingulate	right	p26865	1063
+MRI	cortex_thickness_right_lateraloccipital	Cortical thickness right lateraloccipital	cortex	Desikan-Killiany	thickness	lateraloccipital	right	p26866	1064
+MRI	cortex_thickness_right_lateralorbitofrontal	Cortical thickness right lateralorbitofrontal	cortex	Desikan-Killiany	thickness	lateralorbitofrontal	right	p26867	1065
+MRI	cortex_thickness_right_lingual	Cortical thickness right lingual	cortex	Desikan-Killiany	thickness	lingual	right	p26868	1066
+MRI	cortex_thickness_right_medialorbitofrontal	Cortical thickness right medialorbitofrontal	cortex	Desikan-Killiany	thickness	medialorbitofrontal	right	p26869	1067
+MRI	cortex_thickness_right_middletemporal	Cortical thickness right middletemporal	cortex	Desikan-Killiany	thickness	middletemporal	right	p26870	1068
+MRI	cortex_thickness_right_paracentral	Cortical thickness right paracentral	cortex	Desikan-Killiany	thickness	paracentral	right	p26872	1070
+MRI	cortex_thickness_right_parahippocampal	Cortical thickness right parahippocampal	cortex	Desikan-Killiany	thickness	parahippocampal	right	p26871	1069
+MRI	cortex_thickness_right_parsopercularis	Cortical thickness right parsopercularis	cortex	Desikan-Killiany	thickness	parsopercularis	right	p26873	1071
+MRI	cortex_thickness_right_parsorbitalis	Cortical thickness right parsorbitalis	cortex	Desikan-Killiany	thickness	parsorbitalis	right	p26874	1072
+MRI	cortex_thickness_right_parstriangularis	Cortical thickness right parstriangularis	cortex	Desikan-Killiany	thickness	parstriangularis	right	p26875	1073
+MRI	cortex_thickness_right_pericalcarine	Cortical thickness right pericalcarine	cortex	Desikan-Killiany	thickness	pericalcarine	right	p26876	1074
+MRI	cortex_thickness_right_postcentral	Cortical thickness right postcentral	cortex	Desikan-Killiany	thickness	postcentral	right	p26877	1075
+MRI	cortex_thickness_right_posteriorcingulate	Cortical thickness right posteriorcingulate	cortex	Desikan-Killiany	thickness	posteriorcingulate	right	p26878	1076
+MRI	cortex_thickness_right_precentral	Cortical thickness right precentral	cortex	Desikan-Killiany	thickness	precentral	right	p26879	1077
+MRI	cortex_thickness_right_precuneus	Cortical thickness right precuneus	cortex	Desikan-Killiany	thickness	precuneus	right	p26880	1078
+MRI	cortex_thickness_right_rostralanteriorcingulate	Cortical thickness right rostralanteriorcingulate	cortex	Desikan-Killiany	thickness	rostralanteriorcingulate	right	p26881	1079
+MRI	cortex_thickness_right_rostralmiddlefrontal	Cortical thickness right rostralmiddlefrontal	cortex	Desikan-Killiany	thickness	rostralmiddlefrontal	right	p26882	1080
+MRI	cortex_thickness_right_superiorfrontal	Cortical thickness right superiorfrontal	cortex	Desikan-Killiany	thickness	superiorfrontal	right	p26883	1081
+MRI	cortex_thickness_right_superiorparietal	Cortical thickness right superiorparietal	cortex	Desikan-Killiany	thickness	superiorparietal	right	p26884	1082
+MRI	cortex_thickness_right_superiortemporal	Cortical thickness right superiortemporal	cortex	Desikan-Killiany	thickness	superiortemporal	right	p26885	1083
+MRI	cortex_thickness_right_supramarginal	Cortical thickness right supramarginal	cortex	Desikan-Killiany	thickness	supramarginal	right	p26886	1084
+MRI	cortex_thickness_right_transversetemporal	Cortical thickness right transversetemporal	cortex	Desikan-Killiany	thickness	transversetemporal	right	p26888	1086
+MRI	cortex_volume_left_bankssts	Cortical volume left bankssts	cortex	Desikan-Killiany	volume	bankssts	left	p26789	344
+MRI	cortex_volume_left_caudalanteriorcingulate	Cortical volume left caudalanteriorcingulate	cortex	Desikan-Killiany	volume	caudalanteriorcingulate	left	p26790	345
+MRI	cortex_volume_left_caudalmiddlefrontal	Cortical volume left caudalmiddlefrontal	cortex	Desikan-Killiany	volume	caudalmiddlefrontal	left	p26791	346
+MRI	cortex_volume_left_cuneus	Cortical volume left cuneus	cortex	Desikan-Killiany	volume	cuneus	left	p26792	347
+MRI	cortex_volume_left_entorhinal	Cortical volume left entorhinal	cortex	Desikan-Killiany	volume	entorhinal	left	p26793	348
+MRI	cortex_volume_left_frontalpole	Cortical volume left frontalpole	cortex	Desikan-Killiany	volume	frontalpole	left	p26819	374
+MRI	cortex_volume_left_fusiform	Cortical volume left fusiform	cortex	Desikan-Killiany	volume	fusiform	left	p26794	349
+MRI	cortex_volume_left_inferiorparietal	Cortical volume left inferiorparietal	cortex	Desikan-Killiany	volume	inferiorparietal	left	p26795	350
+MRI	cortex_volume_left_inferiortemporal	Cortical volume left inferiortemporal	cortex	Desikan-Killiany	volume	inferiortemporal	left	p26796	351
+MRI	cortex_volume_left_insula	Cortical volume left insula	cortex	Desikan-Killiany	volume	insula	left	p26821	376
+MRI	cortex_volume_left_isthmuscingulate	Cortical volume left isthmuscingulate	cortex	Desikan-Killiany	volume	isthmuscingulate	left	p26797	352
+MRI	cortex_volume_left_lateraloccipital	Cortical volume left lateraloccipital	cortex	Desikan-Killiany	volume	lateraloccipital	left	p26798	353
+MRI	cortex_volume_left_lateralorbitofrontal	Cortical volume left lateralorbitofrontal	cortex	Desikan-Killiany	volume	lateralorbitofrontal	left	p26799	354
+MRI	cortex_volume_left_lingual	Cortical volume left lingual	cortex	Desikan-Killiany	volume	lingual	left	p26800	355
+MRI	cortex_volume_left_medialorbitofrontal	Cortical volume left medialorbitofrontal	cortex	Desikan-Killiany	volume	medialorbitofrontal	left	p26801	356
+MRI	cortex_volume_left_middletemporal	Cortical volume left middletemporal	cortex	Desikan-Killiany	volume	middletemporal	left	p26802	357
+MRI	cortex_volume_left_paracentral	Cortical volume left paracentral	cortex	Desikan-Killiany	volume	paracentral	left	p26804	359
+MRI	cortex_volume_left_parahippocampal	Cortical volume left parahippocampal	cortex	Desikan-Killiany	volume	parahippocampal	left	p26803	358
+MRI	cortex_volume_left_parsopercularis	Cortical volume left parsopercularis	cortex	Desikan-Killiany	volume	parsopercularis	left	p26805	360
+MRI	cortex_volume_left_parsorbitalis	Cortical volume left parsorbitalis	cortex	Desikan-Killiany	volume	parsorbitalis	left	p26806	361
+MRI	cortex_volume_left_parstriangularis	Cortical volume left parstriangularis	cortex	Desikan-Killiany	volume	parstriangularis	left	p26807	362
+MRI	cortex_volume_left_pericalcarine	Cortical volume left pericalcarine	cortex	Desikan-Killiany	volume	pericalcarine	left	p26808	363
+MRI	cortex_volume_left_postcentral	Cortical volume left postcentral	cortex	Desikan-Killiany	volume	postcentral	left	p26809	364
+MRI	cortex_volume_left_posteriorcingulate	Cortical volume left posteriorcingulate	cortex	Desikan-Killiany	volume	posteriorcingulate	left	p26810	365
+MRI	cortex_volume_left_precentral	Cortical volume left precentral	cortex	Desikan-Killiany	volume	precentral	left	p26811	366
+MRI	cortex_volume_left_precuneus	Cortical volume left precuneus	cortex	Desikan-Killiany	volume	precuneus	left	p26812	367
+MRI	cortex_volume_left_rostralanteriorcingulate	Cortical volume left rostralanteriorcingulate	cortex	Desikan-Killiany	volume	rostralanteriorcingulate	left	p26813	368
+MRI	cortex_volume_left_rostralmiddlefrontal	Cortical volume left rostralmiddlefrontal	cortex	Desikan-Killiany	volume	rostralmiddlefrontal	left	p26814	369
+MRI	cortex_volume_left_superiorfrontal	Cortical volume left superiorfrontal	cortex	Desikan-Killiany	volume	superiorfrontal	left	p26815	370
+MRI	cortex_volume_left_superiorparietal	Cortical volume left superiorparietal	cortex	Desikan-Killiany	volume	superiorparietal	left	p26816	371
+MRI	cortex_volume_left_superiortemporal	Cortical volume left superiortemporal	cortex	Desikan-Killiany	volume	superiortemporal	left	p26817	372
+MRI	cortex_volume_left_supramarginal	Cortical volume left supramarginal	cortex	Desikan-Killiany	volume	supramarginal	left	p26818	373
+MRI	cortex_volume_left_transversetemporal	Cortical volume left transversetemporal	cortex	Desikan-Killiany	volume	transversetemporal	left	p26820	375
+MRI	cortex_volume_right_bankssts	Cortical volume right bankssts	cortex	Desikan-Killiany	volume	bankssts	right	p26890	377
+MRI	cortex_volume_right_caudalanteriorcingulate	Cortical volume right caudalanteriorcingulate	cortex	Desikan-Killiany	volume	caudalanteriorcingulate	right	p26891	378
+MRI	cortex_volume_right_caudalmiddlefrontal	Cortical volume right caudalmiddlefrontal	cortex	Desikan-Killiany	volume	caudalmiddlefrontal	right	p26892	379
+MRI	cortex_volume_right_cuneus	Cortical volume right cuneus	cortex	Desikan-Killiany	volume	cuneus	right	p26893	380
+MRI	cortex_volume_right_entorhinal	Cortical volume right entorhinal	cortex	Desikan-Killiany	volume	entorhinal	right	p26894	381
+MRI	cortex_volume_right_frontalpole	Cortical volume right frontalpole	cortex	Desikan-Killiany	volume	frontalpole	right	p26920	407
+MRI	cortex_volume_right_fusiform	Cortical volume right fusiform	cortex	Desikan-Killiany	volume	fusiform	right	p26895	382
+MRI	cortex_volume_right_inferiorparietal	Cortical volume right inferiorparietal	cortex	Desikan-Killiany	volume	inferiorparietal	right	p26896	383
+MRI	cortex_volume_right_inferiortemporal	Cortical volume right inferiortemporal	cortex	Desikan-Killiany	volume	inferiortemporal	right	p26897	384
+MRI	cortex_volume_right_insula	Cortical volume right insula	cortex	Desikan-Killiany	volume	insula	right	p26922	409
+MRI	cortex_volume_right_isthmuscingulate	Cortical volume right isthmuscingulate	cortex	Desikan-Killiany	volume	isthmuscingulate	right	p26898	385
+MRI	cortex_volume_right_lateraloccipital	Cortical volume right lateraloccipital	cortex	Desikan-Killiany	volume	lateraloccipital	right	p26899	386
+MRI	cortex_volume_right_lateralorbitofrontal	Cortical volume right lateralorbitofrontal	cortex	Desikan-Killiany	volume	lateralorbitofrontal	right	p26900	387
+MRI	cortex_volume_right_lingual	Cortical volume right lingual	cortex	Desikan-Killiany	volume	lingual	right	p26901	388
+MRI	cortex_volume_right_medialorbitofrontal	Cortical volume right medialorbitofrontal	cortex	Desikan-Killiany	volume	medialorbitofrontal	right	p26902	389
+MRI	cortex_volume_right_middletemporal	Cortical volume right middletemporal	cortex	Desikan-Killiany	volume	middletemporal	right	p26903	390
+MRI	cortex_volume_right_paracentral	Cortical volume right paracentral	cortex	Desikan-Killiany	volume	paracentral	right	p26905	392
+MRI	cortex_volume_right_parahippocampal	Cortical volume right parahippocampal	cortex	Desikan-Killiany	volume	parahippocampal	right	p26904	391
+MRI	cortex_volume_right_parsopercularis	Cortical volume right parsopercularis	cortex	Desikan-Killiany	volume	parsopercularis	right	p26906	393
+MRI	cortex_volume_right_parsorbitalis	Cortical volume right parsorbitalis	cortex	Desikan-Killiany	volume	parsorbitalis	right	p26907	394
+MRI	cortex_volume_right_parstriangularis	Cortical volume right parstriangularis	cortex	Desikan-Killiany	volume	parstriangularis	right	p26908	395
+MRI	cortex_volume_right_pericalcarine	Cortical volume right pericalcarine	cortex	Desikan-Killiany	volume	pericalcarine	right	p26909	396
+MRI	cortex_volume_right_postcentral	Cortical volume right postcentral	cortex	Desikan-Killiany	volume	postcentral	right	p26910	397
+MRI	cortex_volume_right_posteriorcingulate	Cortical volume right posteriorcingulate	cortex	Desikan-Killiany	volume	posteriorcingulate	right	p26911	398
+MRI	cortex_volume_right_precentral	Cortical volume right precentral	cortex	Desikan-Killiany	volume	precentral	right	p26912	399
+MRI	cortex_volume_right_precuneus	Cortical volume right precuneus	cortex	Desikan-Killiany	volume	precuneus	right	p26913	400
+MRI	cortex_volume_right_rostralanteriorcingulate	Cortical volume right rostralanteriorcingulate	cortex	Desikan-Killiany	volume	rostralanteriorcingulate	right	p26914	401
+MRI	cortex_volume_right_rostralmiddlefrontal	Cortical volume right rostralmiddlefrontal	cortex	Desikan-Killiany	volume	rostralmiddlefrontal	right	p26915	402
+MRI	cortex_volume_right_superiorfrontal	Cortical volume right superiorfrontal	cortex	Desikan-Killiany	volume	superiorfrontal	right	p26916	403
+MRI	cortex_volume_right_superiorparietal	Cortical volume right superiorparietal	cortex	Desikan-Killiany	volume	superiorparietal	right	p26917	404
+MRI	cortex_volume_right_superiortemporal	Cortical volume right superiortemporal	cortex	Desikan-Killiany	volume	superiortemporal	right	p26918	405
+MRI	cortex_volume_right_supramarginal	Cortical volume right supramarginal	cortex	Desikan-Killiany	volume	supramarginal	right	p26919	406
+MRI	cortex_volume_right_transversetemporal	Cortical volume right transversetemporal	cortex	Desikan-Killiany	volume	transversetemporal	right	p26921	408
+MRI	subcortex_left_Accumbens_area	Subcortical volume left Accumbens area	subcortex	FreeSurfer aseg	volume	Accumbens area	left	p26564	201
+MRI	subcortex_left_Amygdala	Subcortical volume left Amygdala	subcortex	FreeSurfer aseg	volume	Amygdala	left	p26563	200
+MRI	subcortex_left_Caudate	Subcortical volume left Caudate	subcortex	FreeSurfer aseg	volume	Caudate	left	p26559	196
+MRI	subcortex_left_Hippocampus	Subcortical volume left Hippocampus	subcortex	FreeSurfer aseg	volume	Hippocampus	left	p26562	199
+MRI	subcortex_left_Lateral_Ventricle	Subcortical volume left Lateral Ventricle	subcortex	FreeSurfer aseg	volume	Lateral Ventricle	left	p26554	191
+MRI	subcortex_left_Pallidum	Subcortical volume left Pallidum	subcortex	FreeSurfer aseg	volume	Pallidum	left	p26561	198
+MRI	subcortex_left_Putamen	Subcortical volume left Putamen	subcortex	FreeSurfer aseg	volume	Putamen	left	p26560	197
+MRI	subcortex_left_Thalamus_Proper	Subcortical volume left Thalamus Proper	subcortex	FreeSurfer aseg	volume	Thalamus Proper	left	p26558	195
+MRI	subcortex_right_Accumbens_area	Subcortical volume right Accumbens area	subcortex	FreeSurfer aseg	volume	Accumbens area	right	p26595	218
+MRI	subcortex_right_Amygdala	Subcortical volume right Amygdala	subcortex	FreeSurfer aseg	volume	Amygdala	right	p26594	217
+MRI	subcortex_right_Caudate	Subcortical volume right Caudate	subcortex	FreeSurfer aseg	volume	Caudate	right	p26590	213
+MRI	subcortex_right_Hippocampus	Subcortical volume right Hippocampus	subcortex	FreeSurfer aseg	volume	Hippocampus	right	p26593	216
+MRI	subcortex_right_Lateral_Ventricle	Subcortical volume right Lateral Ventricle	subcortex	FreeSurfer aseg	volume	Lateral Ventricle	right	p26585	208
+MRI	subcortex_right_Pallidum	Subcortical volume right Pallidum	subcortex	FreeSurfer aseg	volume	Pallidum	right	p26592	215
+MRI	subcortex_right_Putamen	Subcortical volume right Putamen	subcortex	FreeSurfer aseg	volume	Putamen	right	p26591	214
+MRI	subcortex_right_Thalamus_Proper	Subcortical volume right Thalamus Proper	subcortex	FreeSurfer aseg	volume	Thalamus Proper	right	p26589	212
+MRI	white_matter_FA_Anterior_corona_radiata_left	White matter FA Anterior corona radiata	white_matter	JHU TBSS	FA	Anterior corona radiata	left	p25079	1475
+MRI	white_matter_FA_Anterior_corona_radiata_right	White matter FA Anterior corona radiata	white_matter	JHU TBSS	FA	Anterior corona radiata	right	p25078	1474
+MRI	white_matter_FA_Anterior_limb_of_internal_capsule_left	White matter FA Anterior limb of internal capsule	white_matter	JHU TBSS	FA	Anterior limb of internal capsule	left	p25073	1469
+MRI	white_matter_FA_Anterior_limb_of_internal_capsule_right	White matter FA Anterior limb of internal capsule	white_matter	JHU TBSS	FA	Anterior limb of internal capsule	right	p25072	1468
+MRI	white_matter_FA_Body_of_corpus_callosum	White matter FA Body of corpus callosum	white_matter	JHU TBSS	FA	Body of corpus callosum	midline	p25059	1455
+MRI	white_matter_FA_Cerebral_peduncle_left	White matter FA Cerebral peduncle	white_matter	JHU TBSS	FA	Cerebral peduncle	left	p25071	1467
+MRI	white_matter_FA_Cerebral_peduncle_right	White matter FA Cerebral peduncle	white_matter	JHU TBSS	FA	Cerebral peduncle	right	p25070	1466
+MRI	white_matter_FA_Cingulum_cingulate_gyrus_left	White matter FA Cingulum cingulate gyrus	white_matter	JHU TBSS	FA	Cingulum cingulate gyrus	left	p25091	1487
+MRI	white_matter_FA_Cingulum_cingulate_gyrus_right	White matter FA Cingulum cingulate gyrus	white_matter	JHU TBSS	FA	Cingulum cingulate gyrus	right	p25090	1486
+MRI	white_matter_FA_Cingulum_hippocampus_left	White matter FA Cingulum hippocampus	white_matter	JHU TBSS	FA	Cingulum hippocampus	left	p25093	1489
+MRI	white_matter_FA_Cingulum_hippocampus_right	White matter FA Cingulum hippocampus	white_matter	JHU TBSS	FA	Cingulum hippocampus	right	p25092	1488
+MRI	white_matter_FA_Corticospinal_tract_left	White matter FA Corticospinal tract	white_matter	JHU TBSS	FA	Corticospinal tract	left	p25063	1459
+MRI	white_matter_FA_Corticospinal_tract_right	White matter FA Corticospinal tract	white_matter	JHU TBSS	FA	Corticospinal tract	right	p25062	1458
+MRI	white_matter_FA_External_capsule_left	White matter FA External capsule	white_matter	JHU TBSS	FA	External capsule	left	p25089	1485
+MRI	white_matter_FA_External_capsule_right	White matter FA External capsule	white_matter	JHU TBSS	FA	External capsule	right	p25088	1484
+MRI	white_matter_FA_Fornix	White matter FA Fornix	white_matter	JHU TBSS	FA	Fornix	midline	p25061	1457
+MRI	white_matter_FA_Fornix_cres_and_Stria_terminalis_left	White matter FA Fornix cres and Stria terminalis	white_matter	JHU TBSS	FA	Fornix cres and Stria terminalis	left	p25095	1491
+MRI	white_matter_FA_Fornix_cres_and_Stria_terminalis_right	White matter FA Fornix cres and Stria terminalis	white_matter	JHU TBSS	FA	Fornix cres and Stria terminalis	right	p25094	1490
+MRI	white_matter_FA_Genu_of_corpus_callosum	White matter FA Genu of corpus callosum	white_matter	JHU TBSS	FA	Genu of corpus callosum	midline	p25058	1454
+MRI	white_matter_FA_Inferior_cerebellar_peduncle_left	White matter FA Inferior cerebellar peduncle	white_matter	JHU TBSS	FA	Inferior cerebellar peduncle	left	p25067	1463
+MRI	white_matter_FA_Inferior_cerebellar_peduncle_right	White matter FA Inferior cerebellar peduncle	white_matter	JHU TBSS	FA	Inferior cerebellar peduncle	right	p25066	1462
+MRI	white_matter_FA_Medial_lemniscus_left	White matter FA Medial lemniscus	white_matter	JHU TBSS	FA	Medial lemniscus	left	p25065	1461
+MRI	white_matter_FA_Medial_lemniscus_right	White matter FA Medial lemniscus	white_matter	JHU TBSS	FA	Medial lemniscus	right	p25064	1460
+MRI	white_matter_FA_Middle_cerebellar_peduncle	White matter FA Middle cerebellar peduncle	white_matter	JHU TBSS	FA	Middle cerebellar peduncle	midline	p25056	1452
+MRI	white_matter_FA_Pontine_crossing_tract	White matter FA Pontine crossing tract	white_matter	JHU TBSS	FA	Pontine crossing tract	midline	p25057	1453
+MRI	white_matter_FA_Posterior_corona_radiata_left	White matter FA Posterior corona radiata	white_matter	JHU TBSS	FA	Posterior corona radiata	left	p25083	1479
+MRI	white_matter_FA_Posterior_corona_radiata_right	White matter FA Posterior corona radiata	white_matter	JHU TBSS	FA	Posterior corona radiata	right	p25082	1478
+MRI	white_matter_FA_Posterior_limb_of_internal_capsule_left	White matter FA Posterior limb of internal capsule	white_matter	JHU TBSS	FA	Posterior limb of internal capsule	left	p25075	1471
+MRI	white_matter_FA_Posterior_limb_of_internal_capsule_right	White matter FA Posterior limb of internal capsule	white_matter	JHU TBSS	FA	Posterior limb of internal capsule	right	p25074	1470
+MRI	white_matter_FA_Posterior_thalamic_radiation_left	White matter FA Posterior thalamic radiation	white_matter	JHU TBSS	FA	Posterior thalamic radiation	left	p25085	1481
+MRI	white_matter_FA_Posterior_thalamic_radiation_right	White matter FA Posterior thalamic radiation	white_matter	JHU TBSS	FA	Posterior thalamic radiation	right	p25084	1480
+MRI	white_matter_FA_Retrolenticular_part_of_internal_capsule_left	White matter FA Retrolenticular part of internal capsule	white_matter	JHU TBSS	FA	Retrolenticular part of internal capsule	left	p25077	1473
+MRI	white_matter_FA_Retrolenticular_part_of_internal_capsule_right	White matter FA Retrolenticular part of internal capsule	white_matter	JHU TBSS	FA	Retrolenticular part of internal capsule	right	p25076	1472
+MRI	white_matter_FA_Sagittal_stratum_left	White matter FA Sagittal stratum	white_matter	JHU TBSS	FA	Sagittal stratum	left	p25087	1483
+MRI	white_matter_FA_Sagittal_stratum_right	White matter FA Sagittal stratum	white_matter	JHU TBSS	FA	Sagittal stratum	right	p25086	1482
+MRI	white_matter_FA_Splenium_of_corpus_callosum	White matter FA Splenium of corpus callosum	white_matter	JHU TBSS	FA	Splenium of corpus callosum	midline	p25060	1456
+MRI	white_matter_FA_Superior_cerebellar_peduncle_left	White matter FA Superior cerebellar peduncle	white_matter	JHU TBSS	FA	Superior cerebellar peduncle	left	p25069	1465
+MRI	white_matter_FA_Superior_cerebellar_peduncle_right	White matter FA Superior cerebellar peduncle	white_matter	JHU TBSS	FA	Superior cerebellar peduncle	right	p25068	1464
+MRI	white_matter_FA_Superior_corona_radiata_left	White matter FA Superior corona radiata	white_matter	JHU TBSS	FA	Superior corona radiata	left	p25081	1477
+MRI	white_matter_FA_Superior_corona_radiata_right	White matter FA Superior corona radiata	white_matter	JHU TBSS	FA	Superior corona radiata	right	p25080	1476
+MRI	white_matter_FA_Superior_fronto_occipital_fasciculus_left	White matter FA Superior fronto occipital fasciculus	white_matter	JHU TBSS	FA	Superior fronto occipital fasciculus	left	p25099	1495
+MRI	white_matter_FA_Superior_fronto_occipital_fasciculus_right	White matter FA Superior fronto occipital fasciculus	white_matter	JHU TBSS	FA	Superior fronto occipital fasciculus	right	p25098	1494
+MRI	white_matter_FA_Superior_longitudinal_fasciculus_left	White matter FA Superior longitudinal fasciculus	white_matter	JHU TBSS	FA	Superior longitudinal fasciculus	left	p25097	1493
+MRI	white_matter_FA_Superior_longitudinal_fasciculus_right	White matter FA Superior longitudinal fasciculus	white_matter	JHU TBSS	FA	Superior longitudinal fasciculus	right	p25096	1492
+MRI	white_matter_FA_Tapetum_left	White matter FA Tapetum	white_matter	JHU TBSS	FA	Tapetum	left	p25103	1499
+MRI	white_matter_FA_Tapetum_right	White matter FA Tapetum	white_matter	JHU TBSS	FA	Tapetum	right	p25102	1498
+MRI	white_matter_FA_Uncinate_fasciculus_left	White matter FA Uncinate fasciculus	white_matter	JHU TBSS	FA	Uncinate fasciculus	left	p25101	1497
+MRI	white_matter_FA_Uncinate_fasciculus_right	White matter FA Uncinate fasciculus	white_matter	JHU TBSS	FA	Uncinate fasciculus	right	p25100	1496
+MRI	white_matter_MD_Anterior_corona_radiata_left	White matter MD Anterior corona radiata	white_matter	JHU TBSS	MD	Anterior corona radiata	left	p25127	1625
+MRI	white_matter_MD_Anterior_corona_radiata_right	White matter MD Anterior corona radiata	white_matter	JHU TBSS	MD	Anterior corona radiata	right	p25126	1624
+MRI	white_matter_MD_Anterior_limb_of_internal_capsule_left	White matter MD Anterior limb of internal capsule	white_matter	JHU TBSS	MD	Anterior limb of internal capsule	left	p25121	1619
+MRI	white_matter_MD_Anterior_limb_of_internal_capsule_right	White matter MD Anterior limb of internal capsule	white_matter	JHU TBSS	MD	Anterior limb of internal capsule	right	p25120	1618
+MRI	white_matter_MD_Body_of_corpus_callosum	White matter MD Body of corpus callosum	white_matter	JHU TBSS	MD	Body of corpus callosum	midline	p25107	1605
+MRI	white_matter_MD_Cerebral_peduncle_left	White matter MD Cerebral peduncle	white_matter	JHU TBSS	MD	Cerebral peduncle	left	p25119	1617
+MRI	white_matter_MD_Cerebral_peduncle_right	White matter MD Cerebral peduncle	white_matter	JHU TBSS	MD	Cerebral peduncle	right	p25118	1616
+MRI	white_matter_MD_Cingulum_cingulate_gyrus_left	White matter MD Cingulum cingulate gyrus	white_matter	JHU TBSS	MD	Cingulum cingulate gyrus	left	p25139	1637
+MRI	white_matter_MD_Cingulum_cingulate_gyrus_right	White matter MD Cingulum cingulate gyrus	white_matter	JHU TBSS	MD	Cingulum cingulate gyrus	right	p25138	1636
+MRI	white_matter_MD_Cingulum_hippocampus_left	White matter MD Cingulum hippocampus	white_matter	JHU TBSS	MD	Cingulum hippocampus	left	p25141	1639
+MRI	white_matter_MD_Cingulum_hippocampus_right	White matter MD Cingulum hippocampus	white_matter	JHU TBSS	MD	Cingulum hippocampus	right	p25140	1638
+MRI	white_matter_MD_Corticospinal_tract_left	White matter MD Corticospinal tract	white_matter	JHU TBSS	MD	Corticospinal tract	left	p25111	1609
+MRI	white_matter_MD_Corticospinal_tract_right	White matter MD Corticospinal tract	white_matter	JHU TBSS	MD	Corticospinal tract	right	p25110	1608
+MRI	white_matter_MD_External_capsule_left	White matter MD External capsule	white_matter	JHU TBSS	MD	External capsule	left	p25137	1635
+MRI	white_matter_MD_External_capsule_right	White matter MD External capsule	white_matter	JHU TBSS	MD	External capsule	right	p25136	1634
+MRI	white_matter_MD_Fornix	White matter MD Fornix	white_matter	JHU TBSS	MD	Fornix	midline	p25109	1607
+MRI	white_matter_MD_Fornix_cres_and_Stria_terminalis_left	White matter MD Fornix cres and Stria terminalis	white_matter	JHU TBSS	MD	Fornix cres and Stria terminalis	left	p25143	1641
+MRI	white_matter_MD_Fornix_cres_and_Stria_terminalis_right	White matter MD Fornix cres and Stria terminalis	white_matter	JHU TBSS	MD	Fornix cres and Stria terminalis	right	p25142	1640
+MRI	white_matter_MD_Genu_of_corpus_callosum	White matter MD Genu of corpus callosum	white_matter	JHU TBSS	MD	Genu of corpus callosum	midline	p25106	1604
+MRI	white_matter_MD_Inferior_cerebellar_peduncle_left	White matter MD Inferior cerebellar peduncle	white_matter	JHU TBSS	MD	Inferior cerebellar peduncle	left	p25115	1613
+MRI	white_matter_MD_Inferior_cerebellar_peduncle_right	White matter MD Inferior cerebellar peduncle	white_matter	JHU TBSS	MD	Inferior cerebellar peduncle	right	p25114	1612
+MRI	white_matter_MD_Medial_lemniscus_left	White matter MD Medial lemniscus	white_matter	JHU TBSS	MD	Medial lemniscus	left	p25113	1611
+MRI	white_matter_MD_Medial_lemniscus_right	White matter MD Medial lemniscus	white_matter	JHU TBSS	MD	Medial lemniscus	right	p25112	1610
+MRI	white_matter_MD_Middle_cerebellar_peduncle	White matter MD Middle cerebellar peduncle	white_matter	JHU TBSS	MD	Middle cerebellar peduncle	midline	p25104	1602
+MRI	white_matter_MD_Pontine_crossing_tract	White matter MD Pontine crossing tract	white_matter	JHU TBSS	MD	Pontine crossing tract	midline	p25105	1603
+MRI	white_matter_MD_Posterior_corona_radiata_left	White matter MD Posterior corona radiata	white_matter	JHU TBSS	MD	Posterior corona radiata	left	p25131	1629
+MRI	white_matter_MD_Posterior_corona_radiata_right	White matter MD Posterior corona radiata	white_matter	JHU TBSS	MD	Posterior corona radiata	right	p25130	1628
+MRI	white_matter_MD_Posterior_limb_of_internal_capsule_left	White matter MD Posterior limb of internal capsule	white_matter	JHU TBSS	MD	Posterior limb of internal capsule	left	p25123	1621
+MRI	white_matter_MD_Posterior_limb_of_internal_capsule_right	White matter MD Posterior limb of internal capsule	white_matter	JHU TBSS	MD	Posterior limb of internal capsule	right	p25122	1620
+MRI	white_matter_MD_Posterior_thalamic_radiation_left	White matter MD Posterior thalamic radiation	white_matter	JHU TBSS	MD	Posterior thalamic radiation	left	p25133	1631
+MRI	white_matter_MD_Posterior_thalamic_radiation_right	White matter MD Posterior thalamic radiation	white_matter	JHU TBSS	MD	Posterior thalamic radiation	right	p25132	1630
+MRI	white_matter_MD_Retrolenticular_part_of_internal_capsule_left	White matter MD Retrolenticular part of internal capsule	white_matter	JHU TBSS	MD	Retrolenticular part of internal capsule	left	p25125	1623
+MRI	white_matter_MD_Retrolenticular_part_of_internal_capsule_right	White matter MD Retrolenticular part of internal capsule	white_matter	JHU TBSS	MD	Retrolenticular part of internal capsule	right	p25124	1622
+MRI	white_matter_MD_Sagittal_stratum_left	White matter MD Sagittal stratum	white_matter	JHU TBSS	MD	Sagittal stratum	left	p25135	1633
+MRI	white_matter_MD_Sagittal_stratum_right	White matter MD Sagittal stratum	white_matter	JHU TBSS	MD	Sagittal stratum	right	p25134	1632
+MRI	white_matter_MD_Splenium_of_corpus_callosum	White matter MD Splenium of corpus callosum	white_matter	JHU TBSS	MD	Splenium of corpus callosum	midline	p25108	1606
+MRI	white_matter_MD_Superior_cerebellar_peduncle_left	White matter MD Superior cerebellar peduncle	white_matter	JHU TBSS	MD	Superior cerebellar peduncle	left	p25117	1615
+MRI	white_matter_MD_Superior_cerebellar_peduncle_right	White matter MD Superior cerebellar peduncle	white_matter	JHU TBSS	MD	Superior cerebellar peduncle	right	p25116	1614
+MRI	white_matter_MD_Superior_corona_radiata_left	White matter MD Superior corona radiata	white_matter	JHU TBSS	MD	Superior corona radiata	left	p25129	1627
+MRI	white_matter_MD_Superior_corona_radiata_right	White matter MD Superior corona radiata	white_matter	JHU TBSS	MD	Superior corona radiata	right	p25128	1626
+MRI	white_matter_MD_Superior_fronto_occipital_fasciculus_left	White matter MD Superior fronto occipital fasciculus	white_matter	JHU TBSS	MD	Superior fronto occipital fasciculus	left	p25147	1645
+MRI	white_matter_MD_Superior_fronto_occipital_fasciculus_right	White matter MD Superior fronto occipital fasciculus	white_matter	JHU TBSS	MD	Superior fronto occipital fasciculus	right	p25146	1644
+MRI	white_matter_MD_Superior_longitudinal_fasciculus_left	White matter MD Superior longitudinal fasciculus	white_matter	JHU TBSS	MD	Superior longitudinal fasciculus	left	p25145	1643
+MRI	white_matter_MD_Superior_longitudinal_fasciculus_right	White matter MD Superior longitudinal fasciculus	white_matter	JHU TBSS	MD	Superior longitudinal fasciculus	right	p25144	1642
+MRI	white_matter_MD_Tapetum_left	White matter MD Tapetum	white_matter	JHU TBSS	MD	Tapetum	left	p25151	1649
+MRI	white_matter_MD_Tapetum_right	White matter MD Tapetum	white_matter	JHU TBSS	MD	Tapetum	right	p25150	1648
+MRI	white_matter_MD_Uncinate_fasciculus_left	White matter MD Uncinate fasciculus	white_matter	JHU TBSS	MD	Uncinate fasciculus	left	p25149	1647
+MRI	white_matter_MD_Uncinate_fasciculus_right	White matter MD Uncinate fasciculus	white_matter	JHU TBSS	MD	Uncinate fasciculus	right	p25148	1646

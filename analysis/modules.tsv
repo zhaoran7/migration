@@ -1,0 +1,34 @@
+Module	Group	Script	Description	Usage	Environment
+base	00_common	00_common/01_base.R	Paths and module loading	internal	All
+define	00_common	00_common/02_definitions.R	Fixed variables and model definitions	internal	All
+source	00_common	00_common/03_source.R	Numerical source-data format	internal	All
+ukb	01_data	01_data/01_ukb.R	UKB extraction and analysis variables	ukb	RAP
+geo	01_data	01_data/02_geography.R	TTWA linkage and geographic summaries	geo	RAP
+urban	01_data	01_data/03_urban.R	Official rural-urban assignment	internal	RAP
+import	01_data	01_data/04_import.R	Protein and MRI input matrices	import Protein|MRI file	RAP
+ukhls	01_data	01_data/05_ukhls.R	UKHLS wave harmonization	ukhls	Approved environment
+hrs	01_data	01_data/06_hrs.R	HRS wave harmonization	hrs	Approved environment
+pheno	02_genetics	02_genetics/01_pheno.R	PC1-40 GWAS phenotype files	pheno	RAP
+sumstats	02_genetics	02_genetics/02_sumstats.R	GWAS merge and harmonization	sumstats regenie|clean arguments	RAP or HPC
+cojo	02_genetics	02_genetics/03_cojo.R	Independent COJO signals	cojo prepare|merge trait	RAP
+ldsc	02_genetics	02_genetics/04_ldsc.R	LDSC preparation and collection	ldsc folder | prepare file map output	HPC
+scores	02_genetics	02_genetics/05_scores.R	Chromosome PGS aggregation	scores folder	RAP
+prs	02_genetics	02_genetics/06_prs.R	Individual PGS associations	prs	RAP
+genetic	02_genetics	02_genetics/07_genetic.R	GWAS diagnostics and comparisons	genetic	HPC
+corr	02_genetics	02_genetics/08_corr.R	Phenotypic and genetic correlations	corr	RAP
+assoc	03_association	03_association/01_assoc.R	SES and health associations and strata	assoc [ses|forest|strata|direction]	RAP
+interaction	03_association	03_association/02_interaction.R	Interaction tests and curves	interaction	RAP
+sensitivity	03_association	03_association/03_sensitivity.R	Sensitivity and extra stratified models	sensitivity [ED7 ED9 ED10 birth matching]	RAP or approved environment
+external	03_association	03_association/04_external.R	External associations and SES trajectories	external	Approved environment
+profile	03_association	03_association/05_profiles.R	Twenty-four joint migration profiles	profile	RAP
+region	04_region	04_region/01_region.R	Regional mixed-effects Cox models	region [data|fit id|tests]	RAP
+ses	04_region	04_region/02_ses.R	Regional SES heterogeneity	ses	RAP
+omics	05_omics	05_omics/01_omics.R	Protein and MRI associations and mediation	omics [Protein MRI]	RAP
+groups	05_omics	05_omics/02_groups.R	Four-group TDI protein comparisons	groups	RAP
+genes	06_enrichment	06_enrichment/01_genes.R	MAGMA top-gene sets	genes md.genes.out tdi.genes.out prefix	HPC
+enrich	06_enrichment	06_enrichment/02_enrich.R	Spatial and single-cell result collection	enrich	HPC
+describe	07_output	07_output/01_describe.R	Sample and flow descriptions	describe	RAP or approved environment
+tables	07_output	07_output/02_tables.R	Supplementary Tables	tables	Approved aggregate environment
+export	07_output	07_output/03_export.R	Figure-specific source workbooks	export [Fig1 ... S10]	RAP or approved aggregate environment
+map	07_output	07_output/04_maps.R	Approved public point-map rasters	internal	RAP
+collect	07_output	07_output/05_collect.R	Merge independent aggregate results	collect output.rds input1.rds input2.rds	Approved aggregate environment

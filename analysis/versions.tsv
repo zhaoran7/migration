@@ -1,0 +1,17 @@
+Package	Version
+R	4.4.2
+data.table	1.17.8
+haven	2.5.5
+tidyselect	1.2.1
+survival	3.8.6
+coxme	2.2.22
+lme4	2.0.1
+RANN	2.6.3
+sf	1.0.20
+openxlsx	4.2.8.1
+jsonlite	2.0.0
+xml2	1.4.0
+zip	2.3.3
+topr	2.0.4
+cluster	2.1.8.1
+ragg	1.5.2
