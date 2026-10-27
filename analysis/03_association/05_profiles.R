@@ -168,5 +168,41 @@ profile_fit <- function() {
     r
 }
 
-if (sys.nframe() == 0L) profile_fit()
 
+
+
+# 1. Compare socioeconomic and health estimates within fixed migration profiles
+profile_mismatch <- function(r) {
+  d <- copy(r$description)
+  a <- copy(if (!is.null(r$outcomes)) r$outcomes else r$results)
+  ses <- a[outcome == 'SES' & supported == TRUE,
+           .(profile, ses = estimate, ses_n = n)]
+  h <- merge(a[outcome != 'SES'], ses, by = 'profile', all.x = TRUE)
+  h <- merge(h, d[, .(profile, N, Route, Cross, MD, Delta, Density)], by = 'profile')
+  h[, available := supported & is.finite(ses) & is.finite(estimate)]
+  refs <- h[available == TRUE, .(ses_reference = weighted.mean(ses, N),
+    risk_reference = weighted.mean(estimate, N), profiles = .N,
+    profile_population = sum(N)), by = outcome]
+  h <- merge(h, refs, by = 'outcome')
+  h[, `:=`(ses_difference = ses - ses_reference,
+            risk_difference = estimate - risk_reference)]
+  h[, pattern := fifelse(!available, 'Insufficient data',
+    fifelse(ses_difference >= 0 & risk_difference <= 0, 'Higher SES / lower risk',
+    fifelse(ses_difference >= 0, 'Higher SES / higher risk',
+    fifelse(risk_difference <= 0, 'Lower SES / lower risk', 'Lower SES / higher risk'))))]
+  h[, discordant := available & pattern %in%
+      c('Higher SES / higher risk', 'Lower SES / lower risk')]
+  counts <- h[available == TRUE, .(profiles = .N, profile_population = sum(N)),
+              by = .(outcome, pattern)]
+  h <- h[, .(profile, outcome, n, events, ses_n, available, estimate, ses, N,
+    Route, Cross, MD, Delta, Density, ses_reference, risk_reference,
+    ses_difference, risk_difference, pattern, discordant)]
+  list(description = d, boxes = copy(r$boxes), points = h, thresholds = refs,
+       counts = counts, outcomes = a, N = sum(d$N), targets = unique(a$outcome[a$outcome != 'SES']))
+}
+
+
+if (sys.nframe() == 0L) {
+  r <- profile_mismatch(profile_fit())
+  saveRDS(r,file.path(out,'Fig3.rds'),compress='gzip')
+}

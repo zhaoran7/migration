@@ -136,7 +136,7 @@ ext_cross <- function(cohort, d, hispanic = TRUE) {
 
 
 # 3. Fix cohort-specific covariates
-fig4_cov <- function(cohort, outcome, exposure = "MD") {
+fig5_cov <- function(cohort, outcome, exposure = "MD") {
     geo <- if (cohort == "UKHLS") 
         "factor(region)"
     else "factor(race)"
@@ -147,10 +147,10 @@ fig4_cov <- function(cohort, outcome, exposure = "MD") {
     else ""))
 }
 
-fig4_model <- function(d, cohort, outcome, terms, exposure = "MD") {
+fig5_model <- function(d, cohort, outcome, terms, exposure = "MD") {
     f <- as.formula(paste(if (outcome == "SES") 
         "final_ses ~"
-    else "Surv(tstart,tstop,event) ~", terms, "+", fig4_cov(cohort, outcome, exposure)))
+    else "Surv(tstart,tstop,event) ~", terms, "+", fig5_cov(cohort, outcome, exposure)))
     d <- d[complete.cases(d[, all.vars(f), with = FALSE])]
     w <- character()
     m <- withCallingHandlers(if (outcome == "SES") 
@@ -164,7 +164,7 @@ fig4_model <- function(d, cohort, outcome, terms, exposure = "MD") {
         status = if (length(w)) paste(w, collapse = "; ") else "OK", formula = paste(deparse(f), collapse = " "))
 }
 
-fig4_basis <- function(v, exposure) {
+fig5_basis <- function(v, exposure) {
     if (exposure == "MD") {
         k <- quantile(v, c(0.05, 0.35, 0.65, 0.95))
         if (anyDuplicated(k)) 
@@ -174,7 +174,7 @@ fig4_basis <- function(v, exposure) {
     else splines::ns(v, knots = c(1, 2), Boundary.knots = c(0, max(3, max(v))))
 }
 
-fig4_predict <- function(b, V, L, outcome = "SES") {
+fig5_predict <- function(b, V, L, outcome = "SES") {
     L <- as.matrix(L)
     e <- drop(L %*% b)
     se <- sqrt(pmax(0, rowSums((L %*% V) * L)))
@@ -184,7 +184,7 @@ fig4_predict <- function(b, V, L, outcome = "SES") {
     d
 }
 
-fig4_test <- function(B, x, b, V) {
+fig5_test <- function(B, x, b, V) {
     linear <- lm.fit(cbind(1, B), x)
     stopifnot(max(abs(linear$residuals)) < 1e-07 * max(1, max(abs(x))))
     C <- t(qr.Q(qr(matrix(linear$coefficients[-1], ncol = 1)), complete = TRUE)[, -1])
@@ -194,25 +194,25 @@ fig4_test <- function(B, x, b, V) {
 
 
 # 4. Estimate between-person associations
-fig4_assoc <- function(d, cohort, outcome, exposure) {
+fig5_assoc <- function(d, cohort, outcome, exposure) {
     s <- copy(if (exposure == "MD") 
         d[mover == 1 & distance > 0]
     else d)
-    f <- as.formula(paste("~ distance + count + mover +", fig4_cov(cohort, outcome, exposure)))
+    f <- as.formula(paste("~ distance + count + mover +", fig5_cov(cohort, outcome, exposure)))
     v <- unique(c(all.vars(f), if (outcome == "SES") "final_ses" else c("tstart", "tstop", "event")))
     s <- s[complete.cases(s[, ..v])]
     s[, `:=`(xx, switch(exposure, Migrant = as.numeric(mover), MD = z(log1p(distance)), MT = z(count)))]
-    m <- fig4_model(s, cohort, outcome, "xx", exposure)
+    m <- fig5_model(s, cohort, outcome, "xx", exposure)
     L <- matrix(as.numeric(names(m$b) == "xx"), nrow = 1)
-    a <- fig4_predict(m$b, m$V, L, outcome)
+    a <- fig5_predict(m$b, m$V, L, outcome)
     cbind(data.table(cohort, outcome, exposure, n = m$n, observations = m$observations, events = m$events, p = 2 * 
         pnorm(-abs(m$b["xx"]/sqrt(m$V["xx", "xx"]))), status = m$status, formula = m$formula), a)
 }
 
 
 # 5. Estimate nonlinear curves
-fig4_curve <- function(d, cohort, outcome, exposure) {
-    f <- as.formula(paste("~ distance + count + mover +", fig4_cov(cohort, outcome)))
+fig5_curve <- function(d, cohort, outcome, exposure) {
+    f <- as.formula(paste("~ distance + count + mover +", fig5_cov(cohort, outcome)))
     v <- unique(c(all.vars(f), if (outcome == "SES") "final_ses" else c("tstart", "tstop", "event")))
     d <- copy(d[complete.cases(d[, ..v])])
     if (exposure == "MD") 
@@ -221,7 +221,7 @@ fig4_curve <- function(d, cohort, outcome, exposure) {
         log1p(distance)
     else count)]
     nm <- paste0("s", 1:3)
-    B <- fig4_basis(d$xx, exposure)
+    B <- fig5_basis(d$xx, exposure)
     d[, `:=`((nm), as.data.table(B))]
     lim <- quantile(d$xx, c(0.01, 0.99))
     grid <- if (exposure == "MD") 
@@ -230,7 +230,7 @@ fig4_curve <- function(d, cohort, outcome, exposure) {
     ref <- if (exposure == "MD") 
         median(d$xx)
     else 1
-    m <- fig4_model(d, cohort, outcome, paste(nm, collapse = " + "))
+    m <- fig5_model(d, cohort, outcome, paste(nm, collapse = " + "))
     stopifnot(all(is.finite(m$b)))
     L0 <- if (outcome == "SES") 
         m$mean
@@ -243,8 +243,8 @@ fig4_curve <- function(d, cohort, outcome, exposure) {
         expm1(grid)
     else grid, reference = if (exposure == "MD") 
         expm1(ref)
-    else ref), fig4_predict(m$b, m$V, A, outcome))
-    test <- fig4_test(B, d$xx, m$b[nm], m$V[nm, nm])
+    else ref), fig5_predict(m$b, m$V, A, outcome))
+    test <- fig5_test(B, d$xx, m$b[nm], m$V[nm, nm])
     a[, `:=`(cohort = cohort, outcome = outcome, exposure = exposure, n = m$n, observations = m$observations, events = m$events, 
         p_overall = test$p_overall, p_nonlinear = test$p_nonlinear, status = m$status)]
     a
@@ -252,7 +252,7 @@ fig4_curve <- function(d, cohort, outcome, exposure) {
 
 
 # 6. Estimate within-person SES trajectories
-fig4_within <- function(pan, cohort, exposure, adjusted = FALSE) {
+fig5_within <- function(pan, cohort, exposure, adjusted = FALSE) {
     d <- copy(pan)
     setorder(d, id, wave)
     d[, `:=`(obs = cumsum(!is.na(md)), distance = cumsum(fifelse(is.na(md), 0, md)), count = cumsum(fifelse(!is.na(moved) & 
@@ -270,7 +270,7 @@ fig4_within <- function(pan, cohort, exposure, adjusted = FALSE) {
     d <- d[id %in% ids]
     if (exposure == "MD") 
         d[, `:=`(xx, log1p(xx))]
-    B <- fig4_basis(d$xx, exposure)
+    B <- fig5_basis(d$xx, exposure)
     bn <- paste0("b", 1:3)
     an <- paste0("a", 1:3)
     wn <- paste0("w", 1:3)
@@ -304,12 +304,12 @@ fig4_within <- function(pan, cohort, exposure, adjusted = FALSE) {
     L <- sweep(predict(B, grid), 2, predict(B, ref)[1, ], "-")
     b <- fixef(m)[wn]
     V <- as.matrix(vcov(m)[wn, wn])
-    test <- fig4_test(B, d$xx, b, V)
+    test <- fig5_test(B, d$xx, b, V)
     a <- cbind(data.table(cohort, exposure, x = if (exposure == "MD") 
         expm1(grid)
     else grid, reference = if (exposure == "MD") 
         expm1(ref)
-    else ref), fig4_predict(b, V, L))
+    else ref), fig5_predict(b, V, L))
     a[, `:=`(n = uniqueN(d$id), observations = nrow(d), p_overall = test$p_overall, p_nonlinear = test$p_nonlinear, 
         status = if (length(w)) 
             paste(w, collapse = "; ")
@@ -317,7 +317,7 @@ fig4_within <- function(pan, cohort, exposure, adjusted = FALSE) {
     a
 }
 
-fig4_waves <- function(pan, ids, cohort) {
+fig5_waves <- function(pan, ids, cohort) {
     h <- copy(pan[id %in% ids])
     setorder(h, id, wave)
     h[, `:=`(obs = cumsum(!is.na(md)), cumulative = cumsum(fifelse(is.na(md), 0, md))), by = id]
@@ -338,7 +338,7 @@ fig4_waves <- function(pan, ids, cohort) {
 
 
 # 7. Save cohort results
-run_fig4_fit <- function() {
+run_fig5_fit <- function() {
     setDTthreads(1)
     main <- curves <- within <- status <- counts <- densities <- description <- waves <- list()
     for (cohort in c("UKHLS", "HRS")) {
@@ -357,21 +357,21 @@ run_fig4_fit <- function() {
             d <- if (o == "SES") 
                 ses
             else mort
-            for (e in c("Migrant", "MD", "MT")) main[[paste(cohort, o, e)]] <- fig4_assoc(d, cohort, o, e)
-            for (e in c("MD", "MT")) curves[[paste(cohort, o, e)]] <- fig4_curve(d, cohort, o, e)
+            for (e in c("Migrant", "MD", "MT")) main[[paste(cohort, o, e)]] <- fig5_assoc(d, cohort, o, e)
+            for (e in c("MD", "MT")) curves[[paste(cohort, o, e)]] <- fig5_curve(d, cohort, o, e)
         }
         for (e in c("MD", "MT")) {
             message(cohort, ": individual SES change, ", e)
-            within[[paste(cohort, e)]] <- fig4_within(pan, cohort, e)
+            within[[paste(cohort, e)]] <- fig5_within(pan, cohort, e)
         }
-        f <- as.formula(paste("~ final_ses + distance + mover + count +", fig4_cov(cohort, "SES")))
+        f <- as.formula(paste("~ final_ses + distance + mover + count +", fig5_cov(cohort, "SES")))
         s <- ses[complete.cases(ses[, all.vars(f), with = FALSE])]
         status[[cohort]] <- s[, .(n = .N), by = mover][, `:=`(cohort, cohort)]
         counts[[cohort]] <- s[, .(n = .N), by = count][, `:=`(cohort = cohort, fraction = n/sum(n))]
         v <- s[mover == 1 & distance > 0, distance]
         den <- density(log1p(v), n = 256, from = 0, to = log1p(max(v)))
         densities[[cohort]] <- data.table(cohort, x = den$x, y = den$y)
-        waves[[cohort]] <- fig4_waves(pan, s$id, cohort)
+        waves[[cohort]] <- fig5_waves(pan, s$id, cohort)
         description[[cohort]] <- data.table(cohort, n = nrow(s), migrants = sum(s$mover == 1), nonmigrants = sum(s$mover == 
             0), md_median = median(v), md_q1 = quantile(v, 0.25), md_q3 = quantile(v, 0.75), md_max = max(v), mt_max = max(s$count))
     }
@@ -391,8 +391,8 @@ run_fig4_fit <- function() {
         "No new imputation. Cumulative histories sum observed intervals only; wholly unobserved histories excluded. Observed non-moves distinguished from missing records.", 
         "BH-FDR separately within each cohort over 3 exposures x 2 outcomes (6 primary tests). Filled forest points q<0.05; open otherwise. Curve p overall is a 3-df Wald test of spline coefficients; p non-linear is a 2-df Wald test of departure from linearity in log(1+MD) or MT, using the same fitted model and covariance. HC3 for cross-sectional SES, participant-robust for Cox, model-based for mixed models. Curve tests are exploratory and unadjusted.", 
         "All complete observations fitted. MD curves show 1st-99th percentiles, km labels on a log(1+km) axis; MT predictions at integer counts through 99th percentile, joined by lines. Panel a describes core-model SES sample. Intervals/bands are pointwise 95% CI. Descriptive wave/count lines do not receive inferential p values.", 
-        fig4_wave_note, "2026-09-21 core adjustment, log MD, reference-centred curves and Wald tests, 3 rows x 4 columns"))
-    saveRDS(r, file.path(out, "Fig4.rds"))
+        fig5_wave_note, "2026-09-21 core adjustment, log MD, reference-centred curves and Wald tests, 3 rows x 4 columns"))
+    saveRDS(r, file.path(out, "Fig5.rds"))
     print(r$Main[, .(cohort, outcome, exposure, n, events, estimate, lo, hi, p, q, status)])
     invisible(r)
 }
@@ -475,12 +475,12 @@ urban_sample <- function(x, cohort, outcome) {
     d[, `:=`(route = factor(urban_route, urban_levels), md_log = log1p(distance))]
     f <- as.formula(paste(if (outcome == "SES") 
         "final_ses ~"
-    else "Surv(tstart,tstop,event) ~", "route + md_log +", fig4_cov(cohort, outcome, "MD")))
+    else "Surv(tstart,tstop,event) ~", "route + md_log +", fig5_cov(cohort, outcome, "MD")))
     d[complete.cases(d[, all.vars(f), with = FALSE])]
 }
 
 urban_fit <- function(d, cohort, outcome) {
-    m <- fig4_model(d, cohort, outcome, "route + md_log", "MD")
+    m <- fig5_model(d, cohort, outcome, "route + md_log", "MD")
     pair <- data.table(comparison = c("Urban to rural vs Urban to urban", "Rural to urban vs Urban to urban", "Rural to rural vs Urban to urban", 
         "Rural to urban vs Urban to rural"), a = c("Urban to rural", "Rural to urban", "Rural to rural", "Rural to urban"), 
         b = c("Urban to urban", "Urban to urban", "Urban to urban", "Urban to rural"))
@@ -504,7 +504,7 @@ urban_fit <- function(d, cohort, outcome) {
 }
 
 urban_interaction <- function(d, cohort, outcome) {
-    m <- fig4_model(d, cohort, outcome, "route * md_log", "MD")
+    m <- fig5_model(d, cohort, outcome, "route * md_log", "MD")
     terms <- grep(":md_log$", names(m$b), value = TRUE)
     v <- m$V[terms, terms, drop = FALSE]
     stat <- drop(crossprod(m$b[terms], solve(v, m$b[terms])))
@@ -525,6 +525,6 @@ urban_interaction <- function(d, cohort, outcome) {
 }
 
 if (sys.nframe() == 0L) {
-    run_fig4_fit()
+    run_fig5_fit()
 }
 

@@ -83,7 +83,7 @@ ed1_data <- function(gwas = NULL) {
         migration_followup <- uniqueN(d$id)
         d[, `:=`(distance = cumulative, mover = ever)]
         req <- unique(c("distance", "count", "mover", "tstart", "tstop", "event", all.vars(as.formula(paste("~", 
-            fig4_cov(cohort, "Mortality", "MD"))))))
+            fig5_cov(cohort, "Mortality", "MD"))))))
         d <- d[complete.cases(d[, ..req])]
         mortality <- uniqueN(d$id)
         deaths <- sum(d$event)
@@ -96,7 +96,7 @@ ed1_data <- function(gwas = NULL) {
         groups <- people[, .(n = .N, events = sum(events)), by = migrant]
         groups[, `:=`(criterion, ifelse(migrant == 1, "Ever migrated during eligible risk intervals", "No observed migration during eligible risk intervals"))]
         cohort_key <- cohort
-        saved <- as.data.table(readRDS(file.path(out, "Fig4.rds"))$Main)[cohort == cohort_key]
+        saved <- as.data.table(readRDS(file.path(out, "Fig5.rds"))$Main)[cohort == cohort_key]
         stopifnot(all(s$id %in% history_ids), eligible >= history, history >= max(ses_n, mortality), saved[outcome == 
             "SES" & exposure == "Migrant", n] == ses_n, saved[outcome == "SES" & exposure == "MD", n] == ses_md, 
             saved[outcome == "Mortality" & exposure == "Migrant", n] == mortality, saved[outcome == "Mortality" & 
@@ -187,7 +187,7 @@ supp_base <- function() {
 supp_external <- function() {
     message("External history coverage")
     external <- list()
-    r4 <- readRDS(file.path(out, "Fig4.rds"))
+    r4 <- readRDS(file.path(out, "Fig5.rds"))
     for (cohort in c("UKHLS", "HRS")) {
         cohort0 <- cohort
         raw <- readRDS(file.path(phe, paste0(tolower(cohort), ".rds")))
@@ -196,7 +196,7 @@ supp_external <- function() {
         hist <- merge(pan[, .(id, wave, date, md, moved)], ses[, .(id, end_wave)], by = "id")
         mt <- hist[wave <= end_wave & !is.na(md), .(count = sum(moved == 1, na.rm = TRUE)), by = id]
         ses <- merge(ses, mt, by = "id")
-        f <- as.formula(paste("~ final_ses + distance + mover + count +", fig4_cov(cohort, "SES")))
+        f <- as.formula(paste("~ final_ses + distance + mover + count +", fig5_cov(cohort, "SES")))
         ses <- ses[complete.cases(ses[, all.vars(f), with = FALSE])]
         stopifnot(nrow(ses) == r4$Description[cohort == cohort0, n])
         hh <- hist[id %in% ses$id & wave <= end_wave]
@@ -207,7 +207,7 @@ supp_external <- function() {
         else rep_hrs_tv(raw)
         mort <- rep_tv_risk(tv, "All-cause mortality")[move_obs > 0]
         mort[, `:=`(distance = cumulative, mover = ever)]
-        f <- as.formula(paste("~ tstart + tstop + event + mover +", fig4_cov(cohort, "Mortality", "Migrant")))
+        f <- as.formula(paste("~ tstart + tstop + event + mover +", fig5_cov(cohort, "Mortality", "Migrant")))
         mort <- mort[complete.cases(mort[, all.vars(f), with = FALSE])]
         stopifnot(uniqueN(mort$id) == r4$Main[cohort == cohort0 & outcome == "Mortality" & exposure == "Migrant", 
             n])

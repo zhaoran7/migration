@@ -93,7 +93,7 @@ samples <- function(omics, ses) {
         hist <- merge(pan[, .(id, wave, md, moved)], d[, .(id, end_wave)], by = 'id')
         mt <- hist[wave <= end_wave & !is.na(md), .(count = sum(moved == 1, na.rm = TRUE)), by = id]
         d <- merge(d, mt, by = 'id')
-        req <- all.vars(as.formula(paste('~ final_ses + distance + mover + count +', fig4_cov(cohort, 'SES'))))
+        req <- all.vars(as.formula(paste('~ final_ses + distance + mover + count +', fig5_cov(cohort, 'SES'))))
         d <- d[complete.cases(d[, ..req])]
         add(cohort, 'SES sample', 'Participants', nrow(d), nrow(d))
         summary(cohort, 'SES sample', 'Age', d$age, 'years')
@@ -105,7 +105,7 @@ samples <- function(omics, ses) {
         tv <- if (cohort == 'UKHLS') rep_ukhls_tv(raw) else rep_hrs_tv(raw)
         m <- rep_tv_risk(tv, 'All-cause mortality')[move_obs > 0]
         m[, `:=`(distance = cumulative, mover = ever)]
-        req <- all.vars(as.formula(paste('~ tstart + tstop + event + mover +', fig4_cov(cohort, 'Mortality', 'Migrant'))))
+        req <- all.vars(as.formula(paste('~ tstart + tstop + event + mover +', fig5_cov(cohort, 'Mortality', 'Migrant'))))
         m <- m[complete.cases(m[, ..req])]
         follow <- m[, .(years = sum(tstop - tstart)/365.25), by = id]
         add(cohort, 'Mortality sample', 'Participants', nrow(follow), nrow(follow))
@@ -129,14 +129,14 @@ samples <- function(omics, ses) {
 run_tables <- function() {
     get <- function(n) readRDS(file.path(out, paste0(n, ".rds")))
     specs <- fread(file.path(code, "reference/tables.tsv"))
-    tables <- setNames(vector("list", 24), paste0("Table S", 1:24))
+    tables <- setNames(vector("list", 25), paste0("Table S", 1:25))
     for (n in c(1:3, 21)) tables[[n]] <- fread(file.path(code, "reference", paste0("S", n, ".tsv")))
     r <- get("Fig2")
     s <- get("Supp")
     ed7 <- get("ED7")
+    ed8 <- get("ED8")
     ed9 <- get("ED9")
-    ed10 <- get("ED10")
-    tables[[4]] <- samples(get('Fig5'), s$base$ses)
+    tables[[4]] <- samples(get('Fig6'), s$base$ses)
     g <- if (file.exists(file.path(out, "genetic.rds"))) 
         get("genetic")
     else list(qc = ed3_qc(), comparison = ed3_comparison())
@@ -152,17 +152,17 @@ run_tables <- function() {
     tables[[7]] <- stack(list(Sources = p$definitions, Groups = p$bars, Associations = p$associations))
     tables[[8]] <- stack(list(SES = r$ses$main, TDI_groups = r$ses$tdi, SES_components = r$ses$comp, SES_density = r$ses$density, 
         SES_routes = r$ses$routes, MD_TTWA = r$forest$main, TDI = r$forest$tdi, Directions = direction_table(r$direction)))
-    tables[[9]] <- stack(list(Main_strata = r$strata, Other_strata = ed9$Extra, Sensitivity = ed7$Effects, Nonlinearity = ed7$Tests, 
+    tables[[9]] <- stack(list(Main_strata = r$strata, Other_strata = ed8$Extra, Sensitivity = ed7$Effects, Nonlinearity = ed7$Tests, 
         TTWA = ed7$TTWA))
     tables[[10]] <- stack(r$interaction)
     z <- region_read()
     tables[[11]] <- stack(list(Variance = z$tests, Areas = z$area))
-    e <- get("Fig4")
-    tables[[12]] <- stack(c(e[c("Main", "Curves", "Within")], setNames(ed10[c("Effects", "Curves", "Within")], 
+    e <- get("Fig5")
+    tables[[12]] <- stack(c(e[c("Main", "Curves", "Within")], setNames(ed9[c("Effects", "Curves", "Within")], 
         c("Sensitivity", "Sensitivity_curves", "Sensitivity_within"))))
     info <- readRDS(file.path(phe, "omics_info.rds"))
     tables[[13]] <- rbindlist(info[c("Protein", "MRI")], fill = TRUE)
-    o <- get("Fig5")
+    o <- get("Fig6")
     tables[[14]] <- rbindlist(lapply(o[c("Protein", "MRI")], `[[`, "association"), fill = TRUE)
     tables[[15]] <- rbindlist(lapply(o[c("Protein", "MRI")], `[[`, "mediation"), fill = TRUE)
     enrich <- enrich_data()
@@ -179,8 +179,11 @@ run_tables <- function() {
     tables[[22]] <- supp_region_table(readRDS(file.path(out, "supp/S6.rds")))
     tables[[23]] <- s$matching$effects
     tables[[24]] <- s$adjustment
+    tables[[25]] <- get("Fig3")$points
     stopifnot(all(lengths(tables) > 0))
     tables <- lapply(tables, table_labels)
+    tables <- tables[c(4,1,5,6,7,8,9,23,24,25,10,11,12,14,17,15,16,21,2,3,13,20,19,22,18)]
+    names(tables) <- paste0("Table S", seq_along(tables))
     contents <- data.table(Table = names(tables), Title = specs$Title[match(names(tables), specs$Table)], Rows = vapply(tables, 
         nrow, 0L))
     save_xlsx(c(list(Contents = contents), tables), file.path(out, "Supplementary Tables.xlsx"))

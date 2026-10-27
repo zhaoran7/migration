@@ -33,15 +33,15 @@ figure_source <- function(id) {
         return(list(description = fig1_description_data(), map = list(plotting = fig1_map_data()$plotting)))
     if (id == "Fig2") 
         return(list(result = get("Fig2"), a = fig2a_data(), bounds = int_bounds(), selected = int_main()))
-    if (id == "Fig3") {
+    if (id == "Fig4") {
         r <- region_read()
         return(list(result = r[c("tests", "area", "joint", "method", "cache_provenance")], geography = geography()))
     }
-    if (id == "Fig4") 
-        return(list(result = get("Fig4")))
     if (id == "Fig5") 
         return(list(result = get("Fig5")))
     if (id == "Fig6") 
+        return(list(result = get("Fig6")))
+    if (id == "ED10") 
         return(list(result = enrich_data()))
     if (id == "ED1") 
         return(list(result = ed1_data()))
@@ -53,19 +53,11 @@ figure_source <- function(id) {
         return(list(prs = get("prs")))
     if (id == "ED7") 
         return(list(result = get("ED7"), main_result = get("Fig2")))
-    if (id == "ED8") {
-        if (file.exists(file.path(out, "profiles.rds"))) 
-            return(list(result = get("profiles")))
-        r <- get("ED8")
-        r$plot$state$geometry <- list(text = list(), squares = list(), regional = list())
-        r$plot$state$r <- r$plot$state$r[c("description", "results", "best", "targets", "reference", "N", "SES_n")]
-        r$clusters <- NULL
-        return(list(result = r))
-    }
+    if (id == "Fig3") return(list(result=get("Fig3")))
+    if (id == "ED8") 
+        return(list(result = get("ED8"), bounds = int_bounds(), selected = int_main()))
     if (id == "ED9") 
-        return(list(result = get("ED9"), bounds = int_bounds(), selected = int_main()))
-    if (id == "ED10") 
-        return(list(result = get("ED10")[c("Effects", "Curves", "Within", "Methods")]))
+        return(list(result = get("ED9")[c("Effects", "Curves", "Within", "Methods")]))
     s <- get("Supp")
     if (id == "S1") 
         return(list(result = s$flow))

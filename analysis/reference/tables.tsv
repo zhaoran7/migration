@@ -1,25 +1,26 @@
 Table	Title
-Table S1	Exposure definitions and socioeconomic measures
-Table S2	Outcome definitions and follow-up rules
-Table S3	Statistical models and covariate specifications
-Table S4	Cohort characteristics, sample sizes, events and follow-up
-Table S5	GWAS quality control, independent loci and comparisons
-Table S6	Phenotypic correlations, genetic correlations and SNP heritability
-Table S7	Polygenic-score sources, group means and associations
-Table S8	UKB socioeconomic and health associations
-Table S9	UKB stratified and sensitivity analyses
-Table S10	Complete interaction tests and conditional effects
-Table S11	Regional variance and conditional area effects
-Table S12	UKHLS and HRS validation and sensitivity analyses
-Table S13	Protein and MRI feature annotations and sample availability
+Table S1	Cohort characteristics, sample sizes, events and follow-up
+Table S2	Exposure definitions and socioeconomic measures
+Table S3	GWAS quality control, independent loci and comparisons
+Table S4	Phenotypic correlations, genetic correlations and SNP heritability
+Table S5	Polygenic-score sources, group means and associations
+Table S6	UKB socioeconomic and health associations
+Table S7	UKB stratified and sensitivity analyses
+Table S8	TDI reference-matching sensitivity
+Table S9	Birthplace TDI adjustment sensitivity
+Table S10	Socioeconomic-health discordance across joint migration profiles
+Table S11	Complete interaction tests and conditional effects
+Table S12	Regional variance and conditional area effects
+Table S13	UKHLS and HRS validation and sensitivity analyses
 Table S14	Complete protein and MRI association results
-Table S15	Complete single-feature mediation results
-Table S16	Complete spatial and single-cell enrichment results
-Table S17	Protein associations and profiles across four TDI groups
-Table S18	Single-cell enrichment in heart and liver cell types
-Table S19	Complete migration-context Sankey: participant counts and quartile limits
-Table S20	Additional spatial enrichment in human CS8 and adult cortex
-Table S21	GWAS data sources and analysis use
-Table S22	Regional heterogeneity in SES
-Table S23	TDI reference-matching sensitivity
-Table S24	Birthplace TDI adjustment sensitivity
+Table S15	Protein associations and profiles across four TDI groups
+Table S16	Complete single-feature mediation results
+Table S17	Complete spatial and single-cell enrichment results
+Table S18	GWAS data sources and analysis use
+Table S19	Outcome definitions and follow-up rules
+Table S20	Statistical models and covariate specifications
+Table S21	Protein and MRI feature annotations and sample availability
+Table S22	Additional spatial enrichment in human CS8 and adult cortex
+Table S23	Complete migration-context Sankey: participant counts and quartile limits
+Table S24	Regional heterogeneity in SES
+Table S25	Single-cell enrichment in heart and liver cell types

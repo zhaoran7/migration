@@ -1,4 +1,4 @@
-# 1. Extended Data Figure 7
+# 1. Extended Data Figure 07
 source(file.path(dirname(dirname(normalizePath(sub("^--file=", "",
   grep("^--file=", commandArgs(), value=TRUE)[1])))), "style.R"))
 

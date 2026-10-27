@@ -1,248 +1,421 @@
-# 1. Figure 3
+# 1. Figure 03
 source(file.path(dirname(dirname(normalizePath(sub("^--file=", "",
   grep("^--file=", commandArgs(), value=TRUE)[1])))), "style.R"))
 
-region_map_labels <- function(a, cen, i, ctx) {
-    z <- merge(cen, a[id == i & context == ctx, .(code, beta)], by = "code")
-    keep <- which(abs(z$beta) >= log(1.1))
-    keep <- unique(c(keep, which.min(z$beta), which.max(z$beta)))
-    rank <- order(abs(z$beta), decreasing = TRUE)
-    if (length(keep) > 8) 
-        keep <- head(rank[rank %in% keep], 8)
-    if (length(keep) < 6) 
-        keep <- head(unique(c(keep, rank)), 6)
-    stopifnot(length(keep) >= 6, length(keep) <= 8)
-    z[keep]
+# 1. Preserve the joint-profile classification and numerical outcomes
+profile_layout <- function(cache) {
+    r <- list(description = cache$description, boxes = cache$boxes,
+        results = cache$outcomes, targets = c("SES", cache$targets), N = cache$N)
+    r$best <- r$results[lowest == TRUE]
+    routes <- c("Urban to Urban", "Urban to Rural", "Rural to Urban", "Rural to Rural")
+    ord <- unlist(lapply(routes, function(v) unlist(lapply(0:1, function(k) r$description[Route == v & Cross ==
+        k, profile]))))
+    d <- r$description[match(ord, profile)]
+    boxes <- copy(r$boxes)
+    boxes[, `:=`(column, match(profile, ord))]
+    W <- 23.35
+    H <- 27.4
+    cell <- 0.70
+    xx <- 2.55 + (0:23) * 0.77 + floor((0:23)/3) * 0.08 + floor((0:23)/6) * 0.16
+    left <- xx[1] - cell/2
+    right <- tail(xx, 1) + cell/2
+    note_x <- right + 0.18
+    delta <- dtdi_lab
+    arrow <- intToUtf8(8594)
+    minus <- intToUtf8(8722)
+    times <- intToUtf8(215)
+    ink <- "#25323A"
+    teal <- "#168D83"
+    blue <- "#2667AD"
+    red <- "#D45C69"
+    purple <- "#8F65B7"
+    steel <- "#325375"
+    light <- "#EFF1F3"
+    route_fill <- route_stroke <- c("#F0C09A", "#E99559", "#D4713B", "#AE4E25")
+    hr_pal <- colorRampPalette(c(blue, "#F8FAFC", red))(401)
+    ses_pal <- colorRampPalette(c("#F3F8F5", "#A7D3C4", teal))(401)
+    hr_range <- c(0.5, 2)
+    ses_range <- range(pretty(r$results[outcome == "SES" & supported == TRUE, estimate], n = 4))
+    vars <- c("md", "dtdi", "density_shift")
+    box_panels <- list(md = list(top = 6.05, bottom = 9.15, limits = log10(c(0.5, 1000)), ticks = c(1, 10, 100,
+        1000), col = teal, title = "MD (km)", sub = "log scale"), dtdi = list(top = 9.65, bottom = 12.75, limits = c(-16,
+        16), ticks = c(-15, -10, -5, 0, 5, 10, 15), col = blue, title = delta, sub = ""), density_shift = list(top = 13.25,
+        bottom = 16.35, limits = c(-10, 10), ticks = c(-10, -5, 0, 5, 10), col = steel, title = "Density change",
+        sub = ""))
+    labels <- c("SES", "All-cause\nmortality", "CVD\nmortality", "CAD", "Stroke", "HF", "AF", "T2D", "Depression",
+        "Anxiety", "Dementia")
+    cy <- c(17.1, 18.25 + (0:9) * 0.76)
+    geometry <- list(text = list(), squares = list(), regional = list())
+    risk <- TRUE
+    regional <- FALSE
+    joint <- NULL
+    names <- c("routes", "ord", "d", "vars", "boxes", "W", "H", "cell", "xx", "left", "right", "note_x", "delta",
+        "arrow", "minus", "times", "ink", "teal", "blue", "red", "purple", "steel", "light", "route_fill", "route_stroke",
+        "hr_pal", "ses_pal", "hr_range", "ses_range", "box_panels", "labels", "cy", "geometry", "risk", "regional",
+        "r", "joint")
+    r$plot <- list(state = mget(names, envir = environment()))
+    r
 }
 
-region_label_positions <- function(z, ch = 12.5) {
-    z <- data.table::copy(z)
-    z[, `:=`(py, ch * (1 - y/1230000))]
-    data.table::setorder(z, py)
-    z[, `:=`(shown, vapply(name, function(s) paste(strwrap(s, width = 19), collapse = "\n"), character(1)))]
-    h <- 0.42 * lengths(strsplit(z$shown, "\n")) + 0.22
-    yy <- pmax(z$py - 0.12, 3.55)
-    if (nrow(z) > 1) 
-        for (k in 2:nrow(z)) yy[k] <- max(yy[k], yy[k - 1] + h[k - 1])
-    if (tail(yy + h, 1) > ch - 0.15) {
-        yy[nrow(z)] <- ch - 0.15 - tail(h, 1)
-        if (nrow(z) > 1) 
-            for (k in (nrow(z) - 1):1) yy[k] <- min(yy[k], yy[k + 1] - h[k])
+profile_draw <- function(cache) {
+    mismatch <- cache$points
+    list2env(profile_layout(cache)$plot$state, envir = environment())
+    for (v in c("convertWidth", "gpar", "grid.bezier", "grid.circle", "grid.lines", "grid.newpage", "grid.polygon",
+        "grid.raster", "grid.rect", "grid.text", "popViewport", "pushViewport", "stringWidth", "unit", "viewport")) assign(v,
+        getExportedValue("grid", v), envir = environment())
+    record <- FALSE
+    fmt <- function(v) format(v, big.mark = ",", trim = TRUE, scientific = FALSE)
+    sgn <- function(v, n = 2) {
+        v[is.finite(v) & abs(v) < 0.5 * 10^-n] <- 0
+        gsub("-", minus, sprintf(paste0("%.", n, "f"), v), fixed = TRUE)
     }
-    stopifnot(min(yy) > 2.8)
-    z[, `:=`(label_y_cm = yy, label_height_cm = h)]
-    z
+    colour <- function(value, type, limits = NULL) {
+        if (!is.finite(value))
+            return("#E8EBEE")
+        t <- if (type == "Risk")
+            (value - limits[1])/diff(limits)
+        else if (type == "HR")
+            (log(value) - log(hr_range[1]))/diff(log(hr_range))
+        else (value - ses_range[1])/diff(ses_range)
+        pal <- if (type %in% c("HR", "Risk"))
+            hr_pal
+        else ses_pal
+        pal[1 + round(max(0, min(1, t)) * (length(pal) - 1))]
+    }
+    {
+        tree <- TRUE
+        yy <- function(y) if (tree) y * 1.16 else y
+        txt <- function(s, x, y, size = 6.5, col = ink, just = "centre", face = "plain", maxwidth = NULL) {
+            if (risk)
+                face <- "plain"
+            grid.text(s, x = unit(x, "cm"), y = unit(H - yy(y), "cm"), just = just, gp = gpar(fontfamily = "Arial",
+                fontsize = size, col = col, fontface = face, lineheight = 1.03))
+            if (!is.null(maxwidth) && is.character(s)) {
+                pushViewport(viewport(gp = gpar(fontfamily = "Arial", fontsize = size, fontface = face)))
+                widths <- vapply(strsplit(s, "\n", fixed = TRUE)[[1]], function(a) convertWidth(stringWidth(a),
+                  "cm", valueOnly = TRUE), 0)
+                popViewport()
+                stopifnot(max(widths) <= maxwidth)
+            }
+            if (record)
+                geometry$text[[length(geometry$text) + 1L]] <<- list(label = as.character(s), x = x, y = y, size = size,
+                  just = just, face = face)
+        }
+        rect <- function(x, y, w, h, fill = "white", col = NA, lwd = 0.35) {
+            grid.rect(x = unit(x, "cm"), y = unit(H - yy(y), "cm"), width = unit(w, "cm"), height = unit(h, "cm"),
+                gp = gpar(fill = fill, col = col, lwd = lwd))
+        }
+        line <- function(x, y, col = "#CBD1D6", lwd = 0.4, lty = 1) grid.lines(x = unit(x, "cm"), y = unit(H - yy(y), "cm"), gp = gpar(col = col, lwd = lwd, lty = lty))
+        curve <- function(x1, y1, x2, y2, col = "#C5CDD2", lwd = 0.5) {
+            grid.bezier(x = unit(c(x1, x1, x2, x2), "cm"), y = unit(H - yy(c(y1, (y1 + y2)/2, (y1 + y2)/2, y2)), "cm"),
+                gp = gpar(col = col, fill = NA, lwd = lwd))
+        }
+        dot <- function(x, y, r = 0.035, fill = ink, col = NA, lwd = 0.3) grid.circle(x = unit(x, "cm"), y = unit(H - yy(y), "cm"), r = unit(r, "cm"), gp = gpar(fill = fill, col = col, lwd = lwd))
+        diamond <- function(x, y, r = 0.065, col = ink) {
+            grid.polygon(x = unit(x + c(0, r, 0, -r), "cm"), y = unit(H - y + c(r, 0, -r, 0), "cm"), gp = gpar(fill = col,
+                col = "white", lwd = 0.35))
+        }
+        triangle <- function(x, y, fill) {
+            grid.polygon(x = unit(x + c(-0.095, 0.095, -0.095), "cm"),
+                y = unit(H - y - c(-0.095, -0.095, 0.095), "cm"),
+                gp = gpar(fill = fill, col = "white", lwd = 0.6))
+        }
+        txt(paste0("All participants (N = ", fmt(r$N), ")"), mean(xx), 0.64, 7)
+        txt("Rural-urban\npathway", 0.2, 1.48, 7, just = "left")
+        txt("TTWA", 0.2, 2.43, 7, just = "left")
+        txt(paste0("k-means (k = 3)\nMD, ", delta, ", density"), 0.2, 3.2, 6.5,
+            just = "left", maxwidth = left - 0.25)
+        for (j in 1:4) {
+            ii <- (j - 1) * 6 + 1:6
+            mids <- mean(range(xx[ii]))
+            lo <- min(xx[ii]) - cell/2
+            hi <- max(xx[ii]) + cell/2
+            curve(mean(xx), 0.8, mids, 1.19)
+            rect(mids, 1.48, hi - lo, 0.52, route_fill[j], route_stroke[j], 0.45)
+            txt(gsub(" to ", paste0(" ", arrow, " "), routes[j], fixed = TRUE), mids, 1.48, 7, if (j >= 3)
+                "white"
+            else ink)
+            for (k in 1:2) {
+                ix <- ii[(k - 1) * 3 + 1:3]
+                mid <- mean(range(xx[ix]))
+                curve(mids, 1.74, mid, 2.22, route_stroke[j], 0.5)
+                rect(mid, 2.43, diff(range(xx[ix])) + cell, 0.38, if (k == 1)
+                  "#F8F5FC"
+                else "#F0EAF8", NA)
+                txt(if (k == 1)
+                  "Same TTWA"
+                else "Cross TTWA", mid, 2.43, 6.5, purple)
+                for (i in ix) {
+                  curve(mid, 2.64, xx[i], 3.3, "#AAB6C0", 0.42)
+                  txt(ord[i], xx[i], 3.62, 7, maxwidth = 0.76)
+                }
+            }
+        }
+        txt("N", 0.2, 4.52, 7, just = "left")
+        for (i in 1:24) {
+            share <- d$N[i]/r$N
+            cx <- xx[i]
+            yp <- 4.27
+            radius <- 0.22
+            dot(cx, yp, radius, light, "#D9DFE3", 0.25)
+            a <- seq(pi/2, pi/2 - 2 * pi * share, length.out = max(8, ceiling(360 * share)))
+            grid.polygon(x = unit(c(cx, cx + radius * cos(a), cx), "cm"), y = unit(c(H - yy(yp), H - yy(yp) + radius *
+                sin(a), H - yy(yp)), "cm"), gp = gpar(fill = "#647F90", col = NA))
+            txt(fmt(d$N[i]), cx, 4.8, 6, maxwidth = 0.78)
+        }
+        tree <- FALSE
+        for (v in vars) {
+            p <- box_panels[[v]]
+            trans <- function(value) if (v == "md")
+                log10(value)
+            else value
+            ypos <- function(value) p$bottom - (trans(value) - p$limits[1])/diff(p$limits) * (p$bottom - p$top)
+            for (cx in xx) line(rep(cx, 2), c(p$top, p$bottom), "#D4DADF", 0.36, 3)
+            for (t in p$ticks) {
+                y <- ypos(t)
+                if (t == 0 && v != "md")
+                  line(c(left, right), c(y, y), "#BFC9D0", 0.4, 2)
+                axis_x <- if (risk)
+                  left - 0.05
+                else right
+                line(axis_x + if (risk)
+                  c(-0.06, 0)
+                else c(0, 0.06), c(y, y), "#6D7983", 0.4)
+                txt(gsub("-", minus, as.character(t), fixed = TRUE), if (risk)
+                  axis_x - 0.14
+                else right + 0.12, y, 6, just = if (risk)
+                  "right"
+                else "left")
+            }
+            axis_x <- if (risk)
+                left - 0.05
+            else right
+            line(c(axis_x, axis_x), c(p$top, p$bottom), "#6D7983", 0.4)
+            txt(gsub("Density change", "Density\nchange", p$title, fixed = TRUE), 0.2,
+                mean(c(p$top, p$bottom)) - 0.12, 7, p$col, just = "left", maxwidth = left - 0.45)
+            if (nzchar(p$sub))
+                txt(p$sub, 0.2, mean(c(p$top, p$bottom)) + 0.25, 6, just = "left")
+            b <- boxes[variable == v][order(column)]
+            for (i in 1:24) {
+                z <- b[i]
+                cx <- xx[i]
+                col <- if (v == "dtdi")
+                  if (z$median < 0)
+                    blue
+                  else red
+                else p$col
+                rgb0 <- as.numeric(col2rgb(col))/255
+                fill <- if (v == "density_shift")
+                  col
+                else rgb(t(0.55 * rgb0 + 0.45))
+                whisker <- adjustcolor(col, alpha.f = 0.72)
+                line(c(cx, cx), c(ypos(z$lower), ypos(z$upper)), whisker, 0.48)
+                for (k in c(z$lower, z$upper)) line(cx + c(-0.11, 0.11), rep(ypos(k), 2), whisker, 0.48)
+                hh <- abs(ypos(z$q3) - ypos(z$q1))
+                rect(cx, mean(c(ypos(z$q1), ypos(z$q3))), 0.43, max(0.012, hh), fill, NA)
+                lum <- sum(as.numeric(col2rgb(fill))/255 * c(0.2126, 0.7152, 0.0722))
+                line(cx + c(-0.215, 0.215), rep(ypos(z$median), 2), if (lum < 0.48)
+                  "white"
+                else ink, 0.72)
+            }
+        }
+        txt("Most\nfavourable\nprofile", note_x, 16.48, 7, just = "left", maxwidth = W - note_x - 0.3)
+        for (j in seq_along(r$targets)) {
+            txt(labels[j], left - 0.17, cy[j], 6.5, just = "right")
+            z <- r$results[outcome == r$targets[j]]
+            limits <- if (risk && j > 1)
+                range(z[supported == TRUE, estimate])
+            else NULL
+            for (i in 1:24) {
+                a <- z[profile == ord[i]]
+                value <- if (nrow(a) && isTRUE(a$supported))
+                  a$estimate
+                else NA_real_
+                fill <- colour(value, if (j == 1)
+                  "SES"
+                else if (risk)
+                  "Risk"
+                else "HR", limits)
+                rect(xx[i], cy[j], cell, cell, fill, "#D5DBDF", 0.24)
+                optimum <- nrow(a) && isTRUE(a$lowest)
+                if (optimum) {
+                  rect(xx[i], cy[j], cell - 0.018, cell - 0.018, NA, "#17232C", 1.55)
+                  rect(xx[i], cy[j], cell - 0.085, cell - 0.085, NA, "white", 0.7)
+                  diamond(xx[i] + cell/2 - 0.075, cy[j] - cell/2 + 0.075, 0.065)
+                }
+                if (is.finite(value)) {
+                  lum <- sum(as.numeric(col2rgb(fill))/255 * c(0.2126, 0.7152, 0.0722))
+                  txt(sgn(value), xx[i], cy[j], if (optimum)
+                    7
+                  else 6, if (lum < 0.5)
+                    "white"
+                  else ink, face = if (optimum)
+                    "bold"
+                  else "plain", maxwidth = 0.62)
+                }
+                if (j > 1) {
+                  mark <- mismatch[profile == ord[i] & outcome == r$targets[j]]
+                  if (nrow(mark) && isTRUE(mark$discordant))
+                    triangle(xx[i] - cell/2 + 0.115, cy[j] - cell/2 + 0.115,
+                      if (mark$pattern == "Higher SES / higher risk") "#D45C69" else "#8F65B7")
+                }
+                if (record)
+                  geometry$squares[[length(geometry$squares) + 1L]] <<- list(profile = ord[i], outcome = r$targets[j],
+                    x = xx[i], y = cy[j], w = cell, h = cell, estimate = value, optimum = isTRUE(a$lowest))
+            }
+            a <- r$best[outcome == r$targets[j]]
+            txt(a$profile, note_x, cy[j], 7, face = "bold", just = "left")
+        }
+        ly <- 26.1
+        bar <- function(pal, x, y, width, ticks, title) {
+            txt(title, x, y - 0.35, 7, just = "left")
+            grid.rect(x = unit(x + (seq_along(pal) - 0.5) * width/length(pal), "cm"),
+                y = unit(H - yy(y), "cm"), width = unit(width/length(pal) + 0.0005, "cm"),
+                height = unit(0.23, "cm"), gp = gpar(fill = pal, col = NA))
+            for (i in seq_along(ticks)) txt(ticks[i], x + (i - 1) * width/(length(ticks) - 1), y + 0.31, 6.2)
+        }
+        bar(ses_pal, 2.4, ly, 3.1, sgn(c(ses_range[1], mean(ses_range), ses_range[2])), if (risk)
+            "Adjusted SES (SD)"
+        else expression(italic(beta)[SES]))
+        bar(hr_pal, 6.9, ly, 3.1, if (risk)
+            c("Lower", "", "Higher")
+        else sprintf("%.2f", c(0.5, 1, 2)), if (risk)
+            "10-year risk (%)"
+        else paste0("HR (ref. ", r$reference, ")"))
+        rect(11.3, ly, 0.33, 0.33, "white", "#17232C", 1.25)
+        diamond(11.405, ly - 0.105, 0.055)
+        txt("Most favourable\npoint estimate", 11.68, ly, 6.2, just = "left")
+        rect(15.15, ly, 0.33, 0.33, "#E8EBEE", "#D5DBDF", 0.24)
+        txt("Insufficient\ndata", 15.53, ly, 6.2, just = "left")
+        keyx <- 18.65
+        keyy <- ly
+        line(c(keyx, keyx), c(keyy - 0.38, keyy + 0.38), "#64727D", 0.48)
+        line(keyx + c(-0.1, 0.1), rep(keyy - 0.38, 2), "#64727D", 0.48)
+        line(keyx + c(-0.1, 0.1), rep(keyy + 0.38, 2), "#64727D", 0.48)
+        rect(keyx, keyy, 0.36, 0.4, "#BECBD3", NA)
+        line(keyx + c(-0.18, 0.18), rep(keyy, 2), ink, 0.72)
+        txt(paste0("Median; box: Q1-Q3\nWhiskers: 1.5 ", times, " IQR"), 19.12, keyy, 6.2, just = "left", maxwidth = 5.1)
+        triangle(2.8, 26.85, "#D45C69")
+        txt("Higher SES / higher risk", 3.04, 26.85, 6.2, just = "left")
+        triangle(8.9, 26.85, "#8F65B7")
+        txt("Lower SES / lower risk", 9.14, 26.85, 6.2, just = "left")
+    }
+}
+mismatch_draw <- function(cache) {
+  r <- cache
+  H <- 28.0
+  grid::grid.newpage()
+  original <- profile_draw
+  colours <- c('Higher SES / lower risk'='#39A6B1',
+               'Higher SES / higher risk'='#D45C69',
+               'Lower SES / lower risk'='#8F65B7',
+               'Lower SES / higher risk'='#AAB3BB')
+  labels <- c('All-cause mortality','CVD mortality','CAD','Stroke','HF',
+              'AF','T2D','Depression','Anxiety','Dementia')
+  ink <- '#28343D'
+  maximum <- max(r$description$N)
+  minus <- intToUtf8(8722)
+  fmt_x <- function(x) gsub('-',minus,format(x,trim=TRUE,scientific=FALSE),fixed=TRUE)
+  
+  bubble <- function(target,title) {
+    d <- copy(r$points[outcome==target & available==TRUE])
+    stopifnot(nrow(d)==21L,uniqueN(d$profile)==21L)
+    sx <- d$ses_reference[1]; sy <- d$risk_reference[1]
+    xr <- c(-.73,.66)
+    yr <- range(d$estimate)
+    span <- diff(yr)
+    yr <- yr + c(-.16,.20)*span
+    yr[1] <- max(0,yr[1])
+    mark <- unique(c(d[discordant==TRUE,profile],d[which.max(ses),profile],d[which.min(estimate),profile]))
+    d[,label:=fifelse(profile%in%mark,profile,'')]
+    p <- ggplot(d,aes(ses,estimate)) +
+      annotate('rect',xmin=sx,xmax=xr[2],ymin=sy,ymax=yr[2],
+               fill=colours[['Higher SES / higher risk']],alpha=.075) +
+      annotate('rect',xmin=xr[1],xmax=sx,ymin=yr[1],ymax=sy,
+               fill=colours[['Lower SES / lower risk']],alpha=.075) +
+      geom_vline(xintercept=sx,colour='#85939D',linewidth=.17,linetype=2) +
+      geom_hline(yintercept=sy,colour='#85939D',linewidth=.17,linetype=2) +
+      geom_point(aes(size=N,fill=pattern),shape=21,colour='white',stroke=.15,alpha=.94) +
+      geom_text_repel(aes(label=label),family=font,size=6/ggplot2::.pt,
+        colour=ink,box.padding=.12,point.padding=.12,min.segment.length=0,
+        segment.colour='#A0ACB5',segment.size=.15,max.overlaps=Inf,
+        force=1.5,force_pull=.5,max.iter=20000,max.time=Inf,
+        seed=20261027,show.legend=FALSE) +
+      scale_fill_manual(values=colours,drop=FALSE) +
+      scale_size_area(max_size=3.6,limits=c(0,maximum)) +
+      scale_x_continuous(breaks=c(-.5,0,.5),labels=fmt_x,expand=expansion(mult=0)) +
+      scale_y_continuous(breaks=function(x)pretty(x,n=3),
+        labels=function(x)formatC(x,digits=1,format='f'),expand=expansion(mult=0)) +
+      coord_cartesian(xlim=xr,ylim=yr,clip='on') +
+      labs(title=title,x=NULL,y=NULL) +
+      theme_classic(base_size=6,base_family=font) +
+      theme(text=element_text(colour=ink),
+        plot.title=element_text(size=7,face='plain',hjust=.5,margin=margin(b=3)),
+        axis.text=element_text(size=6,colour=ink),
+        axis.line=element_line(linewidth=.18,colour='#657580'),
+        axis.ticks=element_line(linewidth=.16,colour='#657580'),
+        axis.ticks.length=grid::unit(.065,'cm'),
+        axis.text.x=element_text(margin=margin(t=2)),
+        axis.text.y=element_text(margin=margin(r=2)),
+        legend.position='none',aspect.ratio=1,
+        plot.margin=margin(2,2,2,2),plot.background=element_blank())
+    ggplotGrob(p)
+  }
+  plots <- lapply(seq_along(r$targets),function(i)bubble(r$targets[i],labels[i]))
+  widths <- do.call(grid::unit.pmax,lapply(plots,`[[`,'widths'))
+  heights <- do.call(grid::unit.pmax,lapply(plots,`[[`,'heights'))
+  for(i in seq_along(plots)) {
+    plots[[i]]$widths <- widths
+    plots[[i]]$heights <- heights
+  }
+  at <- function(x,y,w,h,hh) grid::viewport(x=grid::unit(x,'cm'),y=grid::unit(hh-y,'cm'),
+    width=grid::unit(w,'cm'),height=grid::unit(h,'cm'),just=c('left','top'),clip='off')
+  text <- function(value,x,y,hh,size=6.5,just='centre',face='plain',rot=0)
+    grid::grid.text(value,x=grid::unit(x,'cm'),y=grid::unit(hh-y,'cm'),just=just,rot=rot,
+      gp=grid::gpar(fontfamily='Arial',fontsize=size,col=ink,fontface=face,lineheight=1.05))
+  grid::pushViewport(at(.3,.3,23.35,27.4,H))
+  original(r)
+  grid::popViewport()
+  grid::pushViewport(at(23.73,.3,10,27.4,H))
+  bh <- 27.4
+  cw <- (10-.15-.12)/2
+  ch <- 5.05
+  gap <- .08
+  for(i in seq_along(plots)) {
+    x <- .15+((i-1)%%2)*(cw+.12)
+    y <- floor((i-1)/2)*(ch+gap)
+    grid::pushViewport(at(x,y,cw,ch,bh))
+    grid::grid.draw(plots[[i]])
+    grid::popViewport()
+  }
+  bottom <- 5*ch+4*gap
+  text('SES (SD)',5,bottom+.20,bh,7)
+  text('10-year risk (%)',.015,bottom/2,bh,7,rot=90)
+  ly <- bottom+.73
+  for(i in 1:4) {
+    x <- .35+(i-1)*2.4
+    grid::grid.circle(grid::unit(x,'cm'),grid::unit(bh-ly,'cm'),r=grid::unit(.065,'cm'),
+      gp=grid::gpar(fill=colours[i],col=NA))
+    text(gsub(' / ','\n',names(colours)[i],fixed=TRUE),x+.15,ly,bh,6,just='left')
+  }
+  ly <- bottom+1.31
+  text('N',.8,ly,bh,7)
+  for(i in 1:3) {
+    x <- 1.8+(i-1)*2.65
+    value <- c(5000,25000,75000)[i]
+    grid::grid.circle(grid::unit(x,'cm'),grid::unit(bh-ly,'cm'),r=grid::unit(.18*sqrt(value/maximum),'cm'),
+      gp=grid::gpar(fill='#8C9CA8',col='white',lwd=.4))
+    text(c('5,000','25,000','75,000')[i],x+.25,ly,bh,6,just='left')
+  }
+  grid::popViewport()
+  text('a',.16,.18,H,10,just='left',face='bold')
+  text('b',23.75,.18,H,10,just='left',face='bold')
 }
 
-region_figure <- function(d = region_read(), geometry = region_geometry()) {
-    a <- data.table::copy(d$area)
-    t <- data.table::copy(d$tests)
-    poly <- geometry$poly
-    cen <- geometry$centroids
-    map_w <- 4.55
-    cell_h <- 8.75
-    first_w <- 5.8
-    gx <- 0.16
-    gy <- 0.28
-    outer <- 0.22
-    main_gap <- 0.25
-    W <- 2 * outer + first_w + main_gap + 4 * map_w + 3 * gx
-    H <- 2 * outer + 3 * cell_h + 2 * gy
-    cols <- c(origin = "#018571", destination = "#7545A0")
-    pal <- list(origin = c("#003C30", "#018571", "#F7F5ED", "#A6611A", "#543005"), destination = c("#A61B29", "#D96A73", 
-        "#FAF6FA", "#A27BC7", "#63328A"))
-    span <- log(1.3)
-    nodes <- scales::rescale(c(-span, -0.075, 0, 0.075, span), from = c(-span, span))
-    label <- c(`All-cause mortality` = "All-cause mortality", `CVD mortality` = "CVD mortality", `CAD/MI` = "CAD", 
-        Stroke = "Stroke", `Heart failure` = "Heart failure", `Atrial fibrillation` = "Atrial fibrillation", `Type 2 diabetes` = "Type 2 diabetes", 
-        Depression = "Depression", `Anxiety disorder` = "Anxiety", Dementia = "Dementia")
-    qtext <- function(x) ifelse(x < 0.001, formatC(x, format = "e", digits = 1), sprintf("%.3f", x))
-    vtext <- function(x) ifelse(x < 1e-04, formatC(x, format = "e", digits = 1), sprintf("%.4f", x))
-    selected <- t[q < 0.05]
-    groups <- selected[, .(contexts = list(intersect(c("origin", "destination"), context)), maps = .N), by = .(id, 
-        outcome)]
-    groups <- data.table::rbindlist(list(groups[maps == 2][order(id)], groups[maps == 1][order(-id)]))
-    stopifnot(nrow(selected) == 12L, nrow(groups) == 7L, sum(groups$maps) == 12L, sum(groups$maps == 2L) == 5L, 
-        sum(groups$maps == 1L) == 2L)
-    layout <- data.table::rbindlist(lapply(seq_len(nrow(groups)), function(k) {
-        pair <- groups$maps[k] == 2L
-        data.table::data.table(id = groups$id[k], outcome = groups$outcome[k], panel = letters[k + 1L], row = if (pair) 
-            ceiling(k/2)
-        else 3L, contexts = list(groups$contexts[[k]]), cols = list(if (pair) if (k%%2L) 1:2 else 3:4 else if (k == 
-            6L) 3L else 4L))
-    }))
-    spread <- function(v, lo = 25000, hi = 975000, gap = 70000) {
-        o <- order(v)
-        y <- pmax(v[o], lo)
-        if (length(y) > 1L) 
-            for (k in 2:length(y)) y[k] <- max(y[k], y[k - 1L] + gap)
-        if (tail(y, 1) > hi) {
-            y[length(y)] <- hi
-            if (length(y) > 1L) 
-                for (k in (length(y) - 1L):1L) y[k] <- min(y[k], y[k + 1L] - gap)
-        }
-        ans <- numeric(length(v))
-        ans[o] <- y
-        ans
-    }
-    map_labels <- function(endpoint, ctx) {
-        z <- region_map_labels(a, cen, endpoint, ctx)
-        z[, `:=`(shown, vapply(name, function(x) paste(strwrap(x, width = 15), collapse = "\n"), character(1)))]
-        data.table::setorder(z, x)
-        z[, `:=`(side, rep(c("left", "right"), c(floor(.N/2), ceiling(.N/2))))]
-        z[, `:=`(label_y, spread(y)), by = side]
-        z[, `:=`(label_x = ifelse(side == "left", 9000, 651000), line_x = ifelse(side == "left", 120000, 540000), 
-            label_h = ifelse(side == "left", 0, 1))]
-        z
-    }
-    map_plot <- function(endpoint, ctx) {
-        s <- t[id == endpoint & context == ctx]
-        z <- merge(poly, a[id == endpoint & context == ctx, .(code, beta)], by = "code", all.x = TRUE, sort = FALSE)
-        lab <- map_labels(endpoint, ctx)
-        ann <- data.table::data.table(x = 647000, y = c(1210000, 1170000), text = c(if (ctx == "origin") "Birthplace" else "Recruitment", 
-            paste("Effect variance", vtext(s$variance))))
-        annq <- data.table::data.table(x = 647000, y = 1130000, text = paste0("italic(q) == ", qtext(s$q)))
-        bar0 <- 485000
-        bar1 <- 647000
-        evx <- bar0 + (bar1 - bar0) * s$events/s$n
-        nlab <- data.table::data.table(x = 647000, y = c(1045000, 1005000), text = c(paste("N", format(s$n, big.mark = ",")), 
-            paste("Events", format(s$events, big.mark = ","))), colour = c("#333333", cols[[ctx]]))
-        ggplot2::ggplot(z, ggplot2::aes(x, y, group = piece, subgroup = ring, fill = beta)) + ggplot2::geom_polygon(rule = "evenodd", 
-            colour = NA) + ggplot2::geom_point(data = lab, ggplot2::aes(x, y), inherit.aes = FALSE, size = 0.35, 
-            colour = "#333333") + ggplot2::geom_segment(data = lab, ggplot2::aes(x = x, y = y, xend = line_x, yend = label_y), 
-            inherit.aes = FALSE, linewidth = 0.12, colour = "#767676", lineend = "butt") + ggplot2::geom_text(data = lab, 
-            ggplot2::aes(x = label_x, y = label_y, label = shown, hjust = label_h), inherit.aes = FALSE, family = font, 
-            size = pt(5), lineheight = 0.82, colour = "#242424") + ggplot2::geom_text(data = ann, ggplot2::aes(x, 
-            y, label = text), inherit.aes = FALSE, hjust = 1, vjust = 1, family = font, size = pt(5.7), lineheight = 0.92, 
-            colour = cols[[ctx]]) + ggplot2::geom_text(data = annq, ggplot2::aes(x, y, label = text), inherit.aes = FALSE, 
-            hjust = 1, vjust = 1, family = font, size = pt(5.7), parse = TRUE, colour = cols[[ctx]]) + ggplot2::annotate("rect", 
-            xmin = bar0, xmax = evx, ymin = 1070000, ymax = 1085000, fill = cols[[ctx]], colour = NA) + ggplot2::annotate("rect", 
-            xmin = evx, xmax = bar1, ymin = 1070000, ymax = 1085000, fill = grDevices::adjustcolor(cols[[ctx]], 
-                alpha.f = 0.22), colour = NA) + ggplot2::geom_text(data = nlab, ggplot2::aes(x, y, label = text, 
-            colour = colour), inherit.aes = FALSE, hjust = 1, vjust = 1, family = font, size = pt(5), lineheight = 0.9, 
-            show.legend = FALSE) + ggplot2::scale_colour_identity() + ggplot2::scale_fill_gradientn(colours = pal[[ctx]], 
-            values = nodes, limits = c(-span, span), oob = scales::squish, na.value = "#DCDCDC", guide = "none") + 
-            ggplot2::coord_fixed(xlim = c(-1000, 660000), ylim = c(0, 1230000), expand = FALSE, clip = "on") + 
-            ggplot2::theme_void(base_family = font) + ggplot2::theme(plot.margin = ggplot2::margin(0, 0, 0, 0))
-    }
-    summary_plot <- function() {
-        v <- data.table::copy(t)
-        v[, `:=`(outcome = factor(outcome, levels = rev(forest_out)), yoff = ifelse(context == "origin", 0.13, 
-            -0.13), sig = q < 0.05, strength = pmin(-log10(pmax(q, 1e-12)), 10))]
-        ggplot2::ggplot(v, ggplot2::aes(y = as.numeric(outcome) + yoff, colour = context)) + ggplot2::geom_vline(xintercept = 0, 
-            colour = "#9A9A9A", linetype = "dashed", linewidth = 0.18) + ggplot2::geom_segment(ggplot2::aes(x = 0, 
-            xend = variance, yend = as.numeric(outcome) + yoff), linewidth = 0.55, lineend = "round") + ggplot2::geom_point(ggplot2::aes(x = variance, 
-            size = strength, shape = sig), stroke = 0.5) + ggplot2::scale_colour_manual(values = cols, guide = "none") + 
-            ggplot2::scale_shape_manual(values = c(`TRUE` = 16, `FALSE` = 1), guide = "none") + ggplot2::scale_size_continuous(range = c(1.8, 
-            4.3), guide = "none") + ggplot2::scale_y_continuous(breaks = seq_along(levels(v$outcome)), labels = levels(v$outcome), 
-            limits = c(0.45, 10.55), expand = c(0, 0)) + ggplot2::scale_x_continuous(limits = c(-3e-04, 0.014), 
-            breaks = c(0, 0.004, 0.008, 0.012), labels = c("0", ".004", ".008", ".012"), expand = c(0, 0)) + ggplot2::labs(x = "Effect variance", 
-            y = NULL) + ggplot2::theme_classic(base_family = font, base_size = 6) + ggplot2::theme(axis.title.x = ggplot2::element_text(size = 7), 
-            axis.text = ggplot2::element_text(size = 6, colour = "#222222"), axis.text.y = ggplot2::element_text(hjust = 1), 
-            axis.line = ggplot2::element_line(linewidth = 0.14), axis.ticks = ggplot2::element_line(linewidth = 0.14), 
-            panel.grid.major.y = ggplot2::element_line(colour = "#ECECEC", linewidth = 0.16), plot.margin = ggplot2::margin(4, 
-                3, 3, 2))
-    }
-    place <- function(p, x, y, w, h) {
-        grid::pushViewport(grid::viewport(x = grid::unit(x, "cm"), y = grid::unit(H - y, "cm"), width = grid::unit(w, 
-            "cm"), height = grid::unit(h, "cm"), just = c("left", "top")))
-        on.exit(grid::popViewport())
-        grid::grid.draw(ggplot2::ggplotGrob(p))
-    }
-    txt <- function(s, x, y, size = 6, bold = FALSE, just = "left", col = "#222222", italic = FALSE) grid::grid.text(s, 
-        x = grid::unit(x, "cm"), y = grid::unit(H - y, "cm"), just = c(just, "top"), gp = grid::gpar(fontfamily = font, 
-            fontsize = size, fontface = if (bold) 
-                "bold"
-            else if (italic) 
-                "italic"
-            else "plain", col = col))
-    rect <- function(x, y, w, h, col) grid::grid.rect(x = grid::unit(x, "cm"), y = grid::unit(H - y, "cm"), width = grid::unit(w, 
-        "cm"), height = grid::unit(h, "cm"), just = c("left", "top"), gp = grid::gpar(fill = col, col = NA))
-    point <- function(x, y, col, pch = 16, size = 2.2) grid::grid.points(grid::unit(x, "cm"), grid::unit(H - y, 
-        "cm"), pch = pch, size = grid::unit(size, "mm"), gp = grid::gpar(col = col, fill = col, lwd = 0.5))
-    legend_panel <- function(x, y, w, h) {
-        point(x + 0.18, y + 0.28, cols[["origin"]], 16, 2.4)
-        txt("Birthplace", x + 0.43, y + 0.14, 6)
-        point(x + 2.85, y + 0.28, cols[["destination"]], 16, 2.4)
-        txt("Recruitment", x + 3.1, y + 0.14, 6)
-        point(x + 0.18, y + 0.91, "#333333", 16, 2.3)
-        txt("q < 0.05", x + 0.43, y + 0.77, 6, italic = TRUE)
-        point(x + 2.85, y + 0.91, "#333333", 1, 2.3)
-        txt("q >= 0.05", x + 3.1, y + 0.77, 6, italic = TRUE)
-        ramp <- function(p) scales::gradient_n_pal(p, values = nodes)
-        top <- y + 1.9
-        height <- h - 2.7
-        for (j in seq_along(c("origin", "destination"))) {
-            ctx <- c("origin", "destination")[j]
-            xx <- x + 0.72 + (j - 1) * w/2
-            txt(if (ctx == "origin") 
-                "Birthplace area HR"
-            else "Recruitment area HR", xx + 0.36, y + 1.48, 6, just = "center")
-            for (k in 1:200) rect(xx, top + height - k * height/200, 0.34, height/200 + 0.005, ramp(pal[[ctx]])((k - 
-                0.5)/200))
-            at <- top + height * (1 - scales::rescale(log(c(0.8, 1, 1.3)), from = c(-span, span)))
-            for (k in seq_along(at)) txt(c(".8", "1", "1.3")[k], xx + 0.55, at[k] - 0.06, 5.7)
-        }
-        rect(x + 0.08, y + h - 0.4, 0.26, 0.26, "#DCDCDC")
-        txt("No estimate", x + 0.46, y + h - 0.45, 6)
-    }
-    tables <- list(panel_a = data.table::copy(t)[, `:=`(panel = "a", strength = pmin(-log10(pmax(q, 1e-12)), 10), 
-        significant = q < 0.05)])
-    labels <- list()
-    for (j in seq_len(nrow(layout))) {
-        g <- layout[j]
-        tables[[paste0("panel_", g$panel)]] <- data.table::rbindlist(lapply(g$contexts[[1]], function(ctx) {
-            s <- t[id == g$id & context == ctx]
-            lab <- map_labels(g$id, ctx)
-            labels[[paste(g$panel, ctx, sep = "_")]] <<- lab
-            z <- merge(cen, a[id == g$id & context == ctx], by = "code", all.x = TRUE, sort = FALSE)
-            z <- merge(z, lab[, .(code, label_x, label_y, line_x, shown)], by = "code", all.x = TRUE, sort = FALSE)
-            z[, `:=`(panel = g$panel, id = g$id, outcome = g$outcome, context = ctx, panel_variance = s$variance, 
-                panel_q = s$q, panel_n = s$n, panel_events = s$events, has_estimate = !is.na(beta), display_beta = pmin(pmax(beta, 
-                  -span), span), is_label = !is.na(shown))]
-            z
-        }), fill = TRUE)
-    }
-    source_data <- list(panels = tables, selected = selected, labels = labels, all_area_estimates = a, tests = t, 
-        legacy_joint = d$joint, method = plot_data$result$method, cache = d$cache_provenance, layout = list(grid = layout,
-            width_cm = W, height_cm = H, map_width_cm = map_w, cell_height_cm = cell_h, gap_x_cm = gx, gap_y_cm = gy, 
-            xlim = c(-1000, 660000), ylim = c(0, 1230000), palette = pal, colour_nodes = nodes, log_hr_limits = c(-span, 
-                span), no_estimate = "#DCDCDC", label_rule = "HR >= 1.10 or HR <= 0.91; retain eight strongest if needed; fill to six labels"))
-    xmap <- outer + first_w + main_gap
-    xc <- xmap + (0:3) * (map_w + gx)
-    yr <- outer + (0:2) * (cell_h + gy)
-    draw <- function() {
-        grid::grid.newpage()
-        grid::grid.rect(gp = grid::gpar(fill = "white", col = NA))
-        place(summary_plot(), outer, outer + 0.22, first_w, 2 * cell_h + gy - 0.22)
-        txt("a", outer, outer, 10, TRUE)
-        legend_panel(outer, yr[3], first_w, cell_h)
-        for (j in seq_len(nrow(layout))) {
-            g <- layout[j]
-            cs <- g$cols[[1]]
-            contexts <- g$contexts[[1]]
-            for (k in seq_along(cs)) place(map_plot(g$id, contexts[k]), xc[cs[k]], yr[g$row] + 0.22, map_w, cell_h - 
-                0.22)
-            x0 <- xc[min(cs)]
-            x1 <- xc[max(cs)] + map_w
-            txt(g$panel, x0, yr[g$row], 10, TRUE)
-            txt(unname(label[g$outcome]), (x0 + x1)/2, yr[g$row] + 0.01, 7, TRUE, "center")
-        }
-        invisible(NULL)
-    }
-    list(draw = draw, source_data = source_data, geometry = geometry, width_cm = W, height_cm = H, selected = selected, 
-        plots = list(summary = summary_plot, map = map_plot))
-}
-
-r <- region_figure(plot_data$result, plot_data$geography)
-
-draw_ppt(file.path(out, "Fig3.pptx"), r$draw, r$width_cm * cm, r$height_cm * cm)
-
-ragg::agg_png(file.path(out, "Fig3.png"), width = r$width_cm, height = r$height_cm, units = "cm", res = 300)
-
-r$draw()
-
-dev.off()
-
-finish("Fig3")
-
+r <- plot_data$result
+draw_ppt(file.path(out,'Fig3.pptx'),function()mismatch_draw(r),34.03*cm,28.0*cm)
+ragg::agg_png(file.path(out,'Fig3.png'),width=34.03,height=28.0,units='cm',res=600)
+mismatch_draw(r);dev.off()
+grDevices::cairo_pdf(file.path(out,'Fig3.pdf'),width=34.03*cm,height=28.0*cm,family=font)
+mismatch_draw(r);dev.off()
+finish('Fig3')

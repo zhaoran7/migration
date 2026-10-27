@@ -1,6 +1,6 @@
 # MOVE
 
-Code for *Migration distance and direction show distinct associations with socioeconomic status and health*.
+Code for *Selective migration and destination context reveal distinct socioeconomic and biological health gradients*.
 
 ## Structure
 

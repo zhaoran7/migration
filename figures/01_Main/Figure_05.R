@@ -1,203 +1,129 @@
-# 1. Figure 5
+# 1. Figure 05
 source(file.path(dirname(dirname(normalizePath(sub("^--file=", "",
   grep("^--file=", commandArgs(), value=TRUE)[1])))), "style.R"))
 
-med_pick <- function(x) if ("selected" %in% names(x)) x[selected == TRUE] else x[0]
-
-med_show <- function(x, max_nodes = 40L) {
-    x <- med_pick(copy(x))[exposure %in% med_view]
-    if (!nrow(x)) 
-        return(x)
-    rank <- x[, .(prop = max(proportion), p = min(p_indirect_bonf)), by = feature]
-    setorder(rank, -prop, p, feature)
-    md <- rank[feature %in% x[exposure == "MD", feature], feature]
-    ids <- head(c(md, setdiff(rank$feature, md)), max_nodes)
-    x[feature %in% ids]
-}
-
-med_protein_plot <- function(x) {
-    d <- copy(x)[Chromosome %in% c(as.character(1:22), "X") & is.finite(Start)]
-    d[, `:=`(chr, match(Chromosome, c(as.character(1:22), "X")))]
-    ends <- d[, .(length = max(Start) + 1e+06), by = chr][order(chr)]
-    ends[, `:=`(offset, shift(cumsum(length), fill = 0))]
-    d <- merge(d, ends[, .(chr, offset)], by = "chr", sort = FALSE)
-    d[, `:=`(pos = Start + offset, score = sign(beta) * (-log10(pmax(p, 1e-300))), sig = p_bonf < 0.05)]
-    lapply(med_view, function(e) {
-        s <- d[exposure == e]
-        count <- if (e == dtdi_lab) 
-            9L
-        else 5L
-        labels <- s[sig == TRUE & !is.na(Gene) & nzchar(Gene)][order(p)]
-        labels <- unique(labels, by = "Gene")[, head(.SD, count), by = .(direction = sign(beta))]
-        threshold <- -log10(0.05/(uniqueN(x$feature) * length(med_exp)))
-        ggplot(s, aes(pos, score)) + geom_hline(yintercept = 0, linewidth = 0.1, colour = "black") + geom_hline(yintercept = c(-threshold, 
-            threshold), linetype = "dashed", linewidth = 0.1, colour = "#808080") + geom_point(data = s[sig == 
-            FALSE], colour = "#CDD2D5", size = 0.45, alpha = 0.65) + geom_point(data = s[sig == TRUE], colour = med_col[[e]], 
-            size = 0.8, alpha = 0.85) + ggrepel::geom_text_repel(data = labels, aes(label = Gene), size = pt(6), 
-            family = font, max.overlaps = Inf, min.segment.length = 0, segment.size = 0.08, box.padding = 0.12, 
-            point.padding = 0.08, seed = 11, max.iter = 15000, show.legend = FALSE) + scale_x_continuous(breaks = ends$offset + 
-            ends$length/2, labels = ifelse(ends$chr == 23, "X", ends$chr), expand = expansion(mult = c(0.002, 0.005)), 
-            guide = guide_axis(n.dodge = 2)) + scale_y_continuous(expand = expansion(mult = c(0.2, 0.2))) + annotate("text", 
-            x = min(s$pos) + 0.015 * diff(range(s$pos)), y = max(s$score) + 0.12 * diff(range(s$score)), label = e, 
-            hjust = 0, family = font, size = pt(7), colour = med_col[[e]]) + labs(x = "Chromosome", y = expression(paste("Signed -", 
-            log[10], "(", italic(p), ")"))) + theme0() + theme(axis.text.x = element_text(size = 6), plot.margin = margin(1, 
-            2, 1, 2))
-    })
-}
-
-med_mri_plot <- function(x) {
-    d <- copy(x)[exposure %in% med_view]
-    d <- d[feature %in% d[p_bonf < 0.05, unique(feature)]]
-    categories <- c("Cortical area", "Cortical thickness", "Cortical volume", "Subcortical volume", "White matter FA", 
-        "White matter MD")
-    colors <- setNames(c("#CDE8DF", "#DCD5ED", "#F4E5BA", "#D2E5F1", "#F0D8D1", "#DCE9C9"), categories)
-    d[, `:=`(category, ifelse(`MRI class` == "cortex", paste("Cortical", Measure), ifelse(`MRI class` == "subcortex", 
-        "Subcortical volume", paste("White matter", Measure))))]
-    rows <- unique(d[, .(feature, category, Region, Hemisphere)])
-    rows[, `:=`(order0, match(category, categories))]
-    setorder(rows, order0, Region, Hemisphere)
-    nr <- nrow(rows)
-    names0 <- c(caudalmiddlefrontal = "Caudal middle frontal", middletemporal = "Middle temporal", parsopercularis = "Pars opercularis", 
-        superiortemporal = "Superior temporal", transversetemporal = "Transverse temporal", GlobalMeanThickness = "Global mean thickness", 
-        bankssts = "Banks of superior temporal sulcus", isthmuscingulate = "Isthmus cingulate", inferiorparietal = "Inferior parietal", 
-        TotalSurface = "Total surface area", superiorfrontal = "Superior frontal")
-    rows[, `:=`(label, fifelse(Region %in% names(names0), unname(names0[Region]), Region))]
-    rows[, `:=`(label, paste0(toupper(substr(label, 1, 1)), substr(label, 2, nchar(label))))]
-    rows[, `:=`(y = nr - seq_len(nr) + 1, label = paste0(label, ifelse(Hemisphere %in% c("left", "right"), paste0(" (", 
-        toupper(substr(Hemisphere, 1, 1)), ")"), "")))]
-    d[, `:=`(xx = match(exposure, med_view) + 3.7, yy = rows$y[match(feature, rows$feature)], score = fifelse(p_bonf < 
-        0.05, beta/se, NA_real_))]
-    blocks <- rows[, .(ymin = min(y) - 0.5, ymax = max(y) + 0.5), by = category]
-    blocks[, `:=`(label, gsub(" ", "\n", category))]
-    blocks[grepl("White matter", category), `:=`(label, paste("White matter", sub("White matter ", "", category), 
-        sep = "\n"))]
-    limit <- ceiling(max(abs(d$score), na.rm = TRUE))
-    head <- data.table(x = seq_along(med_view) + 3.7, label = med_view)
-    p <- ggplot(d, aes(xx, yy)) + geom_tile(aes(fill = score), width = 1, height = 1, colour = "#BFC3C7", linewidth = 0.08) + 
-        geom_rect(data = blocks, aes(xmin = 0.05, xmax = 4.05, ymin = ymin, ymax = ymax), inherit.aes = FALSE, 
-            fill = unname(colors[blocks$category]), colour = "#BFC3C7", linewidth = 0.08) + geom_text(data = blocks, 
-        aes(x = 2.05, y = (ymin + ymax)/2, label = label), inherit.aes = FALSE, family = font, size = pt(6), lineheight = 0.95) + 
-        geom_text(data = rows, aes(x = 6.5, y = y, label = label), inherit.aes = FALSE, hjust = 0, family = font, 
-            size = pt(6)) + geom_text(data = head, aes(x = x, y = nr + 1.65, label = label), inherit.aes = FALSE, 
-        family = font, size = pt(6), angle = 90, colour = unname(med_col[head$label])) + scale_fill_gradient2(low = med_col[["MD"]], 
-        mid = "white", high = med_col[[dtdi_lab]], midpoint = 0, limits = c(-limit, limit), na.value = "white", 
-        name = "Z score", guide = guide_colorbar(barwidth = unit(2.8, "cm"), barheight = unit(0.12, "cm"), ticks = FALSE, 
-            title.position = "top", display = "rectangles", nbin = 128)) + coord_fixed(ratio = 1, xlim = c(0, 18.4), 
-        ylim = c(0.5, nr + 3), expand = FALSE, clip = "off") + theme_void(base_family = font) + theme(legend.position = "bottom", 
-        legend.title = element_text(size = 7), legend.text = element_text(size = 6), legend.margin = margin(0, 
-            0, 0, 0), plot.margin = margin(1, 2, 0, 2))
-    p
-}
-
-med_plot <- function(x, middle) {
-    x <- med_show(x)
-    if (!nrow(x)) 
-        return(ggplot() + annotate("text", 0.5, 0.5, label = "No Bonferroni-significant paths with >5% mediated proportion", 
-            family = font, size = pt(7)) + theme_void())
-    x[, `:=`(mid, fifelse(!is.na(Gene) & nzchar(Gene), Gene, `Display name`))]
-    x[, `:=`(exposure, factor(exposure, levels = med_view))]
-    own <- x[, .(mid = first(mid), value = sum(proportion), share = sum(proportion[exposure == med_view[1]])/sum(proportion), 
-        target = weighted.mean(match(outcome, forest_out), proportion)), by = feature]
-    setorder(own, -share, target, mid)
-    ex <- x[, .(value = sum(proportion)), by = exposure][order(exposure)]
-    od <- x[, .(value = sum(proportion)), by = outcome][order(match(outcome, forest_out))]
-    od[, `:=`(label, unname(int_lab[outcome]))]
-    gap <- 0.006
-    minnode <- 0.015
-    scale <- uniroot(function(k) sum(pmax(k * own$value, minnode)) + gap * (nrow(own) - 1) - 0.95, c(0, 1))$root
-    place <- function(d, minimum = minnode) {
-        d[, `:=`(height, pmax(value * scale, minimum))]
-        space <- if (nrow(d) > 1) 
-            (0.95 - sum(d$height))/(nrow(d) - 1)
-        else 0
-        d[, `:=`(y, 0.985 - cumsum(height) + height/2 - (seq_len(.N) - 1) * space)]
-        d
+run_fig5 <- function(r = NULL) {
+    if (is.null(r)) 
+        r <- plot_data$result
+    cols <- c(UKHLS = "#B76585", HRS = "#39A6B1")
+    for (n in setdiff(names(r), "Methods")) r[[n]][, `:=`(cohort, factor(cohort, names(cols)))]
+    cs <- list(scale_colour_manual(values = cols), scale_fill_manual(values = cols))
+    th <- theme0() + theme(legend.position = "none", axis.text = element_text(size = 6, colour = "black"), plot.margin = margin(4, 
+        5, 4, 5), axis.title = element_text(size = 7), legend.background = element_blank(), legend.key = element_blank())
+    cowplot::set_null_device(function(width, height) ragg::agg_capture(width = width, height = height, units = "in", 
+        res = 96))
+    device <- ragg::agg_capture(width = 24, height = 18, units = "cm", res = 96)
+    on.exit(dev.off(), add = TRUE)
+    w <- copy(r$Waves)
+    w[, `:=`(x, wave + ifelse(cohort == "UKHLS", -0.18, 0.18))]
+    a0 <- ggplot(w, aes(x, n, fill = cohort)) + geom_col(width = 0.32) + scale_fill_manual(values = cols) + th + 
+        scale_x_continuous("Wave", limits = range(w$wave) + c(-0.6, 0.6), breaks = pretty(w$wave, 4), expand = c(0, 
+            0)) + scale_y_continuous("N", labels = label_number(scale = 0.001, suffix = "k"), breaks = breaks_pretty(3), 
+        expand = expansion(mult = c(0, 0.06))) + theme(axis.title.y.left = element_text(angle = 0, vjust = 0.5))
+    s <- copy(r$Status)
+    s[, `:=`(migrant, factor(mover, c(0, 1), c("Non-migrant", "Migrant")))]
+    a1 <- ggplot(s, aes(migrant, n, fill = cohort)) + geom_col(position = position_dodge(0.75), width = 0.65) + 
+        geom_text(aes(label = format(n, big.mark = ",", trim = TRUE)), position = position_dodge(0.75), vjust = -0.4, 
+            size = 6/.pt, family = font) + scale_fill_manual(values = cols) + th + scale_y_continuous("Participants", 
+        labels = label_number(big.mark = ","), expand = expansion(mult = c(0, 0.16))) + labs(x = NULL)
+    a2 <- ggplot(r$Counts, aes(count, fraction, colour = cohort)) + geom_line(linewidth = 0.4) + geom_point(size = 1) + 
+        scale_colour_manual(values = cols) + th + scale_x_continuous("MT", breaks = pretty(r$Counts$count, 5)) + 
+        scale_y_continuous("Participants (%)", labels = label_percent(accuracy = 1))
+    a3 <- ggplot(r$Density, aes(x, y, colour = cohort, fill = cohort)) + geom_area(alpha = 0.12, position = "identity", 
+        colour = NA) + geom_line(linewidth = 0.45) + cs + th + coord_cartesian(expand = FALSE) + labs(x = "log(1 + MD)", 
+        y = "Density")
+    forest <- function(o) {
+        d <- copy(r$Main[outcome == o])
+        d[, `:=`(pos, match(exposure, c("MT", "MD", "Migrant")) + ifelse(cohort == "UKHLS", 0.12, -0.12))]
+        d[, `:=`(mark, fifelse(status != "OK", "Warning", fifelse(q < 0.05, "q < 0.05", "q >= 0.05")))]
+        p <- ggplot(d, aes(estimate, pos, colour = cohort)) + geom_vline(xintercept = if (o == "SES") 
+            0
+        else 1, colour = "grey60", linetype = 2, linewidth = 0.18) + geom_segment(aes(x = lo, xend = hi, yend = pos), 
+            linewidth = 0.35) + geom_point(aes(shape = mark), size = 1.9, stroke = 0.45) + scale_shape_manual(values = c(`q < 0.05` = 16, 
+            `q >= 0.05` = 1, Warning = 4)) + scale_colour_manual(values = cols) + th + scale_y_continuous(NULL, 
+            breaks = 1:3, labels = c("MT (per SD)", "MD (per SD)", "Migrant"), limits = c(0.4, 3.85)) + labs(x = if (o == 
+            "SES") 
+            paste0(intToUtf8(946), " (95% CI)")
+        else "HR (95% CI)")
+        xr <- range(c(d$lo, d$hi))
+        xpos <- function(f) if (o == "SES") 
+            xr[1] + diff(xr) * f
+        else exp(log(xr[1]) + diff(log(xr)) * f)
+        p <- p + annotate("text", x = xpos(0), y = 3.6, label = if (o == "SES") 
+            "SES"
+        else "All-cause mortality", hjust = 0, family = font, size = 7/.pt)
+        if (o == "SES") 
+            p <- p + annotate("point", x = xpos(c(0.02, 0.52)), y = 0.6, shape = c(16, 1), size = 1.5) + annotate("text", 
+                x = xpos(c(0.07, 0.57)), y = 0.6, label = c("q < 0.05", "q >= 0.05"), hjust = 0, family = font, 
+                size = 6/.pt)
+        if (o == "Mortality") 
+            p <- p + scale_x_log10()
+        p
     }
-    own <- place(own)
-    ex <- place(ex)
-    space <- (0.95 - sum(ex$height))/(nrow(ex) + 1)
-    ex[, `:=`(y, 0.985 - space - cumsum(height) + height/2 - (seq_len(.N) - 1) * space)]
-    od <- place(od, 0.016 * lengths(strsplit(od$label, "\n", fixed = TRUE)))
-    x[, `:=`(ei = match(exposure, ex$exposure), mi = match(feature, own$feature), oi = match(outcome, od$outcome), 
-        color = unname(med_flow[as.character(exposure)]))]
-    left <- x[, .(value = sum(proportion), color = first(color)), by = .(ei, mi)]
-    port <- function(d, by, node, column) {
-        d[, `:=`(c(column), node$y[.BY[[1]]] + value * scale/2 - cumsum(value) * scale + sum(value) * scale/2), 
-            by = by]
-        d
+    curve <- function(o, e, individual = FALSE) {
+        d <- copy(if (individual) 
+            r$Within[exposure == e]
+        else r$Curves[outcome == o & exposure == e])
+        d[, `:=`(xx, if (e == "MD") 
+            log1p(x)
+        else x)]
+        bk <- if (e == "MD") 
+            c(0, 1, 10, 100, 1000, 10000)
+        else pretty(d$x, 5)
+        bk <- bk[bk >= min(d$x) & bk <= max(d$x)]
+        p <- ggplot(d, aes(xx, estimate, colour = cohort, fill = cohort)) + geom_ribbon(aes(ymin = lo, ymax = hi), 
+            alpha = 0.12, colour = NA) + geom_line(linewidth = 0.5) + cs + th + scale_x_continuous(if (e == "MD") 
+            "MD (km; log scale)"
+        else "MT", breaks = if (e == "MD") 
+            log1p(bk)
+        else bk, labels = as.character(bk), expand = expansion(mult = c(0.055, 0.025))) + labs(y = if (o == "Mortality") 
+            "HR"
+        else if (individual) 
+            "Individual SES change (SD)"
+        else "SES difference (SD)")
+        p <- p + geom_hline(yintercept = if (o == "Mortality") 
+            1
+        else 0, linetype = 2, linewidth = 0.18, colour = "grey60")
+        if (e == "MT") 
+            p <- p + geom_point(size = 0.85)
+        test <- unique(d[, .(cohort, p_overall, p_nonlinear)])
+        val <- function(v) if (v < 0.001) 
+            "< 0.001"
+        else paste("=", sprintf("%.3f", v))
+        test[, `:=`(label, paste0("paste(italic(p), ' overall ", vapply(p_overall, val, character(1)), "; ', italic(p), ' non-linear ", 
+            vapply(p_nonlinear, val, character(1)), "')"))]
+        yr <- range(c(d$lo, d$hi, if (o == "Mortality") 1 else 0))
+        test[, `:=`(xx = min(d$xx) + 0.01 * diff(range(d$xx)), yy = yr[2] + diff(yr) * ifelse(cohort == "UKHLS", 
+            0.24, 0.14))]
+        p + geom_text(data = test, aes(xx, yy, label = label, colour = cohort), inherit.aes = FALSE, parse = TRUE, 
+            hjust = 0, size = 6/.pt, family = font) + scale_y_continuous(expand = expansion(mult = c(0.04, 0.04)))
     }
-    setorder(left, ei, mi)
-    left <- port(left, "ei", ex, "from")
-    setorder(left, mi, ei)
-    left <- port(left, "mi", own, "to")
-    x[, `:=`(value, proportion)]
-    setorder(x, mi, ei, oi)
-    x <- port(x, "mi", own, "from")
-    setorder(x, oi, ei, mi)
-    x <- port(x, "oi", od, "to")
-    ribbon <- function(d, xx, prefix) rbindlist(lapply(seq_len(nrow(d)), function(i) {
-        half <- d$value[i] * scale/2
-        data.table(id = paste0(prefix, i), x = rep(xx, each = 2), y = c(d$from[i] - half, d$from[i] + half, d$to[i] - 
-            half, d$to[i] + half), value = d$value[i], color = d$color[i], part = prefix, ei = d$ei[i], mi = d$mi[i])
-    }))
-    edge <- rbind(ribbon(left, c(0.07, 0.4675), "a"), ribbon(x, c(0.5025, 0.9), "b"))
-    edge[, `:=`(id, factor(id, levels = unique(id[order(-value)])))]
-    edge[, `:=`(opacity, unname(med_alpha[as.character(ex$exposure[ei])]))]
-    key <- data.table(value = c(0.1, 0.2, 0.4), xx = c(0.55, 0.71, 0.87))
-    node <- rbindlist(list(ex[, .(xmin = 0.035, xmax = 0.07, y, height, label = as.character(exposure), side = "left", 
-        fill = unname(med_node[as.character(exposure)]))], own[, .(xmin = 0.4675, xmax = 0.5025, y, height, label = mid, 
-        side = "middle", fill = "#B5B5B5")], od[, .(xmin = 0.9, xmax = 0.935, y, height, label, side = "right", 
-        fill = unname(med_out[outcome]))]))
-    node[, `:=`(border, grDevices::rgb(t(grDevices::col2rgb(fill)) * 0.49, maxColorValue = 255))]
-    ggplot() + ggforce::geom_diagonal_wide(data = edge, aes(x, y, group = id, fill = color, alpha = opacity), n = 80, 
-        strength = 0.5, colour = NA, show.legend = FALSE) + geom_rect(data = node, aes(xmin = xmin, xmax = xmax, 
-        ymin = y - height/2, ymax = y + height/2, fill = fill, colour = border), alpha = 0.9, linewidth = 0.05, 
-        show.legend = FALSE) + geom_text(data = node[side == "middle"], aes(x = xmax + 0.007, y = y, label = label), 
-        hjust = 0, family = font, size = pt(6), lineheight = 1) + geom_text(data = node[side == "left"], aes(x = xmin - 
-        0.007, y = y, label = label), hjust = 1, family = font, size = pt(6)) + geom_text(data = node[side == "right"], 
-        aes(x = xmax + 0.007, y = y, label = label), hjust = 0, family = font, size = pt(6), lineheight = 1) + 
-        annotate("text", x = 0.71, y = -0.024, label = "Mediation proportion", family = font, size = pt(6)) + geom_rect(data = key, 
-        aes(xmin = xx - 0.035, xmax = xx + 0.035, ymin = -0.043 - value * scale/2, ymax = -0.043 + value * scale/2), 
-        fill = "#B5B5B5", colour = NA) + geom_text(data = key, aes(x = xx, y = -0.065, label = scales::percent(value, 
-        accuracy = 1)), family = font, size = pt(6)) + scale_fill_identity() + scale_alpha_identity() + scale_colour_identity() + 
-        coord_cartesian(xlim = c(-0.04, 1.1), ylim = c(-0.088, 1.01), expand = FALSE, clip = "off") + theme_void(base_family = font) + 
-        theme(plot.margin = margin(2, 3, 2, 3))
+    a <- cowplot::plot_grid(a0, a1, a2, a3, nrow = 1, align = "h", axis = "tb")
+    b <- cowplot::plot_grid(forest("SES"), forest("Mortality"), curve("SES", "MD"), curve("SES", "MT"), nrow = 1, 
+        align = "h", axis = "tb")
+    d <- cowplot::plot_grid(curve("Mortality", "MD"), curve("Mortality", "MT"), curve("SES", "MD", TRUE), curve("SES", 
+        "MT", TRUE), nrow = 1, align = "h", axis = "tb")
+    fig <- cowplot::ggdraw() + cowplot::draw_plot(a, 0.018, 0.668, 0.975, 0.283) + cowplot::draw_plot(b, 0.018, 
+        0.356, 0.975, 0.283) + cowplot::draw_plot(d, 0.018, 0.044, 0.975, 0.283)
+    for (i in 1:5) fig <- fig + cowplot::draw_label(c("a", "b", "c", "d", "e")[i], x = c(0.005, 0.005, 0.493, 0.005, 
+        0.493)[i], y = c(0.956, 0.644, 0.644, 0.332, 0.332)[i], hjust = 0, vjust = 1, size = 10, fontfamily = font, 
+        fontface = "bold")
+    legend <- data.table(cohort = names(cols), x = c(0, 1))
+    key <- ggplot(legend) + geom_rect(aes(xmin = x, xmax = x + 0.12, ymin = 0.31, ymax = 0.69, fill = cohort)) + 
+        geom_segment(aes(x = x + 0.18, xend = x + 0.4, y = 0.5, yend = 0.5, colour = cohort), linewidth = 0.5) + 
+        geom_point(aes(x = x + 0.29, y = 0.5, colour = cohort), size = 1.2) + geom_text(aes(x = x + 0.46, y = 0.5, 
+        label = cohort), hjust = 0, size = 7/.pt, family = font) + cs + xlim(-0.02, 1.95) + ylim(0, 1) + theme_void() + 
+        theme(legend.position = "none", plot.margin = margin(0, 0, 0, 0))
+    fig <- fig + cowplot::draw_plot(key, 0.33, 0.962, 0.34, 0.033)
+    stage <- tempfile(fileext = ".pptx")
+    on.exit(unlink(stage), add = TRUE)
+    write_ppt(stage, list(fig), 24 * cm, 18 * cm)
+    if (!file.copy(stage, file.path(out, "Fig5.pptx"), overwrite = TRUE)) 
+        stop("Close Fig5.pptx before replacing it")
+    invisible(fig)
 }
 
-med_figure <- function(r) {
-    device <- cowplot::set_null_device("agg")
-    on.exit(cowplot::set_null_device(device), add = TRUE)
-    a <- med_protein_plot(r$Protein$association)
-    b <- med_mri_plot(r$MRI$association)
-    c <- med_plot(r$Protein$mediation, "Protein")
-    width <- height <- 20.3
-    pad <- c(x = 0.33, y = 0.24)
-    gap <- 0.3
-    inner <- width - 0.6
-    top <- 4
-    bottom <- height - 0.6 - top - gap
-    split <- 6.3
-    y <- (pad[["y"]] + bottom + gap)/height
-    p <- cowplot::ggdraw() + cowplot::draw_plot(a[[1]], x = pad[["x"]]/width, y = y, width = (inner - gap)/2/width, 
-        height = top/height) + cowplot::draw_plot(a[[2]], x = (pad[["x"]] + (inner + gap)/2)/width, y = y, width = (inner - 
-        gap)/2/width, height = top/height) + cowplot::draw_plot(b, x = pad[["x"]]/width, y = pad[["y"]]/height, 
-        width = split/width, height = bottom/height) + cowplot::draw_plot(c, x = (pad[["x"]] + split + 0.15)/width, 
-        y = pad[["y"]]/height, width = (inner - split - 0.15)/width, height = bottom/height) + cowplot::draw_text(c("a", 
-        "b", "c"), x = (pad[["x"]] + c(0, 0, split + 0.15))/width, y = (pad[["y"]] + bottom + 0.08 + c(gap + top, 
-        0, 0))/height, hjust = 0, vjust = 1, family = font, fontface = "bold", size = 10) + theme(plot.background = element_rect(fill = "white", 
-        colour = NA))
-    list(plot = p, width = width, height = height)
-}
-
-r <- med_figure(plot_data$result)
-
-write_ppt(file.path(out, "Fig5.pptx"), list(r$plot), r$width * cm, r$height * cm)
-
-ragg::agg_png(file.path(out, "Fig5.png"), width = r$width, height = r$height, units = "cm", res = 600)
-
-print(r$plot)
-
-dev.off()
+run_fig5(plot_data$result)
 
 finish("Fig5")
 

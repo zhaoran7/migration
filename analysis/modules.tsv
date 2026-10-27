@@ -18,9 +18,9 @@ genetic	02_genetics	02_genetics/07_genetic.R	GWAS diagnostics and comparisons	ge
 corr	02_genetics	02_genetics/08_corr.R	Phenotypic and genetic correlations	corr	RAP
 assoc	03_association	03_association/01_assoc.R	SES and health associations and strata	assoc [ses|forest|strata|direction]	RAP
 interaction	03_association	03_association/02_interaction.R	Interaction tests and curves	interaction	RAP
-sensitivity	03_association	03_association/03_sensitivity.R	Sensitivity and extra stratified models	sensitivity [ED7 ED9 ED10 birth matching]	RAP or approved environment
+sensitivity	03_association	03_association/03_sensitivity.R	Sensitivity and extra stratified models	sensitivity [ED7 ED8 ED9 birth matching]	RAP or approved environment
 external	03_association	03_association/04_external.R	External associations and SES trajectories	external	Approved environment
-profile	03_association	03_association/05_profiles.R	Twenty-four joint migration profiles	profile	RAP
+profile	03_association	03_association/05_profiles.R	Twenty-four profiles and socioeconomic-health discordance	profile	RAP
 region	04_region	04_region/01_region.R	Regional mixed-effects Cox models	region [data|fit id|tests]	RAP
 ses	04_region	04_region/02_ses.R	Regional SES heterogeneity	ses	RAP
 omics	05_omics	05_omics/01_omics.R	Protein and MRI associations and mediation	omics [Protein MRI]	RAP

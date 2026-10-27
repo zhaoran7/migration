@@ -1,251 +1,203 @@
-# 1. Figure 6
+# 1. Figure 06
 source(file.path(dirname(dirname(normalizePath(sub("^--file=", "",
   grep("^--file=", commandArgs(), value=TRUE)[1])))), "style.R"))
 
-enrich_cloud <- function(d, colour, size = 0.33) {
-    xr <- range(d$x)
-    yr <- range(d$y)
-    xr <- xr + c(-1, 1) * diff(xr) * 0.01
-    yr <- yr + c(-1, 1) * diff(yr) * 0.01
-    x <- (d$x - xr[1])/diff(xr)
-    y <- (d$y - yr[1])/diff(yr)
-    radius <- if (size > 0.2) 
-        0.0026
-    else 0.0012
-    angle <- seq(0, 2 * pi, length.out = 13)[-13]
-    rx <- radius * cos(angle)
-    ry <- radius * diff(xr)/diff(yr) * sin(angle)
-    pieces <- unlist(lapply(unique(colour), function(col) {
-        i <- which(colour == col)
-        lapply(split(i, ceiling(seq_along(i)/300)), function(k) grid::pathGrob(as.vector(t(outer(x[k], rx, "+"))), 
-            as.vector(t(outer(y[k], ry, "+"))), id = rep(seq_along(k), each = 12), rule = "winding", gp = grid::gpar(fill = col, 
-                col = NA)))
-    }), recursive = FALSE)
-    grob <- do.call(grid::grobTree, unname(pieces))
-    p <- ggplot() + annotation_custom(grob, xmin = xr[1], xmax = xr[2], ymin = yr[1], ymax = yr[2]) + scale_x_continuous(limits = xr, 
-        expand = c(0, 0)) + scale_y_continuous(limits = yr, expand = c(0, 0)) + coord_fixed() + theme_void(base_family = font, 
-        base_size = 6) + theme(plot.margin = margin(0, 0, 0, 0))
+med_pick <- function(x) if ("selected" %in% names(x)) x[selected == TRUE] else x[0]
+
+med_show <- function(x, max_nodes = 40L) {
+    x <- med_pick(copy(x))[exposure %in% med_view]
+    if (!nrow(x)) 
+        return(x)
+    rank <- x[, .(prop = max(proportion), p = min(p_indirect_bonf)), by = feature]
+    setorder(rank, -prop, p, feature)
+    md <- rank[feature %in% x[exposure == "MD", feature], feature]
+    ids <- head(c(md, setdiff(rank$feature, md)), max_nodes)
+    x[feature %in% ids]
+}
+
+med_protein_plot <- function(x) {
+    d <- copy(x)[Chromosome %in% c(as.character(1:22), "X") & is.finite(Start)]
+    d[, `:=`(chr, match(Chromosome, c(as.character(1:22), "X")))]
+    ends <- d[, .(length = max(Start) + 1e+06), by = chr][order(chr)]
+    ends[, `:=`(offset, shift(cumsum(length), fill = 0))]
+    d <- merge(d, ends[, .(chr, offset)], by = "chr", sort = FALSE)
+    d[, `:=`(pos = Start + offset, score = sign(beta) * (-log10(pmax(p, 1e-300))), sig = p_bonf < 0.05)]
+    lapply(med_view, function(e) {
+        s <- d[exposure == e]
+        count <- if (e == dtdi_lab) 
+            9L
+        else 5L
+        labels <- s[sig == TRUE & !is.na(Gene) & nzchar(Gene)][order(p)]
+        labels <- unique(labels, by = "Gene")[, head(.SD, count), by = .(direction = sign(beta))]
+        threshold <- -log10(0.05/(uniqueN(x$feature) * length(med_exp)))
+        ggplot(s, aes(pos, score)) + geom_hline(yintercept = 0, linewidth = 0.1, colour = "black") + geom_hline(yintercept = c(-threshold, 
+            threshold), linetype = "dashed", linewidth = 0.1, colour = "#808080") + geom_point(data = s[sig == 
+            FALSE], colour = "#CDD2D5", size = 0.45, alpha = 0.65) + geom_point(data = s[sig == TRUE], colour = med_col[[e]], 
+            size = 0.8, alpha = 0.85) + ggrepel::geom_text_repel(data = labels, aes(label = Gene), size = pt(6), 
+            family = font, max.overlaps = Inf, min.segment.length = 0, segment.size = 0.08, box.padding = 0.12, 
+            point.padding = 0.08, seed = 11, max.iter = 15000, show.legend = FALSE) + scale_x_continuous(breaks = ends$offset + 
+            ends$length/2, labels = ifelse(ends$chr == 23, "X", ends$chr), expand = expansion(mult = c(0.002, 0.005)), 
+            guide = guide_axis(n.dodge = 2)) + scale_y_continuous(expand = expansion(mult = c(0.2, 0.2))) + annotate("text", 
+            x = min(s$pos) + 0.015 * diff(range(s$pos)), y = max(s$score) + 0.12 * diff(range(s$score)), label = e, 
+            hjust = 0, family = font, size = pt(7), colour = med_col[[e]]) + labs(x = "Chromosome", y = expression(paste("Signed -", 
+            log[10], "(", italic(p), ")"))) + theme0() + theme(axis.text.x = element_text(size = 6), plot.margin = margin(1, 
+            2, 1, 2))
+    })
+}
+
+med_mri_plot <- function(x) {
+    d <- copy(x)[exposure %in% med_view]
+    d <- d[feature %in% d[p_bonf < 0.05, unique(feature)]]
+    categories <- c("Cortical area", "Cortical thickness", "Cortical volume", "Subcortical volume", "White matter FA", 
+        "White matter MD")
+    colors <- setNames(c("#CDE8DF", "#DCD5ED", "#F4E5BA", "#D2E5F1", "#F0D8D1", "#DCE9C9"), categories)
+    d[, `:=`(category, ifelse(`MRI class` == "cortex", paste("Cortical", Measure), ifelse(`MRI class` == "subcortex", 
+        "Subcortical volume", paste("White matter", Measure))))]
+    rows <- unique(d[, .(feature, category, Region, Hemisphere)])
+    rows[, `:=`(order0, match(category, categories))]
+    setorder(rows, order0, Region, Hemisphere)
+    nr <- nrow(rows)
+    names0 <- c(caudalmiddlefrontal = "Caudal middle frontal", middletemporal = "Middle temporal", parsopercularis = "Pars opercularis", 
+        superiortemporal = "Superior temporal", transversetemporal = "Transverse temporal", GlobalMeanThickness = "Global mean thickness", 
+        bankssts = "Banks of superior temporal sulcus", isthmuscingulate = "Isthmus cingulate", inferiorparietal = "Inferior parietal", 
+        TotalSurface = "Total surface area", superiorfrontal = "Superior frontal")
+    rows[, `:=`(label, fifelse(Region %in% names(names0), unname(names0[Region]), Region))]
+    rows[, `:=`(label, paste0(toupper(substr(label, 1, 1)), substr(label, 2, nchar(label))))]
+    rows[, `:=`(y = nr - seq_len(nr) + 1, label = paste0(label, ifelse(Hemisphere %in% c("left", "right"), paste0(" (", 
+        toupper(substr(Hemisphere, 1, 1)), ")"), "")))]
+    d[, `:=`(xx = match(exposure, med_view) + 3.7, yy = rows$y[match(feature, rows$feature)], score = fifelse(p_bonf < 
+        0.05, beta/se, NA_real_))]
+    blocks <- rows[, .(ymin = min(y) - 0.5, ymax = max(y) + 0.5), by = category]
+    blocks[, `:=`(label, gsub(" ", "\n", category))]
+    blocks[grepl("White matter", category), `:=`(label, paste("White matter", sub("White matter ", "", category), 
+        sep = "\n"))]
+    limit <- ceiling(max(abs(d$score), na.rm = TRUE))
+    head <- data.table(x = seq_along(med_view) + 3.7, label = med_view)
+    p <- ggplot(d, aes(xx, yy)) + geom_tile(aes(fill = score), width = 1, height = 1, colour = "#BFC3C7", linewidth = 0.08) + 
+        geom_rect(data = blocks, aes(xmin = 0.05, xmax = 4.05, ymin = ymin, ymax = ymax), inherit.aes = FALSE, 
+            fill = unname(colors[blocks$category]), colour = "#BFC3C7", linewidth = 0.08) + geom_text(data = blocks, 
+        aes(x = 2.05, y = (ymin + ymax)/2, label = label), inherit.aes = FALSE, family = font, size = pt(6), lineheight = 0.95) + 
+        geom_text(data = rows, aes(x = 6.5, y = y, label = label), inherit.aes = FALSE, hjust = 0, family = font, 
+            size = pt(6)) + geom_text(data = head, aes(x = x, y = nr + 1.65, label = label), inherit.aes = FALSE, 
+        family = font, size = pt(6), angle = 90, colour = unname(med_col[head$label])) + scale_fill_gradient2(low = med_col[["MD"]], 
+        mid = "white", high = med_col[[dtdi_lab]], midpoint = 0, limits = c(-limit, limit), na.value = "white", 
+        name = "Z score", guide = guide_colorbar(barwidth = unit(2.8, "cm"), barheight = unit(0.12, "cm"), ticks = FALSE, 
+            title.position = "top", display = "rectangles", nbin = 128)) + coord_fixed(ratio = 1, xlim = c(0, 18.4), 
+        ylim = c(0.5, nr + 3), expand = FALSE, clip = "off") + theme_void(base_family = font) + theme(legend.position = "bottom", 
+        legend.title = element_text(size = 7), legend.text = element_text(size = 6), legend.margin = margin(0, 
+            0, 0, 0), plot.margin = margin(1, 2, 0, 2))
     p
 }
 
-enrich_umap <- function(r, atlas) {
-    d <- r$umap[Atlas == atlas]
-    keys <- sort(unique(d$Cell))
-    cols <- setNames(grDevices::hcl.colors(length(keys), "Dark 3"), keys)
-    selected <- r$cells[Atlas == atlas & Display == TRUE, unique(Cell)]
-    lab <- r$counts[Atlas == atlas]
-    lab[, `:=`(priority, Cell %in% selected)]
-    lab <- lab[order(-priority, -Cells), head(.SD, 8)]
-    short <- c(`near-projecting glutamatergic cortical neuron` = "Near-projecting neuron", `intratelencephalic-projecting glutamatergic cortical neuron` = "Intratelencephalic neuron", 
-        `caudal ganglionic eminence derived interneuron` = "CGE interneuron", `medial ganglionic eminence derived interneuron` = "MGE interneuron", 
-        `cerebral cortex neuron` = "Cortical neuron", `oligodendrocyte precursor cell` = "OPC", `capillary endothelial cell` = "Capillary endothelium", 
-        `endothelial cell of artery` = "Arterial endothelium", `hematopoietic precursor cell` = "Hematopoietic precursor", 
-        `CD4-positive alpha-beta T cell` = "CD4 T cell", `CD4-positive, alpha-beta T cell` = "CD4 T cell")
-    lab[, `:=`(name, gsub("_", " ", Cell))]
-    lab[, `:=`(label, fifelse(name %in% names(short), unname(short[name]), name))]
-    lab[, `:=`(label, vapply(label, function(s) paste(strwrap(s, width = 26), collapse = "\n"), ""))]
-    lab[, `:=`(dx = 0, dy = 0)]
-    if (atlas == "Immune") {
-        lab[Cell == "Cycling T&NK", `:=`(dx = 2.4, dy = 1.6)]
-        lab[Cell == "Erythroid", `:=`(dx = -0.7, dy = -1.2)]
-    }
-    enrich_cloud(d, unname(cols[d$Cell]), 0.1) + geom_text_repel(data = lab, aes(x, y, label = label), inherit.aes = FALSE, 
-        size = pt(6), family = font, color = "#222222", seed = 13, box.padding = 0.25, point.padding = 0.06, min.segment.length = 0, 
-        segment.size = 0.1, nudge_x = lab$dx, nudge_y = lab$dy, max.overlaps = Inf, force = 4, force_pull = 0.05, 
-        max.iter = 1e+05, max.time = Inf) + labs(title = atlas) + theme(plot.title = element_text(size = 7, hjust = 0.5, 
-        margin = margin(b = 3)))
-}
-
-enrich_heat <- function(d, group, x, y, h, tile = 0.27, pitch = tile, category = NULL, limits = c(0, 15), colours = enrich_pal) {
-    rows <- d[, .(best = min(p)), by = c(if (!is.null(category)) "Atlas", group)]
-    if (is.null(category)) 
-        rows <- rows[order(best)]
-    else rows <- rows[order(match(Atlas, names(category)), best)]
-    rows[, `:=`(yy, y + (seq_len(.N) - 0.5) * pitch)]
-    text <- function(s, xx, yy, size = 6, just = "left", angle = 0) grid::grid.text(s, unit(xx, "cm"), unit(h - 
-        yy, "cm"), just = just, rot = angle, gp = grid::gpar(fontfamily = font, fontsize = size, col = "#222222"))
-    if (!is.null(category)) {
-        blocks <- rows[, .(top = min(yy) - pitch/2, bottom = max(yy) + pitch/2), by = Atlas]
-        for (i in seq_len(nrow(blocks))) {
-            b <- blocks[i]
-            grid::grid.rect(unit(x - 0.5, "cm"), unit(h - (b$top + b$bottom)/2, "cm"), unit(0.7, "cm"), unit(b$bottom - 
-                b$top, "cm"), gp = grid::gpar(fill = category[b$Atlas], col = "#C8C8C8", lwd = 0.35))
-            text(b$Atlas, x - 0.5, (b$top + b$bottom)/2, 6, "centre", 90)
-        }
-    }
-    for (j in 1:2) text(c("MD", dtdi_lab)[j], x + (j - 0.5) * tile, y - 0.35, 6, "centre", 90)
-    ramp <- colorRampPalette(colours)(256)
-    for (i in seq_len(nrow(rows))) {
-        yy <- rows$yy[i]
-        for (j in 1:2) {
-            take <- d[[group]] == rows[[group]][i] & d$Trait == c("MD", dtdi_lab)[j]
-            if (!is.null(category)) 
-                take <- take & d$Atlas == rows$Atlas[i]
-            a <- d[which(take)]
-            stopifnot(nrow(a) == 1)
-            score <- pmax(limits[1], pmin(a$score, limits[2]))
-            fill <- if (is.finite(score)) 
-                ramp[1 + round((score - limits[1])/diff(limits) * 255)]
-            else "white"
-            grid::grid.rect(unit(x + (j - 0.5) * tile, "cm"), unit(h - yy, "cm"), unit(tile, "cm"), unit(tile, 
-                "cm"), gp = grid::gpar(fill = fill, col = "#C8C8C8", lwd = 0.35))
-            if (a$sig) 
-                text("*", x + (j - 0.5) * tile, yy, 7, "centre")
-        }
-        label <- gsub("_", " ", rows[[group]][i])
-        if (group != "Tissue") 
-            label <- paste(strwrap(label, width = 40), collapse = "\n")
-        text(label, x + 2 * tile + 0.13, yy, 6)
-    }
-    invisible(y + nrow(rows) * pitch)
-}
-
-enrich_bar <- function(x, y, w, cap, h, limits = c(0, cap), colours = enrich_pal, title = expression(paste("-", 
-    log[10], "(", italic(p), ")"))) {
-    colour <- colorRampPalette(colours)(256)
-    grid::grid.rect(unit(x + ((1:256) - 0.5) * w/256, "cm"), unit(h - y, "cm"), width = unit(w/256 * 1.015, "cm"), 
-        height = unit(0.16, "cm"), gp = grid::gpar(fill = colour, col = NA))
-    ticks <- sort(unique(c(limits, pretty(limits, n = 3))))
-    ticks <- ticks[ticks >= limits[1] & ticks <= limits[2]]
-    grid::grid.text(format(ticks, trim = TRUE), unit(x + (ticks - limits[1])/diff(limits) * w, "cm"), unit(h - 
-        y - 0.24, "cm"), gp = grid::gpar(fontfamily = font, fontsize = 6))
-    grid::grid.text(title, unit(x + w/2, "cm"), unit(h - y + 0.25, "cm"), gp = grid::gpar(fontfamily = font, fontsize = 7))
-}
-
-enrich_ppt <- function(file, plots, positions, draw, w, h) {
-    vector <- identical(Sys.getenv("MOVE_VECTOR", "0"), "1")
-    stopifnot(requireNamespace("ragg", quietly = TRUE))
-    if (vector) 
-        stopifnot(requireNamespace("svglite", quietly = TRUE))
-    stage <- tempfile(fileext = ".pptx")
-    svg <- vapply(plots, function(p) tempfile(fileext = ".svg"), "")
-    png <- vapply(plots, function(p) tempfile(fileext = ".png"), "")
-    package <- tempfile()
-    dir.create(package)
-    on.exit({
-        unlink(c(stage, svg, png))
-        unlink(package, recursive = TRUE)
-    }, add = TRUE)
-    draw_ppt(stage, function() draw(FALSE), w * cm, h * cm)
-    deck <- read_pptx(stage)
-    for (i in seq_along(plots)) {
-        plate <- plots[[i]]
-        plate$layers <- plate$layers[1]
-        plate <- plate + theme(plot.title = element_text(color = "transparent"))
-        if (vector) {
-            svglite::svglite(svg[i], width = positions$w[i] * cm, height = positions$h[i] * cm)
-            print(plate)
-            dev.off()
-        }
-        ragg::agg_png(png[i], width = positions$w[i], height = positions$h[i], units = "cm", res = 600)
-        print(plate)
-        dev.off()
-        deck <- ph_with(deck, external_img(png[i], alt = "Enrichment point cloud"), location = ph_location(left = positions$x[i] * 
-            cm, top = positions$y[i] * cm, width = positions$w[i] * cm, height = positions$h[i] * cm))
-    }
-    for (i in seq_along(plots)) {
-        label <- plots[[i]]
-        label$layers <- label$layers[-1L]
-        label <- label + theme(plot.background = element_rect(fill = "transparent", color = NA), panel.background = element_rect(fill = "transparent", 
-            color = NA))
-        deck <- ph_with(deck, rvg::dml(ggobj = label, bg = "transparent"), location = ph_location(left = positions$x[i] * 
-            cm, top = positions$y[i] * cm, width = positions$w[i] * cm, height = positions$h[i] * cm))
-    }
-    print(deck, target = stage)
-    if (vector) {
-        unzip(stage, exdir = package)
-        slide <- file.path(package, "ppt/slides/slide1.xml")
-        relfile <- file.path(package, "ppt/slides/_rels/slide1.xml.rels")
-        doc <- xml2::read_xml(slide)
-        rel <- xml2::read_xml(relfile)
-        ns <- c(p = "http://schemas.openxmlformats.org/presentationml/2006/main", a = "http://schemas.openxmlformats.org/drawingml/2006/main")
-        blips <- xml2::xml_find_all(doc, ".//p:pic/p:blipFill/a:blip", ns)
-        stopifnot(length(blips) == length(svg))
-        for (i in seq_along(svg)) {
-            name <- paste0("enrich", i, ".svg")
-            id <- paste0("rIdVector", i)
-            file.copy(svg[i], file.path(package, "ppt/media", name))
-            xml2::xml_add_child(rel, xml2::read_xml(paste0("<Relationship xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"", 
-                " Id=\"", id, "\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/image\"", 
-                " Target=\"../media/", name, "\"/>")))
-            xml2::xml_add_child(blips[[i]], xml2::read_xml(paste0("<a:extLst xmlns:a=\"", ns["a"], "\"><a:ext uri=\"{96DAC541-7B7A-43D3-8B79-37D633B846F1}\">", 
-                "<asvg:svgBlip xmlns:asvg=\"http://schemas.microsoft.com/office/drawing/2016/SVG/main\"", " xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"", 
-                " r:embed=\"", id, "\"/></a:ext></a:extLst>")))
-        }
-        types <- file.path(package, "[Content_Types].xml")
-        content <- xml2::read_xml(types)
-        if (!length(xml2::xml_find_all(content, ".//*[local-name()='Default'][@Extension='svg']"))) 
-            xml2::xml_add_child(content, xml2::read_xml("<Default xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\" Extension=\"svg\" ContentType=\"image/svg+xml\"/>"))
-        xml2::write_xml(doc, slide)
-        xml2::write_xml(rel, relfile)
-        xml2::write_xml(content, types)
-        zip::zipr(stage, list.files(package, recursive = TRUE, all.files = TRUE, no.. = TRUE), root = package, 
-            mode = "mirror")
-    }
-    if (!file.copy(stage, file, overwrite = TRUE)) 
-        stop("Close the presentation before replacing: ", file)
-    invisible(file)
-}
-
-run_fig6 <- function() {
-    r <- plot_data$result
-    zlim <- range(r$cells[Display == TRUE]$Z, 0, na.rm = TRUE)
-    zlim <- c(floor(zlim[1]), ceiling(zlim[2]))
-    zcol <- c("#F4FAFB", med_flow[["MD"]], med_col[["MD"]])
-    maps <- lapply(c("MD", dtdi_lab), function(k) {
-        d <- r$spatial[Trait == k]
-        col <- colorRampPalette(enrich_pal)(256)[1 + round(pmin(d$score, 15)/15 * 255)]
-        enrich_cloud(d, col) + labs(title = k) + theme(plot.title = element_text(size = 7, hjust = 0.5, margin = margin(b = 3)))
-    })
-    umap <- lapply(r$atlas$Atlas, function(k) enrich_umap(r, k))
-    colours <- setNames(c("#CDE8DF", "#DCD5ED", "#F4E5BA", "#D2E5F1"), r$atlas$Atlas)
-    positions <- list(a = data.table(x = c(3.8, 11.55), y = 0.6, w = 7.4, h = 7.9), b = data.table(x = rep(c(0.35, 
-        6.75), 2), y = rep(c(0.75, 6.5), each = 2), w = 6, h = 5.3))
-    plots <- list(a = maps, b = umap)
-    sizes <- list(a = c(19.5, 9.45), b = c(19.5, 12.1))
-    draws <- lapply(c("a", "b"), function(id) {
-        force(id)
-        h <- sizes[[id]][2]
-        pos <- positions[[id]]
-        function(points = TRUE) {
-            grid::grid.text(id, unit(0.2, "cm"), unit(h - 0.18, "cm"), just = c("left", "top"), gp = grid::gpar(fontfamily = font, 
-                fontsize = 10, fontface = "bold"))
-            if (points) 
-                for (i in seq_along(plots[[id]])) print(plots[[id]][[i]], vp = grid::viewport(x = unit(pos$x[i], 
-                  "cm"), y = unit(h - pos$y[i], "cm"), width = unit(pos$w[i], "cm"), height = unit(pos$h[i], "cm"), 
-                  just = c("left", "top")))
-            if (id == "a") {
-                enrich_heat(r$tissue, "Tissue", 0.5, 0.85, h, tile = 0.28)
-                enrich_bar(6.3, 9, 9, 15, h)
-            }
-            else {
-                bottom <- enrich_heat(r$cells[Display == TRUE], "Cell", 13.85, 1.35, h, tile = 0.34, pitch = 0.46, 
-                  category = colours, limits = zlim, colours = zcol)
-                enrich_bar(13.85, bottom + 0.7, 4.65, max(zlim), h, limits = zlim, colours = zcol, title = "Z score")
-            }
-        }
-    })
-    names(draws) <- names(plots)
-    offset <- c(a = 0, b = sizes$a[2] + 0.3)
-    size <- c(19.5, sum(vapply(sizes, `[`, numeric(1), 2)) + 0.3)
-    draw <- function(points = TRUE) for (id in names(draws)) {
-        grid::pushViewport(grid::viewport(x = unit(0, "cm"), y = unit(size[2] - offset[id], "cm"), width = unit(size[1], 
-            "cm"), height = unit(sizes[[id]][2], "cm"), just = c("left", "top")))
-        draws[[id]](points)
-        grid::upViewport()
-    }
-    pos <- rbindlist(lapply(names(positions), function(id) {
-        d <- copy(positions[[id]])
-        d[, `:=`(y, y + offset[id])]
+med_plot <- function(x, middle) {
+    x <- med_show(x)
+    if (!nrow(x)) 
+        return(ggplot() + annotate("text", 0.5, 0.5, label = "No Bonferroni-significant paths with >5% mediated proportion", 
+            family = font, size = pt(7)) + theme_void())
+    x[, `:=`(mid, fifelse(!is.na(Gene) & nzchar(Gene), Gene, `Display name`))]
+    x[, `:=`(exposure, factor(exposure, levels = med_view))]
+    own <- x[, .(mid = first(mid), value = sum(proportion), share = sum(proportion[exposure == med_view[1]])/sum(proportion), 
+        target = weighted.mean(match(outcome, forest_out), proportion)), by = feature]
+    setorder(own, -share, target, mid)
+    ex <- x[, .(value = sum(proportion)), by = exposure][order(exposure)]
+    od <- x[, .(value = sum(proportion)), by = outcome][order(match(outcome, forest_out))]
+    od[, `:=`(label, unname(int_lab[outcome]))]
+    gap <- 0.006
+    minnode <- 0.015
+    scale <- uniroot(function(k) sum(pmax(k * own$value, minnode)) + gap * (nrow(own) - 1) - 0.95, c(0, 1))$root
+    place <- function(d, minimum = minnode) {
+        d[, `:=`(height, pmax(value * scale, minimum))]
+        space <- if (nrow(d) > 1) 
+            (0.95 - sum(d$height))/(nrow(d) - 1)
+        else 0
+        d[, `:=`(y, 0.985 - cumsum(height) + height/2 - (seq_len(.N) - 1) * space)]
         d
+    }
+    own <- place(own)
+    ex <- place(ex)
+    space <- (0.95 - sum(ex$height))/(nrow(ex) + 1)
+    ex[, `:=`(y, 0.985 - space - cumsum(height) + height/2 - (seq_len(.N) - 1) * space)]
+    od <- place(od, 0.016 * lengths(strsplit(od$label, "\n", fixed = TRUE)))
+    x[, `:=`(ei = match(exposure, ex$exposure), mi = match(feature, own$feature), oi = match(outcome, od$outcome), 
+        color = unname(med_flow[as.character(exposure)]))]
+    left <- x[, .(value = sum(proportion), color = first(color)), by = .(ei, mi)]
+    port <- function(d, by, node, column) {
+        d[, `:=`(c(column), node$y[.BY[[1]]] + value * scale/2 - cumsum(value) * scale + sum(value) * scale/2), 
+            by = by]
+        d
+    }
+    setorder(left, ei, mi)
+    left <- port(left, "ei", ex, "from")
+    setorder(left, mi, ei)
+    left <- port(left, "mi", own, "to")
+    x[, `:=`(value, proportion)]
+    setorder(x, mi, ei, oi)
+    x <- port(x, "mi", own, "from")
+    setorder(x, oi, ei, mi)
+    x <- port(x, "oi", od, "to")
+    ribbon <- function(d, xx, prefix) rbindlist(lapply(seq_len(nrow(d)), function(i) {
+        half <- d$value[i] * scale/2
+        data.table(id = paste0(prefix, i), x = rep(xx, each = 2), y = c(d$from[i] - half, d$from[i] + half, d$to[i] - 
+            half, d$to[i] + half), value = d$value[i], color = d$color[i], part = prefix, ei = d$ei[i], mi = d$mi[i])
     }))
-    enrich_ppt(file.path(out, "Fig6.pptx"), c(maps, umap), pos, draw, size[1], size[2])
-    invisible(NULL)
-    unlink(file.path(out, paste0("Fig6", c("a", "b"), ".pptx")))
-    invisible(list(data = r, draw = draw, size = size))
+    edge <- rbind(ribbon(left, c(0.07, 0.4675), "a"), ribbon(x, c(0.5025, 0.9), "b"))
+    edge[, `:=`(id, factor(id, levels = unique(id[order(-value)])))]
+    edge[, `:=`(opacity, unname(med_alpha[as.character(ex$exposure[ei])]))]
+    key <- data.table(value = c(0.1, 0.2, 0.4), xx = c(0.55, 0.71, 0.87))
+    node <- rbindlist(list(ex[, .(xmin = 0.035, xmax = 0.07, y, height, label = as.character(exposure), side = "left", 
+        fill = unname(med_node[as.character(exposure)]))], own[, .(xmin = 0.4675, xmax = 0.5025, y, height, label = mid, 
+        side = "middle", fill = "#B5B5B5")], od[, .(xmin = 0.9, xmax = 0.935, y, height, label, side = "right", 
+        fill = unname(med_out[outcome]))]))
+    node[, `:=`(border, grDevices::rgb(t(grDevices::col2rgb(fill)) * 0.49, maxColorValue = 255))]
+    ggplot() + ggforce::geom_diagonal_wide(data = edge, aes(x, y, group = id, fill = color, alpha = opacity), n = 80, 
+        strength = 0.5, colour = NA, show.legend = FALSE) + geom_rect(data = node, aes(xmin = xmin, xmax = xmax, 
+        ymin = y - height/2, ymax = y + height/2, fill = fill, colour = border), alpha = 0.9, linewidth = 0.05, 
+        show.legend = FALSE) + geom_text(data = node[side == "middle"], aes(x = xmax + 0.007, y = y, label = label), 
+        hjust = 0, family = font, size = pt(6), lineheight = 1) + geom_text(data = node[side == "left"], aes(x = xmin - 
+        0.007, y = y, label = label), hjust = 1, family = font, size = pt(6)) + geom_text(data = node[side == "right"], 
+        aes(x = xmax + 0.007, y = y, label = label), hjust = 0, family = font, size = pt(6), lineheight = 1) + 
+        annotate("text", x = 0.71, y = -0.024, label = "Mediation proportion", family = font, size = pt(6)) + geom_rect(data = key, 
+        aes(xmin = xx - 0.035, xmax = xx + 0.035, ymin = -0.043 - value * scale/2, ymax = -0.043 + value * scale/2), 
+        fill = "#B5B5B5", colour = NA) + geom_text(data = key, aes(x = xx, y = -0.065, label = scales::percent(value, 
+        accuracy = 1)), family = font, size = pt(6)) + scale_fill_identity() + scale_alpha_identity() + scale_colour_identity() + 
+        coord_cartesian(xlim = c(-0.04, 1.1), ylim = c(-0.088, 1.01), expand = FALSE, clip = "off") + theme_void(base_family = font) + 
+        theme(plot.margin = margin(2, 3, 2, 3))
 }
 
-run_fig6()
+med_figure <- function(r) {
+    device <- cowplot::set_null_device("agg")
+    on.exit(cowplot::set_null_device(device), add = TRUE)
+    a <- med_protein_plot(r$Protein$association)
+    b <- med_mri_plot(r$MRI$association)
+    c <- med_plot(r$Protein$mediation, "Protein")
+    width <- height <- 20.3
+    pad <- c(x = 0.33, y = 0.24)
+    gap <- 0.3
+    inner <- width - 0.6
+    top <- 4
+    bottom <- height - 0.6 - top - gap
+    split <- 6.3
+    y <- (pad[["y"]] + bottom + gap)/height
+    p <- cowplot::ggdraw() + cowplot::draw_plot(a[[1]], x = pad[["x"]]/width, y = y, width = (inner - gap)/2/width, 
+        height = top/height) + cowplot::draw_plot(a[[2]], x = (pad[["x"]] + (inner + gap)/2)/width, y = y, width = (inner - 
+        gap)/2/width, height = top/height) + cowplot::draw_plot(b, x = pad[["x"]]/width, y = pad[["y"]]/height, 
+        width = split/width, height = bottom/height) + cowplot::draw_plot(c, x = (pad[["x"]] + split + 0.15)/width, 
+        y = pad[["y"]]/height, width = (inner - split - 0.15)/width, height = bottom/height) + cowplot::draw_text(c("a", 
+        "b", "c"), x = (pad[["x"]] + c(0, 0, split + 0.15))/width, y = (pad[["y"]] + bottom + 0.08 + c(gap + top, 
+        0, 0))/height, hjust = 0, vjust = 1, family = font, fontface = "bold", size = 10) + theme(plot.background = element_rect(fill = "white", 
+        colour = NA))
+    list(plot = p, width = width, height = height)
+}
+
+r <- med_figure(plot_data$result)
+
+write_ppt(file.path(out, "Fig6.pptx"), list(r$plot), r$width * cm, r$height * cm)
+
+ragg::agg_png(file.path(out, "Fig6.png"), width = r$width, height = r$height, units = "cm", res = 600)
+
+print(r$plot)
+
+dev.off()
 
 finish("Fig6")
 

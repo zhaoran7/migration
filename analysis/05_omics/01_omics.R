@@ -339,8 +339,8 @@ med_show <- function(x, max_nodes = 40L) {
 
 
 # 7. Save the primary results
-run_fig5_fit <- function(fresh = FALSE, layers = c("Protein", "MRI")) {
-    file <- file.path(out, "Fig5.rds")
+run_fig6_fit <- function(fresh = FALSE, layers = c("Protein", "MRI")) {
+    file <- file.path(out, "Fig6.rds")
     r <- if (!fresh && file.exists(file)) 
         readRDS(file)
     else list()
@@ -456,7 +456,7 @@ supp_pattern <- function(r) {
 
 if (sys.nframe() == 0L) {
     a <- commandArgs(TRUE)
-    run_fig5_fit(fresh = TRUE, layers = if (length(a)) 
+    run_fig6_fit(fresh = TRUE, layers = if (length(a)) 
         a
     else c("Protein", "MRI"))
 }

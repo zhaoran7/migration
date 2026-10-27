@@ -1,4 +1,4 @@
-# 1. Supplementary Figure 3
+# 1. Supplementary Figure 03
 source(file.path(dirname(dirname(normalizePath(sub("^--file=", "",
   grep("^--file=", commandArgs(), value=TRUE)[1])))), "style.R"))
 

@@ -120,7 +120,7 @@ ed7_fit <- function(outcomes = forest_out) {
 
 
 # 3. Extend strata and interaction results
-ed9_fit <- function() {
+ed8_fit <- function() {
     r <- readRDS(file.path(out, "Fig2.rds"))
     x <- fig2_data()
     od <- defs(make_icd(x$eid))
@@ -130,7 +130,7 @@ ed9_fit <- function() {
     bounds <- rbindlist(lapply(c("md_z", "dtdi_z"), function(v) data.table(exposure = v, lower = quantile(x[[v]], 
         0.01, na.rm = TRUE), upper = quantile(x[[v]], 0.99, na.rm = TRUE))))
     fit <- function(o) {
-        message("ED9 strata: ", o)
+        message("ED8 strata: ", o)
         d <- ukb_surv(x, od, o)
         rbindlist(lapply(c("sex", "age"), function(id) {
             levels <- if (id == "sex") 
@@ -196,10 +196,10 @@ ed9_fit <- function() {
 
 
 # 4. Prepare external sensitivity samples
-ed10_base <- function() {
+ed9_base <- function() {
     effects <- weights <- list()
     for (cohort in c("UKHLS", "HRS")) {
-        message("ED10: ", cohort)
+        message("ED9: ", cohort)
         raw <- readRDS(file.path(phe, paste0(tolower(cohort), ".rds")))
         pan <- ext_panel(cohort, raw)
         if (cohort == "UKHLS") 
@@ -227,7 +227,7 @@ ed10_base <- function() {
             else mort)
             if (e == "MD") 
                 d <- d[mover == 1 & distance > 0]
-            cv <- fig4_cov(cohort, o, e)
+            cv <- fig5_cov(cohort, o, e)
             f <- as.formula(paste("~ distance + count + mover +", cv))
             v <- unique(c(all.vars(f), if (o == "SES") "final_ses" else c("tstart", "tstop", "event")))
             d <- d[complete.cases(d[, ..v])]
@@ -284,20 +284,20 @@ ed10_base <- function() {
     }
     a <- rbindlist(effects)
     a[, `:=`(q, p.adjust(ifelse(status == "OK", p, NA_real_), "BH")), by = .(cohort, group)]
-    ref <- readRDS(file.path(out, "Fig4.rds"))$Main
+    ref <- readRDS(file.path(out, "Fig5.rds"))$Main
     check <- merge(a[group == "Core"], ref, by = c("cohort", "outcome", "exposure"), suffixes = c("", "_main"))
     check[, `:=`(n_difference = n - n_main, beta_difference = estimate - estimate_main)]
     if (any(check$n_difference != 0) || any(abs(check$beta_difference) > 1e-06)) 
-        stop("ED10 core estimates do not reproduce Fig4.")
+        stop("ED9 core estimates do not reproduce Fig5.")
     list(Effects = a, Weights = rbindlist(weights), Check = check, Methods = data.table(item = c("Core", "Matched", 
-        "Adjusted", "Scaling", "Intervals", "Correction"), definition = c("Exact Fig4 core models; HRS race, not Hispanic origin.", 
+        "Adjusted", "Scaling", "Intervals", "Correction"), definition = c("Exact Fig5 core models; HRS race, not Hispanic origin.", 
         "Core model restricted to BMI and smoking complete cases; BMI 10-80 kg/m2. UKHLS uses latest available prior values because BMI is only observed at wave 1 and smoking begins at wave 6; HRS uses current wave values.", 
         "Same matched observations as Matched; add BMI and categorical smoking, not alcohol.", "Freeze full core-sample means and SDs before restricting observations.", 
         "SES HC3 standard errors; time-updated Cox with participant-cluster robust standard errors.", "BH across six exposure-outcome tests within each cohort/model; models with convergence warnings excluded from significance classification.")))
 }
 
-ed10_curve <- function(d, cohort, outcome, exposure) {
-    cv <- fig4_cov(cohort, outcome, exposure)
+ed9_curve <- function(d, cohort, outcome, exposure) {
+    cv <- fig5_cov(cohort, outcome, exposure)
     v <- unique(c(all.vars(as.formula(paste("~ distance + count + mover +", cv))), if (outcome == "SES") "final_ses" else c("tstart", 
         "tstop", "event")))
     d <- copy(d[complete.cases(d[, ..v])])
@@ -306,7 +306,7 @@ ed10_curve <- function(d, cohort, outcome, exposure) {
     d[, `:=`(xx, if (exposure == "MD") 
         log1p(distance)
     else count)]
-    B <- fig4_basis(d$xx, exposure)
+    B <- fig5_basis(d$xx, exposure)
     nm <- paste0("s", 1:3)
     d[, `:=`((nm), as.data.table(B))]
     ref <- if (exposure == "MD") 
@@ -317,15 +317,15 @@ ed10_curve <- function(d, cohort, outcome, exposure) {
     grid <- if (exposure == "MD") 
         seq(lim[1], lim[2], length.out = 160)
     else 0:floor(lim[2])
-    m <- fig4_model(d, cohort, outcome, paste(c(nm, "bmi", "factor(smoke)"), collapse = " + "), exposure)
+    m <- fig5_model(d, cohort, outcome, paste(c(nm, "bmi", "factor(smoke)"), collapse = " + "), exposure)
     stopifnot(all(is.finite(m$b[nm])), all(is.finite(m$V[nm, nm])))
     L <- predict(B, grid) - matrix(predict(B, ref), length(grid), 3, byrow = TRUE)
-    test <- fig4_test(as.matrix(d[, ..nm]), d$xx, m$b[nm], m$V[nm, nm])
+    test <- fig5_test(as.matrix(d[, ..nm]), d$xx, m$b[nm], m$V[nm, nm])
     a <- cbind(data.table(cohort, outcome, exposure, group = "Adjusted", x = if (exposure == "MD") 
         expm1(grid)
     else grid, reference = if (exposure == "MD") 
         expm1(ref)
-    else ref), fig4_predict(m$b[nm], m$V[nm, nm], L, outcome))
+    else ref), fig5_predict(m$b[nm], m$V[nm, nm], L, outcome))
     a[, `:=`(n = m$n, observations = m$observations, events = m$events, p_overall = test$p_overall, p_nonlinear = test$p_nonlinear, 
         status = m$status, formula = m$formula)]
     a
@@ -333,14 +333,14 @@ ed10_curve <- function(d, cohort, outcome, exposure) {
 
 
 # 5. Fit external sensitivity models
-ed10_fit <- function() {
-    file <- file.path(out, "ED10.rds")
+ed9_fit <- function() {
+    file <- file.path(out, "ED9.rds")
     r <- if (file.exists(file) && !stale(file, file.path(phe, c("ukhls.rds", "hrs.rds")))) 
         readRDS(file)
-    else ed10_base()
+    else ed9_base()
     curves <- within <- list()
     for (cohort in c("UKHLS", "HRS")) {
-        message("ED10 curves: ", cohort)
+        message("ED9 curves: ", cohort)
         raw <- readRDS(file.path(phe, paste0(tolower(cohort), ".rds")))
         pan <- ext_panel(cohort, raw)
         if (cohort == "UKHLS") 
@@ -358,13 +358,13 @@ ed10_fit <- function() {
         mort[, `:=`(distance = cumulative, mover = ever)]
         for (o in c("SES", "Mortality")) for (e in c("MD", "MT")) {
             message(cohort, " ", o, " ", e)
-            curves[[paste(cohort, o, e)]] <- ed10_curve(if (o == "SES") 
+            curves[[paste(cohort, o, e)]] <- ed9_curve(if (o == "SES") 
                 ses
             else mort, cohort, o, e)
         }
         for (e in c("MD", "MT")) {
             message(cohort, " individual SES ", e)
-            within[[paste(cohort, e)]] <- fig4_within(pan, cohort, e, adjusted = TRUE)
+            within[[paste(cohort, e)]] <- fig5_within(pan, cohort, e, adjusted = TRUE)
         }
         rm(raw, pan, ses, mort, hist)
         invisible(gc())
@@ -378,8 +378,8 @@ ed10_fit <- function() {
     r$CurveCheck <- c0
     r$Methods <- rbind(r$Methods, data.table(item = c("Displayed models", "Curve adjustment", "Within-person sensitivity", 
         "Point markers"), definition = c("Panels b-e show the BMI/smoking-adjusted model. Core and Matched effect estimates remain in source data; panel a compares Core versus Adjusted sample sizes.", 
-        "Same Fig4 spline specification, pointwise intervals, core-sample knots and reference; fitted on BMI/smoking-complete observations with BMI and smoking added. No alcohol or Hispanic-origin adjustment.", 
-        "Same Fig4 person-centred spline mixed model with BMI and categorical smoking added; require at least two complete visits and changing exposure. Within-person bases/reference are computed in this eligible sample; SES scaling stays frozen from the full wave data.", 
+        "Same Fig5 spline specification, pointwise intervals, core-sample knots and reference; fitted on BMI/smoking-complete observations with BMI and smoking added. No alcohol or Hispanic-origin adjustment.", 
+        "Same Fig5 person-centred spline mixed model with BMI and categorical smoking added; require at least two complete visits and changing exposure. Within-person bases/reference are computed in this eligible sample; SES scaling stays frozen from the full wave data.", 
         "Filled forest circles use nominal p<0.05, open otherwise. BH q values are retained in source data and are not the point-shape criterion.")))
     r
 }
@@ -505,9 +505,9 @@ if (sys.nframe() == 0L) {
     a <- commandArgs(TRUE)
     ids <- if (length(a)) 
         a
-    else c("ED7", "ED9", "ED10", "birth", "matching")
-    for (id in intersect(ids, c("ED7", "ED9", "ED10"))) {
-        x <- switch(id, ED7 = ed7_fit(), ED9 = ed9_fit(), ED10 = ed10_fit())
+    else c("ED7", "ED8", "ED9", "birth", "matching")
+    for (id in intersect(ids, c("ED7", "ED8", "ED9"))) {
+        x <- switch(id, ED7 = ed7_fit(), ED8 = ed8_fit(), ED9 = ed9_fit())
         x$model <- fig2_model
         saveRDS(x, file.path(out, paste0(id, ".rds")))
     }

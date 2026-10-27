@@ -28,6 +28,8 @@ out <- if (length(args) > 1) args[2] else file.path(getwd(), "output")
 
 dir.create(out, recursive = TRUE, showWarnings = FALSE)
 
+out <- normalizePath(out, mustWork = TRUE)
+
 cowplot::set_null_device("agg")
 
 proj <- file.path(dirname(dirname(R.home())),'share/proj')

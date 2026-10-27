@@ -2811,9 +2811,9 @@ prot.rds	TLR3	numeric	""	Baseline	0	TLR3	Olink NPX	Match the assay identifier in
 prot.rds	TLR4	numeric	""	Baseline	0	TLR4	Olink NPX	Match the assay identifier in reference/protein.tsv; numeric Showcase field ID is not present in the current assay metadata
 prot.rds	TMCO5A	numeric	""	Baseline	0	TMCO5A	Olink NPX	Match the assay identifier in reference/protein.tsv; numeric Showcase field ID is not present in the current assay metadata
 prot.rds	TMED1	numeric	""	Baseline	0	TMED1	Olink NPX	Match the assay identifier in reference/protein.tsv; numeric Showcase field ID is not present in the current assay metadata
-prot.rds	TMED10	numeric	""	Baseline	0	TMED10	Olink NPX	Match the assay identifier in reference/protein.tsv; numeric Showcase field ID is not present in the current assay metadata
+prot.rds	TMED9	numeric	""	Baseline	0	TMED9	Olink NPX	Match the assay identifier in reference/protein.tsv; numeric Showcase field ID is not present in the current assay metadata
 prot.rds	TMED4	numeric	""	Baseline	0	TMED4	Olink NPX	Match the assay identifier in reference/protein.tsv; numeric Showcase field ID is not present in the current assay metadata
-prot.rds	TMED8	numeric	""	Baseline	0	TMED8	Olink NPX	Match the assay identifier in reference/protein.tsv; numeric Showcase field ID is not present in the current assay metadata
+prot.rds	TMFig3	numeric	""	Baseline	0	TMFig3	Olink NPX	Match the assay identifier in reference/protein.tsv; numeric Showcase field ID is not present in the current assay metadata
 prot.rds	TMEM106A	numeric	""	Baseline	0	TMEM106A	Olink NPX	Match the assay identifier in reference/protein.tsv; numeric Showcase field ID is not present in the current assay metadata
 prot.rds	TMEM132A	numeric	""	Baseline	0	TMEM132A	Olink NPX	Match the assay identifier in reference/protein.tsv; numeric Showcase field ID is not present in the current assay metadata
 prot.rds	TMEM25	numeric	""	Baseline	0	TMEM25	Olink NPX	Match the assay identifier in reference/protein.tsv; numeric Showcase field ID is not present in the current assay metadata

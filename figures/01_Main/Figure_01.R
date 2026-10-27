@@ -1,4 +1,4 @@
-# 1. Figure 1
+# 1. Figure 01
 source(file.path(dirname(dirname(normalizePath(sub("^--file=", "",
   grep("^--file=", commandArgs(), value=TRUE)[1])))), "style.R"))
 
@@ -24,7 +24,7 @@ fig1_map_size <- function() {
 fig1_map_plot <- function(r = fig1_map_data()) {
     stopifnot(is.list(r), is.list(r$plotting))
     x <- r$plotting
-    map_pal <- list(bg_low = "#2166AC", bg_mid = "#F7F7F7", bg_high = "#B2182B", in_col = "#2AA99A", out_col = "#C18543")
+    map_pal <- list(bg_low = "#2166AC", bg_mid = "#A7ACB2", bg_high = "#B2182B", in_col = "#2AA99A", out_col = "#C18543")
     fs <- 6/ggplot2::.pt
     fs_title <- 7/ggplot2::.pt
     poly <- x$poly
@@ -100,11 +100,15 @@ fig1_map_plot <- function(r = fig1_map_data()) {
         label = scales::comma(flow$N), hjust = 0, color = "#333333", size = fs) + annotate("text", x = leg_x + 
         26000, y = 790000, label = "Total flow", hjust = 0.5, color = "#333333", size = fs_title) + geom_point(data = pts, 
         aes(x, y, size = pt), color = "#666666", alpha = 1) + annotate("text", x = leg_x + 62500, y = pts$y, label = scales::comma(pts$N), 
-        hjust = 0, color = "#333333", size = fs) + annotate("text", x = leg_x + 25500, y = 585000, label = "TDI", 
+        hjust = 0, color = "#333333", size = fs) + annotate("text", x = leg_x + 25500, y = 585000, label = "Recruitment\nTDI", 
         hjust = 0.5, color = "#333333", size = fs_title) + geom_rect(data = tbar, aes(xmin = xmin, xmax = xmax, 
         ymin = ymin, ymax = ymax, fill = v), color = NA) + annotate("text", x = leg_x + 39000, y = c(410000, 480000, 
         550000), label = c("-5", "0", "5"), hjust = 0, color = "#333333", size = fs) + scale_fill_gradient2(low = map_pal$bg_low, 
-        mid = map_pal$bg_mid, high = map_pal$bg_high, midpoint = 0, limits = c(-5, 5), oob = scales::squish, na.value = "#F2F2F2") + 
+        mid = map_pal$bg_mid, high = map_pal$bg_high, midpoint = 0, limits = c(-5, 5), oob = scales::squish, na.value = "#C0C5CB") +
+        annotate('rect', xmin=leg_x+20000, xmax=leg_x+31000, ymin=346000, ymax=364000,
+                 fill='#C0C5CB', colour=NA, alpha=.58)+
+        annotate('text', x=leg_x+39000, y=355000, label='No estimate',
+                 hjust=0,colour='#333333',size=fs)+
         scale_color_identity() + scale_size_identity() + scale_linewidth_identity() + scale_alpha_identity() + 
         coord_fixed(xlim = c(-45000, 715000), ylim = c(15000, 1215000), expand = FALSE, clip = "off") + guides(fill = "none", 
         color = "none", size = "none", linewidth = "none", alpha = "none") + theme_void(base_size = 6) + theme(plot.margin = margin(0, 
