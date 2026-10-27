@@ -65,8 +65,8 @@
     "transform": "<p:grpSpPr>\n  <a:xfrm>\n    <a:off x=\"-18994\" y=\"-13927\"/>\n    <a:ext cx=\"8280000\" cy=\"8352000\"/>\n    <a:chOff x=\"0\" y=\"0\"/>\n    <a:chExt cx=\"8280000\" cy=\"8352000\"/>\n  </a:xfrm>\n</p:grpSpPr>"
   },
   "Fig3": {
-    "width": 12250800.0,
-    "height": 10080000,
+    "width": 12610800,
+    "height": 10440000,
     "transform": {}
   },
   "ED8": {

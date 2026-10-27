@@ -305,6 +305,10 @@ mismatch_draw <- function(cache) {
   r <- cache
   H <- 28.0
   grid::grid.newpage()
+  grid::pushViewport(grid::viewport(x=grid::unit(.5,'cm'),y=grid::unit(.5,'cm'),
+    width=grid::unit(34.03,'cm'),height=grid::unit(28,'cm'),
+    just=c('left','bottom'),clip='off'))
+  on.exit(grid::popViewport())
   original <- profile_draw
   colours <- c('Higher SES / lower risk'='#39A6B1',
                'Higher SES / higher risk'='#D45C69',
@@ -413,9 +417,9 @@ mismatch_draw <- function(cache) {
 }
 
 r <- plot_data$result
-draw_ppt(file.path(out,'Fig3.pptx'),function()mismatch_draw(r),34.03*cm,28.0*cm)
-ragg::agg_png(file.path(out,'Fig3.png'),width=34.03,height=28.0,units='cm',res=600)
+draw_ppt(file.path(out,'Fig3.pptx'),function()mismatch_draw(r),35.03*cm,29.0*cm)
+ragg::agg_png(file.path(out,'Fig3.png'),width=35.03,height=29.0,units='cm',res=600)
 mismatch_draw(r);dev.off()
-grDevices::cairo_pdf(file.path(out,'Fig3.pdf'),width=34.03*cm,height=28.0*cm,family=font)
+grDevices::cairo_pdf(file.path(out,'Fig3.pdf'),width=35.03*cm,height=29.0*cm,family=font)
 mismatch_draw(r);dev.off()
 finish('Fig3')
