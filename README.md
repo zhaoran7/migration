@@ -1,6 +1,6 @@
 # MOVE
 
-Code for *Selective migration and destination context reveal distinct socioeconomic and biological health gradients*.
+Code for *Selective migration and destination context reveal distinct socioeconomic and health gradients*.
 
 ## Structure
 
