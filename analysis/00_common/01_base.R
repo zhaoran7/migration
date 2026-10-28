@@ -17,7 +17,7 @@ if (!exists('.move_ready', inherits=FALSE)) {
     Sys.setenv(PROJ_DATA=proj,PROJ_LIB=proj)
   modules <- fread(file.path(code,'modules.tsv'))
   source(file.path(code,'00_common/02_definitions.R'))
-  source(file.path(code,'00_common/03_source.R'))
+  source(file.path(code,'00_common/03_plotting.R'))
   .loaded <- character()
   use <- function(names) for(n in names) if(!n%in%.loaded) {
     .loaded <<- c(.loaded,n)
@@ -183,52 +183,3 @@ save_xlsx <- function(x, file) {
         stop("Close the workbook before replacing: ", file)
     invisible(file)
 }
-
-source_data <- function(figure, panels) {
-    labels <- c(cohort = "Cohort", outcome = "Outcome", exposure = "Exposure", term = "Term", model = "Model", 
-        type = "Model", group = "Group", level = "Level", strat = "Stratum", n = "N", N = "N", event = "Events", 
-        events = "Events", estimate = "Estimate", fit = "Estimate", beta = "Beta", se = "SE", HR = "HR", 
-        ratio = "RHR", lo = "95% CI lower", hi = "95% CI upper", lower = "95% CI lower", upper = "95% CI upper", 
-        p = "p", q = "q", FDR = "q (BH)", p_current = "p current", p_reference = "p reference", p_overall = "p overall", 
-        p_nonlinear = "p non-linear", p_interaction = "p interaction", interaction_FDR = "q interaction", 
-        interaction = "Interaction", df = "Degrees of freedom", x = "X", y = "Y", wave = "Wave", count = "MT", 
-        mover = "Migrant", md = "MD (km)", val = "Correlation", half = "Correlation type", h2 = "SNP heritability", 
-        h2_se = "SE", context = "Location", code = "Area code", area = "Area", MHR = "MHR", conditional_lower = "95% conditional CI lower", 
-        conditional_upper = "95% conditional CI upper", p_approx = "p approximate", q_approx = "q approximate", 
-        panel_q = "q regional variance")
-    format_table <- function(d) {
-        d <- copy(as.data.table(d))
-        drop <- intersect(names(d), c("eid", "IID", "FID", "pid", "pidp", "HHIDPN"))
-        if (length(drop)) 
-            stop("Source data must not contain participant identifiers: ", paste(drop, collapse = ", "))
-        for (v in names(d)) {
-            if (is.factor(d[[v]])) 
-                set(d, j = v, value = as.character(d[[v]]))
-            if (is.list(d[[v]])) 
-                stop("Nested source column: ", v)
-        }
-        old <- names(d)
-        new <- unname(labels[old])
-        new[is.na(new)] <- tools::toTitleCase(gsub("_", " ", old[is.na(new)]))
-        i <- grepl("^[pq]($|_)", old)
-        new[i] <- paste0(substr(old[i], 1, 1), substring(new[i], 2))
-        setnames(d, make.unique(new, sep = " "))
-        for (v in names(d)) if (is.character(d[[v]])) 
-            d[get(v) == "Per SD PRS", `:=`((v), "Per SD PGS")]
-        if ("Outcome" %in% names(d)) 
-            d[Outcome == "CAD/MI", `:=`(Outcome, "CAD")]
-        d
-    }
-    tables <- lapply(panels, function(x) {
-        if (is.data.frame(x)) 
-            return(format_table(x))
-        rbindlist(lapply(names(x), function(nm) {
-            d <- format_table(x[[nm]])
-            d[, `:=`(Analysis, nm)]
-            setcolorder(d, c("Analysis", setdiff(names(d), "Analysis")))
-            d
-        }), fill = TRUE)
-    })
-    save_xlsx(tables, file.path(out, paste0(figure, "_source_data.xlsx")))
-}
-

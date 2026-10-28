@@ -22,7 +22,7 @@ id <- sub("^Supplementary_Figure_", "S", id)
 id <- sub("^Figure_", "Fig", id)
 id <- sub("^([A-Za-z]+)0+([1-9][0-9]*)$", "\\1\\2", id)
 
-input <- if (length(args)) args[1] else file.path(folder, "source", paste0(id, "_source_data.xlsx"))
+input <- if (length(args)) args[1] else file.path(folder, "plotting_data", paste0(id, "_plotting_data.xlsx"))
 
 out <- if (length(args) > 1) args[2] else file.path(getwd(), "output")
 
@@ -77,7 +77,7 @@ int_lab <- setNames(c("All-cause\nmortality", "CVD\nmortality", "CAD", "Stroke",
 ed_col <- c(MD = "#39A6B1", setNames("#D45C69", dtdi_lab), `Migration cross TTWA` = "#8F65B7", UKHLS = "#39A6B1", 
     HRS = "#D45C69")
 
-source_read <- function(file) {
+plotting_read <- function(file) {
     idx <- data.table::as.data.table(openxlsx::read.xlsx(file, "Contents", check.names = FALSE))
     read <- function(id) {
         a <- idx[ID == id]
@@ -376,7 +376,7 @@ supp_save <- function(id, plots, width, height, folder = out) {
     invisible(NULL)
 }
 
-plot_data <- source_read(input)
+plot_data <- plotting_read(input)
 
 finish <- function(id) {
     file <- file.path(out, paste0(id, ".pptx"))

@@ -1,5 +1,5 @@
-# 1. Numerical source-data format
-source_write <- function(x, file) {
+# 1. Plotting-data format
+plotting_write <- function(x, file) {
   dir.create(dirname(file), recursive=TRUE, showWarnings=FALSE)
   wb <- openxlsx::createWorkbook()
   openxlsx::addWorksheet(wb, 'Contents')
@@ -10,7 +10,7 @@ source_write <- function(x, file) {
     item <- list(ID=id, Parent=parent, Name=name, Kind='', Sheet='', Class='', Metadata='')
     index[[id]] <<- item
     if (is.function(x) || is.environment(x) || inherits(x,c('lm','coxph','coxme','merMod','ggplot','grob')))
-      stop('Only numerical source data may be exported: ', name)
+      stop('Only plotting data may be exported: ', name)
     item$Class <- paste(setdiff(class(x),'data.table'),collapse='|')
     if (is.null(x)) item$Kind <- 'null'
     else if (inherits(x,'sf')) {
@@ -55,7 +55,7 @@ source_write <- function(x, file) {
       item$Kind <- 'list'
       item$Metadata <- json(list(names=names(x)))
       for(i in seq_along(x))add(x[[i]],id,if(is.null(names(x)))as.character(i) else names(x)[i])
-    } else stop('Unsupported source-data type: ',name)
+    } else stop('Unsupported plotting-data type: ',name)
     index[[id]] <<- item
     invisible(id)
   }
@@ -82,7 +82,7 @@ source_write <- function(x, file) {
   invisible(file)
 }
 
-source_read <- function(file) {
+plotting_read <- function(file) {
   idx <- data.table::as.data.table(openxlsx::read.xlsx(file,'Contents',check.names=FALSE))
   read <- function(id) {
     a <- idx[ID==id]

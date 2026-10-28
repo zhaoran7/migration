@@ -35,7 +35,7 @@ export MOVE_CODE="$PWD/analysis"
 bash analysis/run.sh -h
 ```
 
-Defaults: inputs in `$MOVE_ROOT/data/phe` and `data/ukb`, results in `results/`, source workbooks in `source/`. Override with `MOVE_PHE`, `MOVE_UKB`, `MOVE_RESULTS` or `MOVE_SOURCE`.
+Defaults: inputs in `$MOVE_ROOT/data/phe` and `data/ukb`, results in `results/`. Override with `MOVE_PHE`, `MOVE_UKB` or `MOVE_RESULTS`.
 
 Examples, once the required inputs are ready:
 
@@ -43,14 +43,14 @@ Examples, once the required inputs are ready:
 bash analysis/rap/run.sh assoc       # UKB associations
 bash analysis/run.sh external       # UKHLS/HRS associations
 bash analysis/run.sh tables         # Supplementary Tables
-bash analysis/run.sh export Fig2    # Figure source data
+bash analysis/run.sh export Fig2    # Plotting data and submission source data
 ```
 
 Run each stage after its inputs are complete. RAP/HPC launchers contain the required tool and input settings. Do not run jobs that write the same result file simultaneously.
 
 ## Figures
 
-Each figure script reads its matching `source/` workbook and assets, without participant data or analysis scripts. Use Arial for matching fonts.
+Each figure script reads its matching `plotting_data/` workbook and assets, without participant data or analysis scripts. Use Arial for matching fonts.
 
 ```bash
 Rscript figures/01_Main/Figure_02.R
@@ -61,10 +61,12 @@ Rscript figures/03_Supplementary/Supplementary_Figure_08.R
 Outputs go to `output/`. Optional arguments specify another workbook and output folder:
 
 ```bash
-Rscript figures/01_Main/Figure_02.R /path/to/source.xlsx /path/to/output
+Rscript figures/01_Main/Figure_02.R /path/to/Fig2_plotting_data.xlsx /path/to/output
 ```
 
 Keep assets beside the workbooks. Fig1a is editable artwork. ED2 point maps use approved raster layers, with precise coordinates retained in RAP.
+
+`plotting_data` preserves the inputs needed by the figure scripts. Submission `source_data` contains readable result tables, one workbook per figure and one sheet per panel. Flowcharts and conceptual drawings have no source workbook. `analysis/run.sh export` writes both types, with submission tables in `$MOVE_ROOT/source_data/`; set `MOVE_PLOTTING` or `MOVE_SOURCE` to change their output locations.
 
 Code is released under the MIT License. Third-party data retain their original licences.
 

@@ -1,6 +1,6 @@
 {
 "type": "FeatureCollection",
-"name": "ED2_source_data_4",
+"name": "ED2_plotting_data_4",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::27700" } },
 "features": [
 { "type": "Feature", "properties": { "class": "Urban" }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 532105.091999999945983, 182011.2305 ], [ 532162.491000000038184, 181867.763 ], [ 532308.875, 181914.797 ], [ 532173.125, 181263.453 ], [ 531948.312999999965541, 181471.969000001001405 ], [ 532095.568199999979697, 181577.318600000988226 ], [ 532105.091999999945983, 182011.2305 ] ] ] ] } },

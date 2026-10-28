@@ -1,4 +1,4 @@
-# 1. Figure-specific source workbooks
+# 1. Plotting data and panel source data
 code <- Sys.getenv('MOVE_CODE')
 if (!nzchar(code)) code <- dirname(dirname(normalizePath(sub('^--file=', '',
   grep('^--file=', commandArgs(), value=TRUE)[1]))))
@@ -6,10 +6,11 @@ Sys.setenv(MOVE_CODE=code)
 source(file.path(code, '00_common/01_base.R'))
 
 use(c("assoc", "interaction", "corr", "region", "external", "omics", "describe", "genetic", "enrich"))
+source(file.path(code,'07_output/06_source.R'))
 
 
 # 2. Remove participant identifiers
-clean_source <- function(x) {
+clean_plotting <- function(x) {
     if (is.data.frame(x)) {
         x <- copy(x)
         remove <- intersect(c("eid", "IID", "FID", "Source", "source_file"), names(x))
@@ -18,7 +19,7 @@ clean_source <- function(x) {
         return(x)
     }
     if (is.list(x)) {
-        x[] <- lapply(x, clean_source)
+        x[] <- lapply(x, clean_plotting)
         return(x)
     }
     x
@@ -26,7 +27,7 @@ clean_source <- function(x) {
 
 
 # 3. Collect the data displayed in each figure
-figure_source <- function(id) {
+figure_plotting <- function(id) {
     get <- function(n) readRDS(file.path(out, paste0(n, ".rds")))
     geography <- function() region_geometry(file.path(root, "data/ref/ttwa.geojson"))
     if (id == "Fig1") 
@@ -64,7 +65,7 @@ figure_source <- function(id) {
     if (id == "S2") 
         return(list(supp = list(base = list(ses = s$base$ses)), result = get("Fig2")))
     if (id == "S3") {
-        file <- file.path(out, "supp/S3_source_data.xlsx")
+        file <- file.path(out, "supp/S3_plotting_data.xlsx")
         r <- s$base$geo
         if ("km" %in% names(r$nearest)) {
             a <- r$nearest[, .(N = .N), by = .(X = log1p(km))][order(X)]
@@ -75,9 +76,14 @@ figure_source <- function(id) {
             a[, `:=`(Xmin = ix * width, Xmax = (ix + 1) * width, Ymin = iy * width, Ymax = (iy + 1) * width)]
             r$tdi <- a[, .(Xmin, Xmax, Ymin, Ymax, MT)]
         }
-        else {
+        else if(file.exists(file)) {
+            if('Contents'%in%openxlsx::getSheetNames(file)) {
+                cached <- plotting_read(file)$supp$base$geo
+                r$nearest <- cached$nearest;r$tdi <- cached$tdi
+            } else {
             r$nearest <- as.data.table(openxlsx::read.xlsx(file, "a", check.names = FALSE))
             r$tdi <- as.data.table(openxlsx::read.xlsx(file, "b", check.names = FALSE))
+            }
         }
         return(list(supp = list(base = list(geo = r), matching = s$matching)))
     }
@@ -88,8 +94,9 @@ figure_source <- function(id) {
     if (id == "S6") 
         return(list(result = readRDS(file.path(out, "supp/S6.rds")), geography = geography()))
     if (id == "S7") {
-        f <- file.path(out, "supp/S7_source_data.xlsx")
-        if (file.exists(f)) 
+        f <- file.path(out, "supp/S7_plotting_data.xlsx")
+        if (file.exists(f) && 'Contents'%in%openxlsx::getSheetNames(f))return(plotting_read(f))
+        if (file.exists(f))
             return(setNames(lapply(letters[1:4], function(n) as.data.table(openxlsx::read.xlsx(f, n, check.names = FALSE))), 
                 letters[1:4]))
         e <- s$base$external
@@ -138,19 +145,22 @@ if (sys.nframe() == 0L) {
     ids <- if (length(args)) 
         args
     else c(paste0("Fig", 1:6), paste0("ED", 1:10), paste0("S", 1:10))
-    folder <- Sys.getenv("MOVE_SOURCE", file.path(root, "source"))
+    folder <- Sys.getenv('MOVE_PLOTTING',file.path(root,'figures'))
+    submission <- Sys.getenv('MOVE_SOURCE',file.path(root,'source_data'))
     for (id in ids) {
-        message("Source: ", id)
+        message('Figure data: ', id)
         group <- if(startsWith(id,"Fig")) "01_Main" else if(startsWith(id,"ED")) "02_Extended_Data" else "03_Supplementary"
-        destination <- file.path(folder,group,"source")
+        destination <- file.path(folder,group,'plotting_data')
         dir.create(destination,recursive=TRUE,showWarnings=FALSE)
         if (id == "ED2") {
             use("map")
             ed2_export(destination)
-            next
+            x <- plotting_read(file.path(destination,'ED2_plotting_data.xlsx'))
+        } else {
+            x <- clean_plotting(figure_plotting(id))
+            plotting_write(x,file.path(destination,paste0(id,'_plotting_data.xlsx')))
         }
-        x <- clean_source(figure_source(id))
-        source_write(x, file.path(destination, paste0(id, "_source_data.xlsx")))
+        source_workbook(source_panels(id,x),file.path(submission,paste0(id,'_source_data.xlsx')))
         rm(x)
         invisible(gc())
     }

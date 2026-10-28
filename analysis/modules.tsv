@@ -1,7 +1,7 @@
 Module	Group	Script	Description	Usage	Environment
 base	00_common	00_common/01_base.R	Paths and module loading	internal	All
 define	00_common	00_common/02_definitions.R	Fixed variables and model definitions	internal	All
-source	00_common	00_common/03_source.R	Numerical source-data format	internal	All
+plotting	00_common	00_common/03_plotting.R	Plotting-data format	internal	All
 ukb	01_data	01_data/01_ukb.R	UKB extraction and analysis variables	ukb	RAP
 geo	01_data	01_data/02_geography.R	TTWA linkage and geographic summaries	geo	RAP
 urban	01_data	01_data/03_urban.R	Official rural-urban assignment	internal	RAP
@@ -29,6 +29,7 @@ genes	06_enrichment	06_enrichment/01_genes.R	MAGMA top-gene sets	genes md.genes.
 enrich	06_enrichment	06_enrichment/02_enrich.R	Spatial and single-cell result collection	enrich	HPC
 describe	07_output	07_output/01_describe.R	Sample and flow descriptions	describe	RAP or approved environment
 tables	07_output	07_output/02_tables.R	Supplementary Tables	tables	Approved aggregate environment
-export	07_output	07_output/03_export.R	Figure-specific source workbooks	export [Fig1 ... S10]	RAP or approved aggregate environment
+export	07_output	07_output/03_export.R	Plotting data and panel source data	export [Fig1 ... S10]	RAP or approved aggregate environment
 map	07_output	07_output/04_maps.R	Approved public point-map rasters	internal	RAP
 collect	07_output	07_output/05_collect.R	Merge independent aggregate results	collect output.rds input1.rds input2.rds	Approved aggregate environment
+source	07_output	07_output/06_source.R	Panel source-data tables	internal	Approved aggregate environment

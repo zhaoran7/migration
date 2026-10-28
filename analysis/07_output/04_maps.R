@@ -24,14 +24,14 @@ point_layer <- function(d, file, dpi = 600) {
     }
 }
 
-ed2_export <- function(destination = Sys.getenv("MOVE_SOURCE", file.path(root, "source"))) {
+ed2_export <- function(destination = Sys.getenv('MOVE_PLOTTING',file.path(root,'figures/02_Extended_Data/plotting_data'))) {
     dir.create(destination, recursive = TRUE, showWarnings = FALSE)
     x <- ed2_data()
     layers <- c(birth = "ED2_birth.png", home = "ED2_home.png")
     for (n in names(layers)) point_layer(x[[n]], file.path(destination, layers[n]))
     x[c("birth", "home")] <- NULL
     x$layers <- layers
-    source_write(list(result = x), file.path(destination, "ED2_source_data.xlsx"))
+    plotting_write(list(result = x), file.path(destination, "ED2_plotting_data.xlsx"))
 }
 
 if (sys.nframe() == 0L) ed2_export()
